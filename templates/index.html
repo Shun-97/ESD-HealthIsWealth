@@ -1,114 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css')}}" />
-    <title>Calendar</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Personal CSS -->
+  <!-- <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css')}}" /> -->
+  <!-- Bootstrap CDN -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  
+  <title>Health is Wealth</title>
 </head>
 <body>
-    <div id="clock">
-    <div class="clock">
-        <div class="hand hour" id="hour-hand"></div>
-        <div class="hand minute" id="min-hand"></div>
-        <div class="hand second" id="sec-hand"></div>
-        <div class="number number1">1</div>
-        <div class="number number2">2</div>
-        <div class="number number3">3</div>
-        <div class="number number4">4</div>
-        <div class="number number5">5</div>
-        <div class="number number6">6</div>
-        <div class="number number7">7</div>
-        <div class="number number8">8</div>
-        <div class="number number9">9</div>
-        <div class="number number10">10</div>
-        <div class="number number11">11</div>
-        <div class="number number12">12</div>
+  <div class="container">
+    <div class="jumbotron">
+      <h1 class="display-4">Health is Wealth</h1>
+      <p class="lead">This is a simple web application to help you plan your meals and manage your calories intake.</p>
+      <!-- <hr class="my-4">
+      <p>It uses utility classes for typography and spacing to space content out within the larger container.</p> -->
+      <a class="btn btn-primary btn-lg" href="#" role="button">Login</a>
+      <br>
+      <a href="#">No account? Create now!</a>
     </div>
-</div>
-<div id="curr">
-    <h3 id='header'>Current Time</h3>
-</div>
-<br>
-<div id="curr">
-    <div id="time"></div>
-</div>
-<div id="curr">
-    <h1>Calendar</h1>
-</div>
-    <div class="month">      
-        <ul>
-          <li class="next">
-            <form action="/" method="POST">
-                <input type="text" name="ename" id="ename">
-                <input type="datetime-local" name="stime" id="stime">
-                <input type="datetime-local" name="etime" id="etime">
-                <input type="submit" value="Add Event">
-            </form>
-          </li>
-          <li>
-              <span id="month"></span>
-            <br>
-            <span style="font-size:18px" id="year"></span>
-          </li>
-        </ul>
+    <h1 class="display-4">Vision</h1>
+    <p>Advocating for healthy living</p>
+
+    <h1 class="display-4">Mission</h1>
+    <p>To make planning meals easy and stress-free for everyone!</p>
+
+    <h1 class="display-4">Meet the team!</h1>
+    <div class="card-group">
+      <div class="card">
+        <img class="card-img-top" src="https://i.pinimg.com/564x/5c/1b/3e/5c1b3eafd5b5648a874134e6a8acb8fd.jpg" alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title">Yao Cong</h5>
+          <!-- <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p> -->
+        </div>
       </div>
-      
-      <ul class="weekdays">
-        <li>Mo</li>
-        <li>Tu</li>
-        <li>We</li>
-        <li>Th</li>
-        <li>Fr</li>
-        <li>Sa</li>
-        <li>Su</li>
-      </ul>
-      
-      <ul class="days">  
-        <li>1</li>
-        <li>2</li>
-        <li>3</li>
-        <li>4</li>
-        <li>5</li>
-        <li>6</li>
-        <li>7</li>
-        <li>8</li>
-        <li>9</li>
-        <li>10</li>
-        <li>11</li>
-        <li>12</li>
-        <li>13</li>
-        <li>14</li>
-        <li>15</li>
-        <li>16</li>
-        <li>17</li>
-        <li>18</li>
-        <li>19</li>
-        <li>20</li>
-        <li>21</li>
-        <li>22</li>
-        <li>23</li>
-        <li>24</li>
-        <li>25</li>
-        <li>26</li>
-        <li>27</li>
-        <li>28</li>
-        <li>29</li>
-        <li>30</li>
-        <li>31</li>
-      </ul>
-       {% for event in events %}
-        <tr>
-          <td>
-            {{event.ename}}
-            <br>
-            {{event.stime}}
-            <br>
-            {{event.etime}}
-            <br>
-          </td>
-        </tr>
-        {% endfor %}  
+      <div class="card">
+        <img class="card-img-top" src="https://i.pinimg.com/564x/5c/1b/3e/5c1b3eafd5b5648a874134e6a8acb8fd.jpg" alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title">Shun hui</h5>
+          <!-- <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p> -->
+        </div>
+      </div>
+      <div class="card">
+        <img class="card-img-top" src="https://i.pinimg.com/564x/5c/1b/3e/5c1b3eafd5b5648a874134e6a8acb8fd.jpg" alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title">Kendrick</h5>
+          <!-- <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p> -->
+        </div>
+      </div>
+      <div class="card">
+        <img class="card-img-top" src="https://i.pinimg.com/564x/5c/1b/3e/5c1b3eafd5b5648a874134e6a8acb8fd.jpg" alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title">Trisha</h5>
+          <!-- <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p> -->
+        </div>
+      </div>
+      <div class="card">
+        <img class="card-img-top" src="https://i.pinimg.com/564x/5c/1b/3e/5c1b3eafd5b5648a874134e6a8acb8fd.jpg" alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title">Li Xuan</h5>
+          <!-- <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p> -->
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
-<script src="{{url_for('static', filename='script.js')}}"></script>
+    <!-- Bootstrap  -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>  
+    <script src="{{url_for('static', filename='script.js')}}"></script>
 </html>
