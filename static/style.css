@@ -1,3 +1,13 @@
+
+nav {
+  background-color: #ffffff;
+}
+
+body {
+  background-color: #ffffff;
+}
+/* 
+
 *, *::after, *::before{
     box-sizing: border-box;
     font-family: Gotham Rounded, sans-serif;
@@ -72,10 +82,10 @@ body {
     padding: 5px;
     background: #033db9;
     color: white !important
-  }
+  } */
   
   /* Add media queries for smaller screens */
-  @media screen and (max-width:720px) {
+  /* @media screen and (max-width:720px) {
     .weekdays li, .days li {width: 13.1%;}
   }
   
@@ -188,4 +198,4 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     border-radius: 50%;
-}
+} */
