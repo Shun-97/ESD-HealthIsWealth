@@ -356,28 +356,5 @@ body {
 
 /* End of copy paste for navbar */
 
-/* bg image */
 
-body {
-
-    padding: 0;
-    margin: 0;
-    background-image: url("https://images.unsplash.com/photo-1490818387583-1baba5e638af?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MTd8fHxlbnwwfHx8&w=1000&q=80");
-
-    height: 100%;
-    background-size: 100% 100%;
-
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-attachment: fixed;
-
-    
-}
-
-.mainbody {
-    padding-top: 100px;
-    padding-left: 20px;
-    padding-right: 20px;
-}
 
