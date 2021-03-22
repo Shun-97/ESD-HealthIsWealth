@@ -9,34 +9,59 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
     <!-- Personal Stylesheet -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css')}}" />
+    
     <!-- Vue JS -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
     <!-- jquery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- Axios  -->
     <script src="https://unpkg.com/axios/dist/axios.js"></script> 
-    <title>Login Page</title>
+    <title>Profile</title>
 </head>
 <body>
-  <div class="container" id="login" >
-    <h1>Login</h1>
-    <!-- <form> -->
+    <!-- NAVBAR HERE COPY AND PASTE THIS SHIT IDK HOW ELSE TO INTEGRATE TO OTHER PAGES LOL -->
+    <nav class="nav">
+        <div class="container">
+            <div class="logo">
+            <a href="home.html">Health Is Wealth</a>
+            </div>
+            <div id="mainListDiv" class="main_list">
+            <ul class="navlinks">
+                <li><a href="../planmeal.html">Plan My Meal</a></li>
+                <li><a href="../whatinmeal.html">What's In My Meal?</a></li>
+                <li><a href="../schedule.html"><i class="fa fa-calendar" aria-hidden="true" style="font-size:25px"></i></a></li>
+                <li><a href="../profile.html"><i class="fas fa-user-circle" style="font-size:25px"></i></a></li>
+
+            </ul>
+
+            </div>
+            <span class="navTrigger">
+            <i></i>
+            <i></i>
+            <i></i>
+
+            </span>
+        </div>
+    </nav>
+    <!-- End Navbar -->
+    <div class="container" id="profile">
+        <h1>Profile</h1>
+        <h3>Welcome! {Username}</h3>
         <div class="mb-3">
-          <label for="username" class="form-label">Username</label>
-          <input type="username" class="form-control" id="username" v-model="username">
+            <label for="height" class="form-label">Height</label>
+            <input type="number" class="form-control" id="height" v-model="height">
         </div>
         <div class="mb-3">
-          <label for="password" class="form-label">Password</label>
-          <input type="password" class="form-control" id="password" v-model="password">
+            <label for="wieght" class="form-label">Weight</label>
+            <input type="number" class="form-control" id="weight" v-model="weight">
+        </div>
+        <div class="mb-3">
+            <label for="bmi" class="form-label">BMI</label>
+            <input type="number" class="form-control" id="bmi" v-model="bmi">
         </div>
         <br>
-        <button class="btn btn-primary" v-on:click="validatePassword()">Login</button>
-    <!-- </form> -->
-    <!-- <button v-on:click="register()">click me</button> -->
-    <br>
-    <label id="error" class="text-danger"></label>
-    <a href="/register">Don't have an account? Sign up here!</a>
-</div>
+        <button class="btn btn-primary">Save</button>
+    </div>
 
 </body>
   <!-- Bootstrap  -->
@@ -45,40 +70,17 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>  
   <!-- <script src="{{url_for('static', filename='script.js')}}"></script> -->
   <!-- JS Part -->
-  <script type="application/javascript">
-    var vm = new Vue({
-      el: "#login",
-      data: {
-        username: '',
-        password: ''
-      },
-      methods: {
-        validatePassword(){
-          axios.get('https://esd-healthiswell-69.hasura.app/api/rest/registration/'+this.username, {
-          headers: {
-            'Content-Type': 'application/json',
-            'x-hasura-admin-secret': 'Qbbq4TMG6uh8HPqe8pGd1MQZky85mRsw5za5RNNREreufUbTHTSYgaTUquaKtQuk',
-            }
-          }).then((response)=>{
-            console.log(response);
-            var data = response.data.Registration
-            if (data){
-              var actualPassword = data[0].Password
-              if (this.password == actualPassword){
-                console.log("true")
-                window.location.replace("/profile")
-                return true;
-              }
-              else{
-                console.log("false")
-                return false;
-              }
-            }
-          }).catch((error)=>{
-            console.log(error);
-          })
-        }
-      }
-    })
+  <script>
+      var vm = new Vue({
+          el: "#profile",
+          data: {
+              height: 0,
+              weight: 0,
+              bmi: 0,
+              
+
+          }
+      })
   </script>
+
 </html>

@@ -23,5 +23,9 @@ def register():
     else:
         return render_template('register.html')
 
+@app.route('/profile')
+def profile():
+    return render_template('profile.html')
+
 if __name__ == '__main__':
     app.run(debug=True)

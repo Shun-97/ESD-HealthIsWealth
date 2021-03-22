@@ -7,33 +7,79 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
   <!-- Personal CSS -->
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css')}}" />
+  <!-- Vue JS -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+  <!-- jquery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <!-- Axios  -->
+  <script src="https://unpkg.com/axios/dist/axios.js"></script> 
   <title>Register</title>
 </head>
 <body>
-    <div class="container">
+    <div class="container" id="register" >
         <h1>Registration</h1>
         <form>
-            <form>
-                <div class="mb-3">
-                  <label for="username" class="form-label">Username</label>
-                  <input type="email" class="form-control" id="username">
-                </div>
-                <div class="mb-3">
-                  <label for="password" class="form-label">Password</label>
-                  <input type="password" class="form-control" id="password">
-                </div>
-                <div class="mb-3">
-                    <label for="confirmPassword" class="form-label">Confirm Password</label>
-                    <input type="password" class="form-control" id="confirmPassword">
-                  </div>
-                <button type="submit" class="btn btn-primary">Sign up!</button>
-              </form>
+            <div class="mb-3">
+              <label for="username" class="form-label">Username</label>
+              <input type="username" class="form-control" id="username" v-model="username">
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" class="form-control" id="email" v-model="email">
+            </div>
+            <div class="mb-3">
+              <label for="password" class="form-label">Password</label>
+              <input type="password" class="form-control" id="password" v-model="password">
+            </div>
+            <!-- <div class="mb-3">
+                <label for="confirmPassword" class="form-label">Confirm Password</label>
+                <input type="password" class="form-control" id="confirmPassword">
+              </div> -->
+            <button type="submit" class="btn btn-primary" id="signUp" v-on:click="register()">Sign up!</button>
         </form>
+        <!-- <button v-on:click="register()">click me</button> -->
+        <label id="error" class="text-danger"></label>
+        <a href="/login">Have an account? Login here!</a>
     </div>
 </body>
     <!-- Bootstrap  -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>  
-    <script src="{{url_for('static', filename='script.js')}}"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script> 
+    
+    <!-- JS Part -->
+    <script>
+      var vm = new Vue({
+        el: '#register',
+        data: {
+          username: '',
+          email: '',
+          password: ''
+        },
+        methods: {
+          register(){
+            axios({
+              method: 'POST',
+              url: 'https://esd-healthiswell-69.hasura.app/api/rest/registration',
+              headers: {
+                'Content-Type': 'application/json',
+                'x-hasura-admin-secret': 'Qbbq4TMG6uh8HPqe8pGd1MQZky85mRsw5za5RNNREreufUbTHTSYgaTUquaKtQuk',
+              },
+              data: {
+                "email": this.email,
+                "username": this.username,
+                "password": this.password
+              }
+            })
+            .then((response)=>{
+              console.log(response);
+              window.location.replce("/profile")
+            })
+            .catch((error)=>{
+              console.log(error);
+            })
+          }
+        }
+      })
+    </script>
 </html>
