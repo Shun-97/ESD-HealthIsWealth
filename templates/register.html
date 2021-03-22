@@ -18,28 +18,29 @@
 <body>
     <div class="container" id="register" >
         <h1>Registration</h1>
-        <form>
-            <div class="mb-3">
-              <label for="username" class="form-label">Username</label>
-              <input type="username" class="form-control" id="username" v-model="username">
-            </div>
-            <div class="mb-3">
-              <label for="email" class="form-label">Email</label>
-              <input type="email" class="form-control" id="email" v-model="email">
-            </div>
-            <div class="mb-3">
-              <label for="password" class="form-label">Password</label>
-              <input type="password" class="form-control" id="password" v-model="password">
-            </div>
-            <!-- <div class="mb-3">
-                <label for="confirmPassword" class="form-label">Confirm Password</label>
-                <input type="password" class="form-control" id="confirmPassword">
-              </div> -->
-            <button type="submit" class="btn btn-primary" id="signUp" v-on:click="register()">Sign up!</button>
-        </form>
+        <!-- Form Start -->
+        <div class="mb-3">
+          <label for="username" class="form-label">Username</label>
+          <input type="username" class="form-control" id="username" v-model="username">
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" class="form-control" id="email" v-model="email">
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" class="form-control" id="password" v-model="password">
+        </div>
+        <!-- <div class="mb-3">
+            <label for="confirmPassword" class="form-label">Confirm Password</label>
+            <input type="password" class="form-control" id="confirmPassword">
+          </div> -->
+        <button type="submit" class="btn btn-primary" id="signUp" v-on:click="register()">Sign up!</button>
         <!-- <button v-on:click="register()">click me</button> -->
         <label id="error" class="text-danger"></label>
+        <br>
         <a href="/login">Have an account? Login here!</a>
+        <!-- Form End -->
     </div>
 </body>
     <!-- Bootstrap  -->
@@ -66,16 +67,34 @@
                 'x-hasura-admin-secret': 'Qbbq4TMG6uh8HPqe8pGd1MQZky85mRsw5za5RNNREreufUbTHTSYgaTUquaKtQuk',
               },
               data: {
-                "email": this.email,
-                "username": this.username,
+                "email": this.email.toLowerCase(),
+                "username": this.username.toLowerCase(),
                 "password": this.password
               }
             })
             .then((response)=>{
               console.log(response);
-              window.location.replce("/profile")
+              this.userAccount();
+              window.location.replace("/profile");
             })
             .catch((error)=>{
+              console.log(error);
+            })
+          },
+          userAccount(){
+            axios({
+              method: 'POST',
+              url: 'https://esd-healthiswell-69.hasura.app/api/rest/userAccount',
+              headers: {
+                'Content-Type': 'application/json',
+                'x-hasura-admin-secret': 'Qbbq4TMG6uh8HPqe8pGd1MQZky85mRsw5za5RNNREreufUbTHTSYgaTUquaKtQuk',
+              },
+              data: {
+                "username": this.username.toLowerCase()
+              }                           
+            }).then((response)=>{
+              console.log(response);
+            }).catch((error)=>{
               console.log(error);
             })
           }
