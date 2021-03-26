@@ -49,6 +49,17 @@ class Query(graphene.ObjectType):
     all_registration = SQLAlchemyConnectionField(RegistrationObject)
     all_userAccount = SQLAlchemyConnectionField(UserAccountObject)
 
+    registration_by_username = graphene.List(RegistrationObject, username=graphene.String())
+
+    @staticmethod
+    def resolve_registration_by_username(parent, info, **args):
+        q = args.get('username')
+
+        registration_query = RegistrationObject.get_query(info)
+
+        return registration_query.filter(Registration.Username == q).all()
+
+
 class CreateRegistration(graphene.Mutation):
     class Arguments:
         Username = graphene.String(required=True)
@@ -65,8 +76,26 @@ class CreateRegistration(graphene.Mutation):
 
         return CreateRegistration(registration=registration)
 
+class CreateUserAccount(graphene.Mutation):
+    class Arguments:
+        Username = graphene.String(required=True)
+        Weight = graphene.Float(required=False)
+        Height = graphene.Float(required=False)
+        BMI = graphene.Float(required=False)
+
+    userAccount = graphene.Field(lambda: UserAccountObject)
+    
+    def mutate(self, info, Username, Weight=0, Height=0, BMI=0):
+        userAccount = UserAccount(Username=Username, Weight=Weight, Height=Height, BMI=BMI)
+
+        db.session.add(userAccount)
+        db.session.commit()
+
+        return CreateUserAccount(userAccount=userAccount)
+
 class Mutation(graphene.ObjectType):
     create_registration = CreateRegistration.Field()
+    create_userAccount = CreateUserAccount.Field()
 
 schema = graphene.Schema(query=Query, mutation=Mutation)
 
@@ -80,11 +109,27 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        # session["user"] = username
-        return username, password
+
+        schema = graphene.Schema(query=Query)
+        query_string = '{registrationByUsername(username:"' + username + '"){Username Password Email}}'
+        validate = schema.execute(query_string)
+
+        if not validate.data['registrationByUsername']:
+            return "user don't exist"
+
+        elif validate.data['registrationByUsername'][0]['Password'] == password:
+            session["user"] = username
+            return render_template('profile.html')
+
+        else:
+            return "password wrong"
+
+        return render_template('login.html')
 
     else:
         return render_template('login.html')
+
+
 
 @app.route('/register', methods=['GET','POST'])
 def register():
