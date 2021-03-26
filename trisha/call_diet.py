@@ -1,7 +1,7 @@
 from dietapi import call_calorieninja
 import json
 
-query = 'carrot' # input by user
+query = 'carrot' # input by user, do later
 results = call_calorieninja(query)
 
 if results == None: # error message
