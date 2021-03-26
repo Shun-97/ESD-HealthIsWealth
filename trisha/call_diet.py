@@ -13,5 +13,4 @@ else: # item found, put everything into 'search_result'
 
 
     print(search_result)
-
 # put into Flask table?
