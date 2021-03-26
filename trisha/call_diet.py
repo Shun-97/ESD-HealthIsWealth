@@ -1,6 +1,17 @@
-from diet import call_calorieninja
+from dietapi import call_calorieninja
+import json
 
-query = '134523452'
+query = 'carrot' # input by user
 results = call_calorieninja(query)
 
-print(results)
+if results == None: # error message
+    print("Error: Item Not Found!")
+
+else: # item found, put everything into 'search_result'
+    items = json.loads(results)["items"]
+    search_result = items[0]
+
+
+    print(search_result)
+
+# put into Flask table?
