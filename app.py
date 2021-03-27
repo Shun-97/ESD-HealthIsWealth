@@ -6,16 +6,18 @@ from flask_graphql import GraphQLView
 from datetime import timedelta
 
 app = Flask(__name__)
-#For login session
+# For login session
 app.secret_key = "healthiswealth"
 app.permanent_session_lifetime = timedelta(minutes=30)
-#Database connection
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://qepnpscgacacmr:d338fb6ef24db3eed89c7a4200ac74e8cb5c1ffd22bf8e26194eb684c6b8e33d@ec2-52-21-252-142.compute-1.amazonaws.com:5432/ddo160cbfi69qt'
+# Database connection
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://qepnpscgacacmr:d338fb6ef24db3eed89c7a4200ac74e8cb5c1ffd22bf8e26194eb684c6b8e33d@ec2-52-21-252-142.compute-1.amazonaws.com:5432/ddo160cbfi69qt'
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 db = SQLAlchemy(app)
 
-#Model
+# Model
+
+
 class Registration(db.Model):
     __tablename__ = 'Registration'
 
@@ -25,6 +27,7 @@ class Registration(db.Model):
 
     def __repr__(self):
         return '<Registration %r>' % self.Username
+
 
 class UserAccount(db.Model):
     __tablename__ = 'UserAccount'
@@ -37,18 +40,23 @@ class UserAccount(db.Model):
     def __repr__(self):
         return '< UserAccount %r>' % self.Username
 
-#Schema Objects
+# Schema Objects
+
+
 class RegistrationObject(SQLAlchemyObjectType):
     class Meta:
         model = Registration
         interfaces = (graphene.relay.Node, )
+
 
 class UserAccountObject(SQLAlchemyObjectType):
     class Meta:
         model = UserAccount
         interfaces = (graphene.relay.Node, )
 
-#Graphql Query
+# Graphql Query
+
+
 class Query(graphene.ObjectType):
     node = graphene.relay.Node.Field()
     all_registration = SQLAlchemyConnectionField(RegistrationObject)
@@ -56,6 +64,7 @@ class Query(graphene.ObjectType):
 
     registration_by_username = graphene.List(RegistrationObject, username=graphene.String())
     userAccount_by_username = graphene.List(UserAccountObject, username=graphene.String())
+
 
     @staticmethod
     def resolve_registration_by_username(parent, info, **args):
@@ -73,6 +82,7 @@ class Query(graphene.ObjectType):
         return userAccount_query.filter(UserAccount.Username == q).all()
 
 #Graphql Mutation
+
 class CreateRegistration(graphene.Mutation):
     class Arguments:
         Username = graphene.String(required=True)
@@ -82,12 +92,14 @@ class CreateRegistration(graphene.Mutation):
     registration = graphene.Field(lambda: RegistrationObject)
 
     def mutate(self, info, Username, Password, Email):
-        registration = Registration(Username=Username, Password=Password, Email=Email)
+        registration = Registration(
+            Username=Username, Password=Password, Email=Email)
 
         db.session.add(registration)
         db.session.commit()
 
         return CreateRegistration(registration=registration)
+
 
 class CreateUserAccount(graphene.Mutation):
     class Arguments:
@@ -97,14 +109,16 @@ class CreateUserAccount(graphene.Mutation):
         BMI = graphene.Float(required=False)
 
     userAccount = graphene.Field(lambda: UserAccountObject)
-    
+
     def mutate(self, info, Username, Weight=0, Height=0, BMI=0):
-        userAccount = UserAccount(Username=Username, Weight=Weight, Height=Height, BMI=BMI)
+        userAccount = UserAccount(
+            Username=Username, Weight=Weight, Height=Height, BMI=BMI)
 
         db.session.add(userAccount)
         db.session.commit()
 
         return CreateUserAccount(userAccount=userAccount)
+
 
 class updateUserAccount(graphene.Mutation):
     class Arguments:
@@ -124,34 +138,38 @@ class updateUserAccount(graphene.Mutation):
         db.session.commit()
         return updateUserAccount(userAccount=userAccount)
 
+
 class Mutation(graphene.ObjectType):
     create_registration = CreateRegistration.Field()
     create_userAccount = CreateUserAccount.Field()
     update_userAccount = updateUserAccount.Field()
 
+
 schema = graphene.Schema(query=Query, mutation=Mutation)
 
-#Routes
+# Routes
 @app.route('/')
 def index():
     return render_template('index.html')
 
-@app.route('/login', methods=['GET','POST'])
+
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         username = request.form['username'].lower()
         password = request.form['password']
 
         schema = graphene.Schema(query=Query)
-        query_string = '{registrationByUsername(username:"' + username + '"){Username Password Email}}'
+        query_string = '{registrationByUsername(username:"' + \
+            username + '"){Username Password Email}}'
         validate = schema.execute(query_string)
 
-        #Check if user exist
+        # Check if user exist
         if not validate.data['registrationByUsername']:
             error = "user don't exist"
             return render_template('login.html', error=error)
 
-        #Check if password matches
+        # Check if password matches
         elif validate.data['registrationByUsername'][0]['Password'] == password:
             session.permanent = True
             session["user"] = username
@@ -167,29 +185,31 @@ def login():
         return render_template('login.html')
 
 
-
-@app.route('/register', methods=['GET','POST'])
+@app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
         username = request.form['username'].lower()
         email = request.form['email']
         password = request.form['password']
         # print(username, email, password)
-        
+
         schema = graphene.Schema(query=Query, mutation=Mutation)
-        query_string = '{registrationByUsername(username:"' + username + '"){Username Password Email}}'
+        query_string = '{registrationByUsername(username:"' + \
+            username + '"){Username Password Email}}'
         validate = schema.execute(query_string)
 
-        #Check if user exist
+        # Check if user exist
         if validate.data['registrationByUsername']:
             error = "user exist, Please login instead"
             return render_template('register.html', error=error)
-        
+
         else:
+
             create_registration = 'mutation{createRegistration(Email:"'+email+'", Username:"'+username+'",Password:"'+password+'"){registration{Email Username Password}}}'
             create_userAccount = 'mutation{createUseraccount(Username:"'+username+'"){userAccount{Username}}}'
             register = schema.execute(create_registration)
             userAccount = schema.execute(create_userAccount)
+
             # print(register)
             if register.data:
                 session.permanent = True
@@ -205,10 +225,12 @@ def register():
     else:
         return render_template('register.html')
 
+
 @app.route('/profile')
 def profile():
     if "user" in session:
         user = session["user"]
+
 
         #Get existing data
         schema = graphene.Schema(query=Query, mutation=Mutation)
@@ -257,13 +279,22 @@ def logout():
     session.pop("user", None)
     return render_template('index.html')
 
-#Graphql interface
+
+@app.route('/schedule')
+def schedule():
+    if "user" in session:
+        user = session["user"]
+
+    return render_template('planmeal.php', user=user)
+
+
+
 app.add_url_rule(
     '/graphql',
     view_func=GraphQLView.as_view(
         'graphql',
         schema=schema,
-        graphiql=True # for having the GraphiQL interface
+        graphiql=True  # for having the GraphiQL interface
     )
 )
 
