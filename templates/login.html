@@ -18,9 +18,10 @@
     <!-- Google Sign in -->
     <meta name="google-signin-client_id" content="267437506767-tr4fko9v6lelbaqaeh1v32b2uo6eahkt.apps.googleusercontent.com">
     <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script type="text/javascript" src="http://platform.linkedin.com/in.js"></script>
     <title>Login Page</title>
 </head>
-{%block body%}
+
 <body>
   <div class="container" id="login" >
     <h1>Login</h1>
@@ -41,9 +42,19 @@
     <br>
     <label id="error" class="text-danger">{{error}}</label>
     <a href="/register">Don't have an account? Sign up here!</a>
-    <div class="g-signin2" data-onsuccess="onSignIn"></div>
+    <div>
+    <span class="g-signin2" data-onsuccess="onSignIn"></span>
+    <span>
+      <form method='get' action='https://www.linkedin.com/oauth/v2/authorization' class="form-inline">
+        <input type='hidden' name='response_type' value = 'code'>
+        <input type='hidden' name='client_id' value = '86707mg6xtcwjh'>
+        <input type='hidden' name='redirect_uri' value = 'http://localhost/esdproj/auth/linkedin/callback'>
+        <input type='hidden' name='scope' value = 'r_liteprofile,r_emailaddress'>
+        <button type="submit" style="background-color: transparent; border: none;"><img src="../img/linkedinbut.png" width="200px" height="40px"></button>
+      </form>  
+    </span>
+    </div>
 </div>
-{%endblock%}
 </body>
   <!-- Bootstrap  -->
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
