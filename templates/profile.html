@@ -48,21 +48,22 @@
     <div class="container" id="profile">
         <h1>Profile</h1>
         <h3>Welcome! {{user}}</h3>
-        <form>
+        <form method="POST" action="/profile/update/{{user}}">
             <div class="mb-3">
                 <label for="height" class="form-label">Height</label>
-                <input type="number" class="form-control" id="height" v-model="height">
+                <input type="number" class="form-control" id="height" name="height" value="{{height}}">
             </div>
             <div class="mb-3">
                 <label for="wieght" class="form-label">Weight</label>
-                <input type="number" class="form-control" id="weight" v-model="weight">
+                <input type="number" class="form-control" id="weight" name="weight" value="{{weight}}">
             </div>
             <div class="mb-3">
                 <label for="bmi" class="form-label">BMI</label>
-                <input type="number" class="form-control" id="bmi" v-model="bmi">
+                <input type="number" class="form-control" id="bmi" name="bmi" value="{{bmi}}">
             </div>
             <br>
-            <button class="btn btn-primary">Save</button>
+            <button type="submit" class="btn btn-primary">Save</button>
+            <label id="error" class="text-danger">{{error}}</label>
         </form>
         <a class="btn btn-primary" href="/logout">Logout</a>
     </div>
@@ -76,16 +77,16 @@
   <!-- <script src="{{url_for('static', filename='script.js')}}"></script> -->
   <!-- JS Part -->
   <script>
-      var vm = new Vue({
-          el: "#profile",
-          data: {
-              height: 0,
-              weight: 0,
-              bmi: 0,
+    //   var vm = new Vue({
+    //       el: "#profile",
+    //       data: {
+    //           height: 0,
+    //           weight: 0,
+    //           bmi: 0,
               
 
-          }
-      })
+    //       }
+    //   })
   </script>
 
 </html>

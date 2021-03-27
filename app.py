@@ -62,8 +62,9 @@ class Query(graphene.ObjectType):
     all_registration = SQLAlchemyConnectionField(RegistrationObject)
     all_userAccount = SQLAlchemyConnectionField(UserAccountObject)
 
-    registration_by_username = graphene.List(
-        RegistrationObject, username=graphene.String())
+    registration_by_username = graphene.List(RegistrationObject, username=graphene.String())
+    userAccount_by_username = graphene.List(UserAccountObject, username=graphene.String())
+
 
     @staticmethod
     def resolve_registration_by_username(parent, info, **args):
@@ -73,8 +74,14 @@ class Query(graphene.ObjectType):
 
         return registration_query.filter(Registration.Username == q).all()
 
-# Graphql Mutation
+    def resolve_userAccount_by_username(parent,info,**args):
+        q = args.get('username')
 
+        userAccount_query = UserAccountObject.get_query(info)
+
+        return userAccount_query.filter(UserAccount.Username == q).all()
+
+#Graphql Mutation
 
 class CreateRegistration(graphene.Mutation):
     class Arguments:
@@ -113,9 +120,29 @@ class CreateUserAccount(graphene.Mutation):
         return CreateUserAccount(userAccount=userAccount)
 
 
+class updateUserAccount(graphene.Mutation):
+    class Arguments:
+        Username = graphene.String(required=True)
+        Weight = graphene.Float(required=False)
+        Height = graphene.Float(required=False)
+        BMI = graphene.Float(required=False)
+
+    userAccount = graphene.Field(UserAccountObject)
+    
+    def mutate(self, info, Username, Weight, Height, BMI):
+        userAccount = db.session.query(UserAccount).filter_by(Username=Username).first()
+        userAccount.Height = Height
+        userAccount.Weight = Weight
+        userAccount.BMI = BMI
+
+        db.session.commit()
+        return updateUserAccount(userAccount=userAccount)
+
+
 class Mutation(graphene.ObjectType):
     create_registration = CreateRegistration.Field()
     create_userAccount = CreateUserAccount.Field()
+    update_userAccount = updateUserAccount.Field()
 
 
 schema = graphene.Schema(query=Query, mutation=Mutation)
@@ -129,7 +156,7 @@ def index():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        username = request.form['username']
+        username = request.form['username'].lower()
         password = request.form['password']
 
         schema = graphene.Schema(query=Query)
@@ -161,7 +188,7 @@ def login():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        username = request.form['username']
+        username = request.form['username'].lower()
         email = request.form['email']
         password = request.form['password']
         # print(username, email, password)
@@ -177,10 +204,12 @@ def register():
             return render_template('register.html', error=error)
 
         else:
-            mutation_string = 'mutation{createRegistration(Email:"'+email+'", Username:"' + \
-                username+'",Password:"'+password + \
-                '"){registration{Email Username Password}}}'
-            register = schema.execute(mutation_string)
+
+            create_registration = 'mutation{createRegistration(Email:"'+email+'", Username:"'+username+'",Password:"'+password+'"){registration{Email Username Password}}}'
+            create_userAccount = 'mutation{createUseraccount(Username:"'+username+'"){userAccount{Username}}}'
+            register = schema.execute(create_registration)
+            userAccount = schema.execute(create_userAccount)
+
             # print(register)
             if register.data:
                 session.permanent = True
@@ -202,9 +231,47 @@ def profile():
     if "user" in session:
         user = session["user"]
 
-        return render_template('profile.html', user=user)
+
+        #Get existing data
+        schema = graphene.Schema(query=Query, mutation=Mutation)
+        query_string = '{userAccountByUsername(username:"'+user+'"){Username Weight Height BMI}}'
+        result = schema.execute(query_string)
+        height = result.data["userAccountByUsername"][0]["Height"]
+        weight = result.data["userAccountByUsername"][0]["Weight"]
+        bmi = result.data["userAccountByUsername"][0]["BMI"]
+        
+        return render_template('profile.html', user=user, height=height, weight=weight, bmi= bmi)
     else:
         return render_template('index.html')
+
+@app.route('/profile/update/<username>', methods=['POST','GET'])
+def update_profile(username):
+    if request.method == "POST":
+        user = session["user"]
+        height = request.form["height"]
+        weight = request.form["weight"]
+        bmi = request.form["bmi"]
+
+        schema = graphene.Schema(query=Query, mutation=Mutation)
+        update_query = 'mutation{updateUseraccount(Username:"'+username+'",BMI:'+bmi+',Height:'+height+',Weight:'+weight+'){userAccount{Username BMI Height Weight}}}'
+        update = schema.execute(update_query)
+        print(update)
+
+        if update.data:
+            query_string = '{userAccountByUsername(username:"'+user+'"){Username Weight Height BMI}}'
+            result = schema.execute(query_string)
+            height = result.data["userAccountByUsername"][0]["Height"]
+            weight = result.data["userAccountByUsername"][0]["Weight"]
+            bmi = result.data["userAccountByUsername"][0]["BMI"]
+            
+            return redirect(url_for("profile"))
+
+        else:
+            error = "Unable to update, please try again later"
+            return render_template('profile.html', user=user, error=error)
+    
+    else:
+        return redirect(url_for("profile"))
 
 
 @app.route('/logout')
@@ -219,6 +286,7 @@ def schedule():
         user = session["user"]
 
     return render_template('planmeal.php', user=user)
+
 
 
 app.add_url_rule(
