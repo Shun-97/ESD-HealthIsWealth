@@ -98,6 +98,15 @@ class CreateUserAccount(graphene.Mutation):
 
         return CreateUserAccount(userAccount=userAccount)
 
+class updateUserAccount(graphene.Mutation):
+    userAccount = graphene.Field(UserAccountObject)
+    class Arguments:
+        Username = graphene.String(required=True)
+
+    def mutate(self, info,Username):
+        pass
+        
+
 class Mutation(graphene.ObjectType):
     create_registration = CreateRegistration.Field()
     create_userAccount = CreateUserAccount.Field()
@@ -159,8 +168,10 @@ def register():
             return render_template('register.html', error=error)
         
         else:
-            mutation_string = 'mutation{createRegistration(Email:"'+email+'", Username:"'+username+'",Password:"'+password+'"){registration{Email Username Password}}}'
-            register = schema.execute(mutation_string)
+            create_registration = 'mutation{createRegistration(Email:"'+email+'", Username:"'+username+'",Password:"'+password+'"){registration{Email Username Password}}}'
+            create_userAccount = 'mutation{createUseraccount(Username:"'+username+'"){userAccount{Username}}}'
+            register = schema.execute(create_registration)
+            userAccount = schema.execute(create_userAccount)
             # print(register)
             if register.data:
                 session.permanent = True
@@ -184,12 +195,16 @@ def profile():
         return render_template('profile.html', user=user)
     else:
         return render_template('index.html')
+@app.route('/profile/update/<str:username>')
+def update_profile(username):
+    pass
 
 @app.route('/logout')
 def logout():
     session.pop("user", None)
     return render_template('index.html')
 
+#Graphql interface
 app.add_url_rule(
     '/graphql',
     view_func=GraphQLView.as_view(
