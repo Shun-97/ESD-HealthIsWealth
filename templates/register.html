@@ -13,6 +13,9 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <!-- Axios  -->
   <script src="https://unpkg.com/axios/dist/axios.js"></script> 
+  <!-- Google Sign in -->
+  <meta name="google-signin-client_id" content="267437506767-tr4fko9v6lelbaqaeh1v32b2uo6eahkt.apps.googleusercontent.com">
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
   <title>Register</title>
 </head>
 {%block body%}
@@ -42,6 +45,7 @@
           <label id="error" class="text-danger">{{error}}</label>
           <br>
           <a href="/login">Have an account? Login here!</a>
+          <div class="g-signin2" data-onsuccess="onSignIn"></div>
         </form>
         <!-- Form End -->
     </div>
@@ -53,7 +57,32 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script> 
     
     <!-- JS Part -->
-    <!-- <script>
+    <script>
+      function onSignIn(googleUser){
+        console.log(JSON.stringify(googleUser.getBasicProfile()))
+        var profile = googleUser.getBasicProfile();
+        console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+        console.log('Name: ' + profile.getName());
+        console.log('Image URL: ' + profile.getImageUrl());
+        console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+        // The ID token you need to pass to your backend:
+        var id_token = googleUser.getAuthResponse().id_token;
+        console.log("ID Token: " + id_token);
+
+        var username = profile.getName()
+        var password = profile.getId()
+        var email = profile.getEmail()
+
+        const http = new XMLHttpRequest();
+        const url = "/register";
+        http.open("POST", url);
+        const data = {
+          username: username,
+          password: password,
+          email: email
+        };
+        http.send(data);
+      }
       var vm = new Vue({
         el: '#register',
         data: {
@@ -61,48 +90,48 @@
           email: '',
           password: ''
         },
-        methods: {
-          register(){
-            axios({
-              method: 'POST',
-              url: 'https://esd-healthiswell-69.hasura.app/api/rest/registration',
-              headers: {
-                'Content-Type': 'application/json',
-                'x-hasura-admin-secret': 'Qbbq4TMG6uh8HPqe8pGd1MQZky85mRsw5za5RNNREreufUbTHTSYgaTUquaKtQuk',
-              },
-              data: {
-                "email": this.email.toLowerCase(),
-                "username": this.username.toLowerCase(),
-                "password": this.password
-              }
-            })
-            .then((response)=>{
-              console.log(response);
-              this.userAccount();
-              window.location.replace("/profile");
-            })
-            .catch((error)=>{
-              console.log(error);
-            })
-          },
-          userAccount(){
-            axios({
-              method: 'POST',
-              url: 'https://esd-healthiswell-69.hasura.app/api/rest/userAccount',
-              headers: {
-                'Content-Type': 'application/json',
-                'x-hasura-admin-secret': 'Qbbq4TMG6uh8HPqe8pGd1MQZky85mRsw5za5RNNREreufUbTHTSYgaTUquaKtQuk',
-              },
-              data: {
-                "username": this.username.toLowerCase()
-              }                           
-            }).then((response)=>{
-              console.log(response);
-            }).catch((error)=>{
-              console.log(error);
-            })
-          }
-        }
-      }) -->
+        // methods: {
+        //   register(){
+        //     axios({
+        //       method: 'POST',
+        //       url: 'https://esd-healthiswell-69.hasura.app/api/rest/registration',
+        //       headers: {
+        //         'Content-Type': 'application/json',
+        //         'x-hasura-admin-secret': 'Qbbq4TMG6uh8HPqe8pGd1MQZky85mRsw5za5RNNREreufUbTHTSYgaTUquaKtQuk',
+        //       },
+        //       data: {
+        //         "email": this.email.toLowerCase(),
+        //         "username": this.username.toLowerCase(),
+        //         "password": this.password
+        //       }
+        //     })
+        //     .then((response)=>{
+        //       console.log(response);
+        //       this.userAccount();
+        //       window.location.replace("/profile");
+        //     })
+        //     .catch((error)=>{
+        //       console.log(error);
+        //     })
+        //   },
+        //   userAccount(){
+        //     axios({
+        //       method: 'POST',
+        //       url: 'https://esd-healthiswell-69.hasura.app/api/rest/userAccount',
+        //       headers: {
+        //         'Content-Type': 'application/json',
+        //         'x-hasura-admin-secret': 'Qbbq4TMG6uh8HPqe8pGd1MQZky85mRsw5za5RNNREreufUbTHTSYgaTUquaKtQuk',
+        //       },
+        //       data: {
+        //         "username": this.username.toLowerCase()
+        //       }                           
+        //     }).then((response)=>{
+        //       console.log(response);
+        //     }).catch((error)=>{
+        //       console.log(error);
+        //     })
+        //   }
+        // }
+      })
     </script>
 </html>
