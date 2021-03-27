@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<?php
+  require_once "../auth/init.php";
+?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap CDN -->
@@ -45,13 +48,8 @@
     <div>
     <span class="g-signin2" data-onsuccess="onSignIn"></span>
     <span>
-      <form method='get' action='https://www.linkedin.com/oauth/v2/authorization' class="form-inline">
-        <input type='hidden' name='response_type' value = 'code'>
-        <input type='hidden' name='client_id' value = '86707mg6xtcwjh'>
-        <input type='hidden' name='redirect_uri' value = 'http://localhost/esdproj/auth/linkedin/callback'>
-        <input type='hidden' name='scope' value = 'r_liteprofile,r_emailaddress'>
-        <button type="submit" style="background-color: transparent; border: none;"><img src="../img/linkedinbut.png" width="200px" height="40px"></button>
-      </form>  
+      <a href="<?php echo $linkedin->getAuthUrl() ?>" style="font-size: large;">Sign in with LinkedIn</a>
+        <!-- <button href="<?=$linkedin->getAuthUrl()?>" style="background-color: transparent; border: none;"><img src="../img/linkedinbut.png" width="200px" height="40px"></button> -->
     </span>
     </div>
 </div>
