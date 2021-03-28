@@ -1,50 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap CDN -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <!--Fontawesome CDN-->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+        integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
     <!-- Personal Stylesheet -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css')}}" />
-    
+    <!-- NEEDED FOR NAVBAR TO WORK-->
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <!-- Vue JS -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
     <!-- jquery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- Axios  -->
-    <script src="https://unpkg.com/axios/dist/axios.js"></script> 
+    <script src="https://unpkg.com/axios/dist/axios.js"></script>
     <title>Profile</title>
 </head>
 {%block body%}
+
 <body>
     <!-- NAVBAR HERE COPY AND PASTE THIS SHIT IDK HOW ELSE TO INTEGRATE TO OTHER PAGES LOL -->
-    <nav class="nav">
-        <div class="container">
-            <div class="logo">
-            <a href="home.html">Health Is Wealth</a>
+    <div class="w3-top">
+        <div class="w3-bar w3-white w3-card" id="myNavbar">
+            <a href="#home" class="w3-bar-item w3-button w3-wide"><img src='/static/img/earthchan.png' height="48px"
+                    width="48px">Health is Wealth</a>
+            <!-- Right-sided navbar links -->
+            <div class="w3-right w3-hide-small">
+                <a href="planmeal.html" class="w3-bar-item w3-button"><i class="fa fa-user"></i> Plan My Meal</a>
+                <a href="whatinmeal.html" class="w3-bar-item w3-button"><i class="fa fa-th"></i> What's In My Meal? </a>
+                <a href="schedule" class="w3-bar-item w3-button"><i class="fa fa-calendar" aria-hidden="true"
+                        style="font-size:25px"></i></a>
+                <a href="profile.html" class="w3-bar-item w3-button"><i class="fas fa-user-circle"
+                        style="font-size:25px"></i></a>
             </div>
-            <div id="mainListDiv" class="main_list">
-            <ul class="navlinks">
-                <li><a href="../planmeal.html">Plan My Meal</a></li>
-                <li><a href="../whatinmeal.html">What's In My Meal?</a></li>
-                <li><a href="../schedule"><i class="fa fa-calendar" aria-hidden="true" style="font-size:25px"></i></a></li>
-                <li><a href="../profile.html"><i class="fas fa-user-circle" style="font-size:25px"></i></a></li>
+            <!-- Hide right-floated links on small screens and replace them with a menu icon -->
 
-            </ul>
-
-            </div>
-            <span class="navTrigger">
-            <i></i>
-            <i></i>
-            <i></i>
-
-            </span>
+            <a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium"
+                onclick="w3_open()">
+                <i class="fa fa-bars"></i>
+            </a>
         </div>
+    </div>
+
+    <!-- Sidebar on small screens when clicking the menu icon -->
+    <nav class="w3-sidebar w3-bar-block w3-black w3-card w3-animate-left w3-hide-medium w3-hide-large"
+        style="display:none" id="mySidebar">
+        <a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-large w3-padding-16">Close
+            ×</a>
+        <a href="planmeal.html" onclick="w3_close()" class="w3-bar-item w3-button">Plan My Meal</a>
+        <a href="whatinmeal.html" onclick="w3_close()" class="w3-bar-item w3-button">What's In My Meal?</a>
+        <a href="schedule.html" onclick="w3_close()" class="w3-bar-item w3-button"><i class="fa fa-calendar"
+                aria-hidden="true" style="font-size:25px"></i></a>
+        <a href="profile.html" onclick="w3_close()" class="w3-bar-item w3-button"><i class="fas fa-user-circle"
+                style="font-size:25px"></i></a>
     </nav>
-    <!-- End Navbar -->
+    <!-- NAVBAR ENDS HERE COPY AND PASTE THIS SHIT IDK HOW ELSE TO INTEGRATE TO OTHER PAGES LOL -->
+
     <div class="container" id="profile">
         <h1>Profile</h1>
         <h3>Welcome! {{user}}</h3>
@@ -70,23 +87,17 @@
 
 </body>
 {%endblock%}
-  <!-- Bootstrap  -->
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>  
-  <!-- <script src="{{url_for('static', filename='script.js')}}"></script> -->
-  <!-- JS Part -->
-  <script>
-    //   var vm = new Vue({
-    //       el: "#profile",
-    //       data: {
-    //           height: 0,
-    //           weight: 0,
-    //           bmi: 0,
-              
-
-    //       }
-    //   })
-  </script>
+<!-- Bootstrap  -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+    integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+    crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+    integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+    crossorigin="anonymous"></script>
+<!-- <script src="{{url_for('static', filename='script.js')}}"></script> -->
+<!-- JS Part -->
 
 </html>
