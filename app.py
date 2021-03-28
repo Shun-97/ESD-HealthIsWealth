@@ -167,7 +167,7 @@ def login():
         # Check if user exist
         if not validate.data['registrationByUsername']:
             error = "user don't exist"
-            return render_template('login.html', error=error)
+            return render_template('login.php', error=error)
 
         # Check if password matches
         elif validate.data['registrationByUsername'][0]['Password'] == password:
@@ -177,12 +177,12 @@ def login():
 
         else:
             error = "Wrong password"
-            return render_template('login.html', error=error)
+            return render_template('login.php', error=error)
 
-        return render_template('login.html')
+        return render_template('login.php')
 
     else:
-        return render_template('login.html')
+        return render_template('login.php')
 
 
 @app.route('/register', methods=['GET', 'POST'])
