@@ -72,13 +72,40 @@
       // The ID token you need to pass to your backend:
       var id_token = googleUser.getAuthResponse().id_token;
       console.log("ID Token: " + id_token);
+
+      var username = profile.getName()
+      var password = profile.getId()
+      var email = profile.getEmail()
+      
+      //Send the data to login
+      var url = "http://localhost:5000/login";
+      const data = JSON.stringify({
+        username: username,
+        password: password,
+      });
+      fetch(url,{
+        method: "POST",
+        headers:{"Content-type": "application/json"},
+        body: data
+      })
+      .then(response => response.json())
+      //grab the returned response
+      .then(data => {
+        console.log(data)
+        console.log(data.code)
+        if (data.code == 201){
+          window.location.replace("http://localhost:5000/profile")
+        }   
+      })
+
+
     }
-    var vm = new Vue({
-      el: "#login",
-      data: {
-        username: '',
-        password: ''
-      },
+    // var vm = new Vue({
+    //   el: "#login",
+    //   data: {
+    //     username: '',
+    //     password: ''
+    //   },
       // methods: {
       //   validatePassword(){
       //     axios.get('https://esd-healthiswell-69.hasura.app/api/rest/registration/'+this.username.toLowerCase(), {
@@ -106,6 +133,6 @@
       //     })
       //   }
       // }
-    })
+    // })
   </script>
 </html>

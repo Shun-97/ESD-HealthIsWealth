@@ -61,28 +61,38 @@
       function onSignIn(googleUser){
         console.log(JSON.stringify(googleUser.getBasicProfile()))
         var profile = googleUser.getBasicProfile();
-        console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-        console.log('Name: ' + profile.getName());
-        console.log('Image URL: ' + profile.getImageUrl());
-        console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
         // The ID token you need to pass to your backend:
         var id_token = googleUser.getAuthResponse().id_token;
         console.log("ID Token: " + id_token);
 
+        //mapping data, not secure de, I know, just hacking this
         var username = profile.getName()
         var password = profile.getId()
         var email = profile.getEmail()
 
-        const http = new XMLHttpRequest();
-        const url = "/register";
-        http.open("POST", url);
-        const data = {
+        var url = "http://localhost:5000/register";
+        const data = JSON.stringify({
           username: username,
           password: password,
           email: email
-        };
-        http.send(data);
+        });
+        fetch(url,{
+          method: "POST",
+          headers:{"Content-type": "application/json"},
+          body: data
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.log(data)
+          console.log(data.code)
+          if (data.code == 201){
+            //redirect to profile if successful
+            window.location.replace("http://localhost:5000/profile")
+          }   
+        })
       }
+
+
       var vm = new Vue({
         el: '#register',
         data: {
