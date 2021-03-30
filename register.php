@@ -47,7 +47,7 @@
             </div> -->
       <button type="submit" class="btn btn-primary" id="signUp" v-on:click="register()">Sign up!</button>
       <!-- <button v-on:click="register()">click me</button> -->
-      <label id="error" class="text-danger">{{error}}</label>
+      <label id="error" class="text-danger"></label>
       <br>
       <a href="/login">Have an account? Login here!</a>
       <div class="g-signin2" data-onsuccess="onSignIn"></div>
@@ -99,7 +99,38 @@
           window.location.replace("./profile.php")
         }
       })
-  }
+    }
+
+  document.getElementById('signUp').addEventListener('click',function(event) { 
+    event.preventDefault();
+    console.log('LOL')
+    name = document.getElementById('username').value
+    password = document.getElementById('password').value
+    email = document.getElementById('email').value
+    data = JSON.stringify({
+      'username': name,
+      'password': password,
+      "email": email
+    })
+    console.log(name,password,email,data)
+    fetch('http://127.0.0.1:5100/api/register/verification', {
+    
+      method: 'POST',
+      headers: {
+          'Content-type': 'application/json',     
+      },
+      body: data  
+    })
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data)
+      console.log(data.code)
+      if (data.code == 201){
+        localStorage.setItem("username", data.data.username)
+        window.location.replace("./profile.php")
+        } 
+      });
+    })   
 </script>
 
 </html>

@@ -44,7 +44,7 @@
     </form>
     <!-- <button v-on:click="register()">click me</button> -->
     <br>
-    <label id="error" class="text-danger">{{error}}</label>
+    <label id="error" class="text-danger"></label>
     <a href="register.php">Don't have an account? Sign up here!</a>
     <div>
     <span class="g-signin2" data-onsuccess="onSignIn"></span>
@@ -106,20 +106,21 @@
     document.getElementById('login_button').addEventListener('click',function(event) { 
       event.preventDefault();
       console.log('LOL')
+      name = document.getElementById('username').value
+      password = document.getElementById('password').value
       data = JSON.stringify({
         'username': name,
         'password': password
       })
-      name = document.getElementById('username').value
-      password = document.getElementById('password').value
+      console.log(name,password,data)
       fetch('http://127.0.0.1:5100/api/login/verification', {
       
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/json',     
-      },
-      body: data  
-    })
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json',     
+        },
+        body: data  
+      })
       .then((res) => res.json())
       .then((data) => {
         console.log(data)

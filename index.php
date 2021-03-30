@@ -69,7 +69,7 @@ session_start();
       <span class="w3-jumbo w3-hide-small">Start planning your meals</span><br>
       <span class="w3-xxlarge w3-hide-large w3-hide-medium">Start planning your meals</span><br>
       <span class="w3-large">For a better health, Eat with choice</span>
-      <p><a href="register.html"
+      <p><a href="register.php"
           class="w3-button w3-white w3-padding-large w3-large w3-margin-top w3-opacity w3-hover-opacity-off">Register
           now!</a>
         <a href="login.php"

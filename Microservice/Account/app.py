@@ -5,6 +5,7 @@ from graphene_sqlalchemy import SQLAlchemyObjectType, SQLAlchemyConnectionField
 from flask_graphql import GraphQLView
 from datetime import timedelta
 from flask_cors import CORS
+import os, sys
 
 
 app = Flask(__name__)
