@@ -32,7 +32,7 @@ html {
 .bgimg-1 {
   background-position: center;
   background-size: cover;
-  background-image: url("/static/img/bg.jpeg");
+  background-image: url("../img/bg.jpeg");
   min-height: 100%;
 }
 
