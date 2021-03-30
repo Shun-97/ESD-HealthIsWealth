@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+session_start();
 
 <head>
   <!-- Required meta tags -->
@@ -11,8 +12,8 @@
     integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
 
   <!-- Styling and JS -->
-  <script src="/static/js/navbar.js"></script>
-  <link rel="stylesheet" href="/static/css/main.css">
+  <script src="./js/navbar.js"></script>
+  <link rel="stylesheet" href="./css/main.css">
 
   <!-- Font Awesome -->
   <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
@@ -29,7 +30,7 @@
   <!-- NAVBAR HERE COPY AND PASTE THIS SHIT IDK HOW ELSE TO INTEGRATE TO OTHER PAGES LOL -->
   <div class="w3-top">
     <div class="w3-bar w3-white w3-card" id="myNavbar">
-      <a href="#home" class="w3-bar-item w3-button w3-wide"><img src='/static/img/earthchan.png' height="48px"
+      <a href="#home" class="w3-bar-item w3-button w3-wide"><img src='./img/earthchan.png' height="48px"
           width="48px">Health is Wealth</a>
       <!-- Right-sided navbar links -->
       <div class="w3-right w3-hide-small">
@@ -71,7 +72,7 @@
       <p><a href="register.html"
           class="w3-button w3-white w3-padding-large w3-large w3-margin-top w3-opacity w3-hover-opacity-off">Register
           now!</a>
-        <a href="/login"
+        <a href="login.php"
           class="w3-button w3-blue w3-padding-large w3-large w3-margin-top w3-opacity w3-hover-opacity-off"
           style="opacity: 1">Login</a>
       </p>
