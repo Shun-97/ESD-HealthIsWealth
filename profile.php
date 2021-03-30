@@ -69,27 +69,28 @@
     </nav>
     <!-- NAVBAR ENDS HERE COPY AND PASTE THIS SHIT IDK HOW ELSE TO INTEGRATE TO OTHER PAGES LOL -->
 
-    <div class="container" id="profile">
+    <div class="container" id="app">
         <h1>Profile</h1>
-        <h3 class = 'app'>Welcome! {{user}}</h3>
-        <form class = 'app' method="POST" action="/profile/update/{{user}}">
+        <h3>Welcome! {{user}}</h3>
+        <form method="POST">
             <div class="mb-3">
                 <label for="height" class="form-label">Height</label>
-                <input type="number" class="form-control" id="height" name="height" value="{{height}}">
+                <input type="number" class="form-control" id="height" name="height">
             </div>
             <div class="mb-3">
                 <label for="wieght" class="form-label">Weight</label>
-                <input type="number" class="form-control" id="weight" name="weight" value="{{weight}}">
+                <input type="number" class="form-control" id="weight" name="weight">
             </div>
             <div class="mb-3">
                 <label for="bmi" class="form-label">BMI</label>
-                <input type="number" class="form-control" id="bmi" name="bmi" value="{{bmi}}">
+                <input type="number" class="form-control" id="bmi" name="bmi">
             </div>
             <br>
             <button type="submit" class="btn btn-primary">Save</button>
             <!-- <label id="error" class="text-danger">{{error}}</label> -->
+            
         </form>
-        <a class="btn btn-primary" href="/logout">Logout</a>
+        <button class="btn btn-primary" v-on:click="logout">Logout</button>
     </div>
 
 </body>
@@ -110,9 +111,16 @@
 console.log(localStorage.getItem('username'))
 
 var app = new Vue({
-    el: '.app',
+    el: '#app',
     data: {
         user: localStorage.getItem('username')
+    },
+    methods: {
+        logout: function(){
+            console.log("logout");
+            localStorage.removeItem('username');
+            window.location.replace("./index.php");
+        }
     }
 })
 
