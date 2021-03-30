@@ -4,12 +4,12 @@ import graphene
 from graphene_sqlalchemy import SQLAlchemyObjectType, SQLAlchemyConnectionField
 from flask_graphql import GraphQLView
 from datetime import timedelta
-from flask_cors import CORS
+import json
 
+import os, sys
+from os import environ
 
 app = Flask(__name__)
-cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
-
 # For login session
 app.secret_key = "healthiswealth"
 app.permanent_session_lifetime = timedelta(minutes=30)
@@ -18,6 +18,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://qepnpscgacacmr:d338fb6ef24
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 db = SQLAlchemy(app)
+
+# Model
 
 
 class Registration(db.Model):
@@ -152,47 +154,15 @@ class Mutation(graphene.ObjectType):
 
 schema = graphene.Schema(query=Query, mutation=Mutation)
 
+# Routes
+@app.route('/')
+def index():
+    return render_template('index.html')
 
-@app.route('/api/login/verification', methods=['POST'])
+
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == 'POST':
-        jsondata = request.get_json(force=True)
-        # return request.form
-        username = jsondata['username']
-        password = jsondata['password']
-
-        schema = graphene.Schema(query=Query)
-        query_string = '{registrationByUsername(username:"' + \
-            username + '"){Username Password Email}}'
-        validate = schema.execute(query_string)
-        # print(validate)
-        # Check if user exist
-        if not validate.data['registrationByUsername']:
-            # return {"message": "user don't exist"}
-
-            return {
-                "code": 500,
-                "data": {
-                    "message": 'Users do not exist'
-                }}
-
-            # Check if password matches
-        elif validate.data['registrationByUsername'][0]['Password'] == password:
-            return {
-                "code": 201,
-                "data": {
-                    "username": username,
-                    "registration": validate.data['registrationByUsername']
-                }}
-
-        else:
-            return {
-                "code": 500,
-                "data": {
-                    "message": 'Wrong Password'
-                }}
-            # return {"message": "user don't exist"}
-    elif request.is_json:
+    if request.is_json:
         try:
             google = request.get_json()
             print("Received")
@@ -206,11 +176,8 @@ def login():
 
             # Check if user exist
             if not validate.data['registrationByUsername']:
-                return {
-                    "code": 500,
-                    "data": {
-                        "message": 'Users do not exist'
-                    }}
+                error = "user don't exist"
+                return render_template('login.php', error=error)
 
             # Check if password matches
             elif validate.data['registrationByUsername'][0]['Password'] == password:
@@ -219,54 +186,83 @@ def login():
                 return {
                     "code": 201,
                     "data": {
-                        "username": username,
                         "registration": validate.data['registrationByUsername']
                     }}
 
             else:
-                return {
-                    "code": 500,
-                    "data": {
-                        "message": 'Wrong Password'
-                    }}
+                error = "Wrong password"
+                return render_template('login.php', error=error)   
 
             return jsonify(google)
-
+        
         except Exception as e:
             # Unexpected error in code
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-            ex_str = str(e) + " at " + str(exc_type) + ": " + \
-                fname + ": line " + str(exc_tb.tb_lineno)
+            ex_str = str(e) + " at " + str(exc_type) + ": " + fname + ": line " + str(exc_tb.tb_lineno)
             print(ex_str)
 
             return jsonify({
                 "code": 500,
                 "message": "internal error: " + ex_str
-            }), 500
+            }), 500   
+
+    elif request.method == 'POST':
+        username = request.form['username'].lower()
+        password = request.form['password']
+
+        schema = graphene.Schema(query=Query)
+        query_string = '{registrationByUsername(username:"' + \
+            username + '"){Username Password Email}}'
+        validate = schema.execute(query_string)
+
+        # Check if user exist
+        if not validate.data['registrationByUsername']:
+            error = "user don't exist"
+            return render_template('login.php', error=error)
+
+        # Check if password matches
+        elif validate.data['registrationByUsername'][0]['Password'] == password:
+            session.permanent = True
+            session["user"] = username
+            return redirect(url_for("profile"))
+
+        else:
+            error = "Wrong password"
+            return render_template('login.php', error=error)
+
+        return render_template('login.php')
+
+    else:
+        return render_template('login.php')
 
 
-@app.route('/api/register/verification', methods=['POST'])
+@app.route('/register', methods=['GET', 'POST'])
 def register():
+    #Check if it's frontend sending data over, in this case, it's only google sign in
     if request.is_json:
         try:
-            # Grab the data
+            #Grab the data
             google = request.get_json()
             print("Received")
-            # Map the data
+            #Map the data
             username = google["username"]
             email = google["email"]
             password = google["password"]
 
-            # Create_registration will return a tuple. e.g. (True, graphql return dict data) or (False, error message)
-            create = create_registration(username, email, password)
+            #Create_registration will return a tuple. e.g. (True, graphql return dict data) or (False, error message)
+            create = create_registration(username, email, password)  
 
-            # If True (success)
+            #If True (success)
             if create[0]:
+                #open login session
+                session.permanent = True
+                session["user"] = username
+
+                #return back status to frontend
                 return {
                     "code": 201,
                     "data": {
-                        "username": username,
                         "registration": create[1]
                     }}
 
@@ -275,94 +271,147 @@ def register():
                 return {
                     "code": 500,
                     "data": error
-                }
-
-        # This part... I copied from prof's codes, I think it returns an error message if the try doesn't work
+                    }    
+        
+        #This part... I copied from prof's codes, I think it returns an error message if the try doesn't work
         except Exception as e:
             # Unexpected error in code
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-            ex_str = str(e) + " at " + str(exc_type) + ": " + \
-                fname + ": line " + str(exc_tb.tb_lineno)
+            ex_str = str(e) + " at " + str(exc_type) + ": " + fname + ": line " + str(exc_tb.tb_lineno)
             print(ex_str)
 
             return jsonify({
                 "code": 500,
                 "message": "internal error: " + ex_str
-            }), 500
+            }), 500            
 
-    # For ownself registration
+    #For ownself registration 
     elif request.method == 'POST':
-        # Grabbing data from the form
+        #Grabbing data from the form
         username = request.form['username'].lower()
         email = request.form['email']
         password = request.form['password']
 
-        # Create_registration will return a tuple. e.g. (True, graphql return dict data) or (False, error message)
+        #Create_registration will return a tuple. e.g. (True, graphql return dict data) or (False, error message)
         create = create_registration(username, email, password)
 
-        # If True (success)
+        #If True (success)
         if create[0]:
-
-            return {
-                "code": 201,
-                "username": username,
-            }
+            session.permanent = True
+            session["user"] = username
+            return redirect(url_for("profile"))
 
         else:
-            return {
-                "code": 500,
-                "message": "Failed to create account. Please try again"
-            }
+            error = "Failed to create account. Please try again"
+            return render_template('register.html', error=error)
+
+        return render_template('register.html')
 
     else:
-        return {
-            "code": 500,
-            "message": "Failed to create account. Please try again"
-        }
+        return render_template('register.html')
 
-
+#Will sent data to graphql and create registration and userAccount
 def create_registration(username, email, password):
     schema = graphene.Schema(query=Query, mutation=Mutation)
-    # Check if username already exist in the database
+    #Check if username already exist in the database
     exist = username_exist(username)
 
     # Check if user exist
     if exist[0]:
-        return (False, exist[1])  # error msg
+        return (False, exist[1]) #error msg
 
     else:
-        # Query
+        #Query
         create_registration = 'mutation{createRegistration(Email:"'+email+'", Username:"' + \
             username+'",Password:"'+password + \
             '"){registration{Email Username Password}}}'
         create_userAccount = 'mutation{createUseraccount(Username:"' + \
             username+'"){userAccount{Username}}}'
-
-        # Execute
+        
+        #Execute
         register = schema.execute(create_registration)
-        userAccount = schema.execute(create_userAccount)
+        userAccount = schema.execute(create_userAccount)   
         return (True, register.data["createRegistration"])
 
-# Checks the database if the username exsit
-
-
+#Checks the database if the username exsit
 def username_exist(username):
     schema = graphene.Schema(query=Query, mutation=Mutation)
-    # Qeury
+    #Qeury
     query_string = '{registrationByUsername(username:"' + \
         username + '"){Username Password Email}}'
-    # Execute
-    validate = schema.execute(query_string)
+    #Execute
+    validate = schema.execute(query_string)   
 
-    # If there's data in registrationByUsername, give error
+    #If there's data in registrationByUsername, give error
     if validate.data['registrationByUsername']:
         error = "user exist, Please login instead"
         return (True, error)
     else:
         return (False, validate.data['registrationByUsername'])
+    
+
+@app.route('/profile')
+def profile():
+    if "user" in session:
+        user = session["user"]
+
+        # Get existing data
+        schema = graphene.Schema(query=Query, mutation=Mutation)
+        query_string = '{userAccountByUsername(username:"' + \
+            user+'"){Username Weight Height BMI}}'
+        result = schema.execute(query_string)
+        height = result.data["userAccountByUsername"][0]["Height"]
+        weight = result.data["userAccountByUsername"][0]["Weight"]
+        bmi = result.data["userAccountByUsername"][0]["BMI"]
+
+        return render_template('profile.html', user=user, height=height, weight=weight, bmi=bmi)
+    else:
+        return render_template('index.html')
 
 
+@app.route('/profile/update/<username>', methods=['POST', 'GET'])
+def update_profile(username):
+    if request.method == "POST":
+        user = session["user"]
+        height = request.form["height"]
+        weight = request.form["weight"]
+        bmi = request.form["bmi"]
+
+        schema = graphene.Schema(query=Query, mutation=Mutation)
+        update_query = 'mutation{updateUseraccount(Username:"'+username+'",BMI:'+bmi + \
+            ',Height:'+height+',Weight:'+weight + \
+            '){userAccount{Username BMI Height Weight}}}'
+        update = schema.execute(update_query)
+
+        #If the update is successful
+        if update.data:
+            #redirect to /profile to re-grab database info
+            return redirect(url_for("profile"))
+
+        else:
+            error = "Unable to update, please try again later"
+            return render_template('profile.html', user=user, error=error)
+
+    else:
+        return redirect(url_for("profile"))
+
+
+@app.route('/logout')
+def logout():
+    session.pop("user", None)
+    return render_template('index.html')
+
+
+@app.route('/schedule')
+def schedule():
+    if "user" in session:
+        user = session["user"]
+
+    return render_template('planmeal.php', user=user)
+
+
+#Graphql interface
 app.add_url_rule(
     '/graphql',
     view_func=GraphQLView.as_view(
@@ -372,6 +421,5 @@ app.add_url_rule(
     )
 )
 
-
 if __name__ == '__main__':
-    app.run(port=5100, debug=True)
+    app.run(debug=True)

@@ -2,6 +2,13 @@
 <html lang="en">
 
 <head>
+    <script>
+
+        if (localStorage.getItem('username') == null) {
+            window.location.replace("index.php")
+        }
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap CDN -->
@@ -11,7 +18,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
         integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
     <!-- Personal Stylesheet -->
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css')}}" />
+    <link rel="stylesheet" type="text/css" href="./css/main.css" />
     <!-- NEEDED FOR NAVBAR TO WORK-->
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <!-- Vue JS -->
@@ -22,13 +29,13 @@
     <script src="https://unpkg.com/axios/dist/axios.js"></script>
     <title>Profile</title>
 </head>
-{%block body%}
+
 
 <body>
     <!-- NAVBAR HERE COPY AND PASTE THIS SHIT IDK HOW ELSE TO INTEGRATE TO OTHER PAGES LOL -->
     <div class="w3-top">
         <div class="w3-bar w3-white w3-card" id="myNavbar">
-            <a href="#home" class="w3-bar-item w3-button w3-wide"><img src='/static/img/earthchan.png' height="48px"
+            <a href="#home" class="w3-bar-item w3-button w3-wide"><img src='./img/earthchan.png' height="48px"
                     width="48px">Health is Wealth</a>
             <!-- Right-sided navbar links -->
             <div class="w3-right w3-hide-small">
@@ -64,8 +71,8 @@
 
     <div class="container" id="profile">
         <h1>Profile</h1>
-        <h3>Welcome! {{user}}</h3>
-        <form method="POST" action="/profile/update/{{user}}">
+        <h3 class = 'app'>Welcome! {{user}}</h3>
+        <form class = 'app' method="POST" action="/profile/update/{{user}}">
             <div class="mb-3">
                 <label for="height" class="form-label">Height</label>
                 <input type="number" class="form-control" id="height" name="height" value="{{height}}">
@@ -80,13 +87,13 @@
             </div>
             <br>
             <button type="submit" class="btn btn-primary">Save</button>
-            <label id="error" class="text-danger">{{error}}</label>
+            <!-- <label id="error" class="text-danger">{{error}}</label> -->
         </form>
         <a class="btn btn-primary" href="/logout">Logout</a>
     </div>
 
 </body>
-{%endblock%}
+
 <!-- Bootstrap  -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
     integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
@@ -99,5 +106,15 @@
     crossorigin="anonymous"></script>
 <!-- <script src="{{url_for('static', filename='script.js')}}"></script> -->
 <!-- JS Part -->
+<script>
+console.log(localStorage.getItem('username'))
 
+var app = new Vue({
+    el: '.app',
+    data: {
+        user: localStorage.getItem('username')
+    }
+})
+
+</script>
 </html>

@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
 <?php
-  require_once "../auth/init.php";
+
+  require_once "./auth/init.php";
 ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,7 +12,7 @@
     <!--Fontawesome CDN-->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
     <!-- Personal Stylesheet -->
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css')}}" />
+    <link rel="stylesheet" type="text/css" href="./css/main.css"/>
     <!-- Vue JS -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
     <!-- jquery -->
@@ -19,7 +20,7 @@
     <!-- Axios  -->
     <script src="https://unpkg.com/axios/dist/axios.js"></script> 
     <!-- Google Sign in -->
-    <meta name="google-signin-client_id" content="267437506767-tr4fko9v6lelbaqaeh1v32b2uo6eahkt.apps.googleusercontent.com">
+    <meta name="google-signin-client_id" content="267437506767-erh0i11osm0ki4jk3roi516qqpesteip.apps.googleusercontent.com">
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     <script type="text/javascript" src="http://platform.linkedin.com/in.js"></script>
     <title>Login Page</title>
@@ -31,20 +32,20 @@
     <form method="POST">
         <div class="mb-3">
           <label for="username" class="form-label">Username</label>
-          <input type="username" class="form-control" id="username" v-model="username" name="username">
+          <input type="username" class="form-control" id="username"name="username">
         </div>
         <div class="mb-3">
           <label for="password" class="form-label">Password</label>
-          <input type="password" class="form-control" id="password" v-model="password" name="password">
+          <input type="password" class="form-control" id="password"name="password">
         </div>
         <br>
-        <button class="btn btn-primary">Login</button>
+        <button id ='login_button' class="btn btn-primary">Login</button>
         <!-- <button class="btn btn-primary" v-on:click="validatePassword()">Login</button> -->
     </form>
     <!-- <button v-on:click="register()">click me</button> -->
     <br>
     <label id="error" class="text-danger">{{error}}</label>
-    <a href="/register">Don't have an account? Sign up here!</a>
+    <a href="register.php">Don't have an account? Sign up here!</a>
     <div>
     <span class="g-signin2" data-onsuccess="onSignIn"></span>
     <span>
@@ -78,7 +79,7 @@
       var email = profile.getEmail()
       
       //Send the data to login
-      var url = "http://localhost:5000/login";
+      var url = "http://127.0.0.1:5100/api/login/verification";
       const data = JSON.stringify({
         username: username,
         password: password,
@@ -94,45 +95,42 @@
         console.log(data)
         console.log(data.code)
         if (data.code == 201){
-          window.location.replace("http://localhost:5000/profile")
+          localStorage.setItem("username", data.data.username)
+          window.location.replace("./profile.php")
         }   
       })
 
 
     }
-    // var vm = new Vue({
-    //   el: "#login",
-    //   data: {
-    //     username: '',
-    //     password: ''
-    //   },
-      // methods: {
-      //   validatePassword(){
-      //     axios.get('https://esd-healthiswell-69.hasura.app/api/rest/registration/'+this.username.toLowerCase(), {
-      //     headers: {
-      //       'Content-Type': 'application/json',
-      //       'x-hasura-admin-secret': 'Qbbq4TMG6uh8HPqe8pGd1MQZky85mRsw5za5RNNREreufUbTHTSYgaTUquaKtQuk',
-      //       }
-      //     }).then((response)=>{
-      //       console.log(response);
-      //       var data = response.data.Registration
-      //       if (data){
-      //         var actualPassword = data[0].Password
-      //         if (this.password == actualPassword){
-      //           console.log("true")
-      //           window.location.replace("/profile")
-      //           return true;
-      //         }
-      //         else{
-      //           console.log("false")
-      //           return false;
-      //         }
-      //       }
-      //     }).catch((error)=>{
-      //       console.log(error);
-      //     })
-      //   }
-      // }
-    // })
+
+    document.getElementById('login_button').addEventListener('click',function(event) { 
+      event.preventDefault();
+      console.log('LOL')
+      data = JSON.stringify({
+        'username': name,
+        'password': password
+      })
+      name = document.getElementById('username').value
+      password = document.getElementById('password').value
+      fetch('http://127.0.0.1:5100/api/login/verification', {
+      
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',     
+      },
+      body: data  
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data)
+        console.log(data.code)
+        if (data.code == 201){
+          localStorage.setItem("username", data.data.username)
+          window.location.replace("./profile.php")
+        } 
+      });
+    })         
+    
+      
   </script>
 </html>
