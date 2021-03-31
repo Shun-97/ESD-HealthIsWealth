@@ -11,9 +11,6 @@ import os, sys
 app = Flask(__name__)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
-# For login session
-app.secret_key = "healthiswealth"
-app.permanent_session_lifetime = timedelta(minutes=30)
 # Database connection
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://qepnpscgacacmr:d338fb6ef24db3eed89c7a4200ac74e8cb5c1ffd22bf8e26194eb684c6b8e33d@ec2-52-21-252-142.compute-1.amazonaws.com:5432/ddo160cbfi69qt'
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
