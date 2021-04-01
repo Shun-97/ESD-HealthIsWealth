@@ -79,7 +79,8 @@
       var email = profile.getEmail()
       
       //Send the data to login
-      var url = "http://127.0.0.1:5100/api/login/verification";
+      //change to this URL for KONG --> http://0.0.0.0:8000/api/v1/login
+      var url = "http://0.0.0.0:5000/api/login/verification";
       const data = JSON.stringify({
         username: username,
         password: password,
@@ -113,7 +114,8 @@
         'password': password
       })
       console.log(name,password,data)
-      fetch('http://127.0.0.1:5100/api/login/verification', {
+      //change to this URL for KONG --> http://0.0.0.0:8000/api/v1/login
+      fetch('http://0.0.0.0:5000/api/login/verification', { 
       
         method: 'POST',
         headers: {
@@ -129,6 +131,9 @@
           localStorage.setItem("username", data.data.username)
           window.location.replace("./profile.php")
         } 
+        if (data.code == 500){
+          document.getElementById('error').innerHTML = data.data.message
+        }
       });
     })         
     
