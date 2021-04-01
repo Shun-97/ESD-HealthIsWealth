@@ -129,7 +129,7 @@ var app = new Vue({
             'username': this.user,
             })
             console.log(data)
-            fetch('http://127.0.0.1:5200/api/userAccount', {
+            fetch('http://127.0.0.1:5000/api/userAccount', {
             
                 method: 'POST',
                 headers: {
@@ -156,7 +156,7 @@ var app = new Vue({
             'height': this.height,
             'bmi': this.bmi
             })
-            fetch('http://127.0.0.1:5200/api/userAccount/update', {
+            fetch('http://127.0.0.1:5000/api/userAccount/update', {
             
                 method: 'POST',
                 headers: {

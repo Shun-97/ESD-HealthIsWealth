@@ -49,7 +49,7 @@
       <!-- <button v-on:click="register()">click me</button> -->
       <label id="error" class="text-danger"></label>
       <br>
-      <a href="/login">Have an account? Login here!</a>
+      <a href="./login.php">Have an account? Login here!</a>
       <div class="g-signin2" data-onsuccess="onSignIn"></div>
     </form>
     <!-- Form End -->
@@ -78,7 +78,7 @@
     var password = profile.getId()
     var email = profile.getEmail()
 
-    var url = "http://127.0.0.1:5100/api/register/verification";
+    var url = "http://0.0.0.0:5000/api/register/verification";
     const data = JSON.stringify({
       username: username,
       password: password,
@@ -113,7 +113,7 @@
       "email": email
     })
     console.log(name,password,email,data)
-    fetch('http://127.0.0.1:5100/api/register/verification', {
+    fetch('http://0.0.0.0:5000/api/register/verification', {
     
       method: 'POST',
       headers: {
@@ -129,6 +129,9 @@
         localStorage.setItem("username", data.data.username)
         window.location.replace("./profile.php")
         } 
+      if (data.code == 500){
+        document.getElementById('error').innerHTML = data.data
+      }
       });
     })   
 </script>
