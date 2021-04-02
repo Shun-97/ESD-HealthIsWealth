@@ -2,7 +2,7 @@ import requests
 import json
 
 query = """mutation MyMutation {
-  insert_Logging(objects: {Type: "testing", Description: "testing"}) {
+  insert_Logging(objects: {Type: "testagain", Description: "testagain"}) {
     affected_rows
   }
 }"""
