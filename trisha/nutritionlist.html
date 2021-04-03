@@ -123,15 +123,17 @@
                                 </table>
                             </div>
                             `;
+                            document.getElementById('results').innerHTML += node.innerHTML;
                         }
 
                     } else {
                         var node = document.createElement('div');
                         node.innerHTML = `<h2 style='color:red'>Error: Item <strong>${query}</strong> not found</h2>`;
+                        document.getElementById('results').innerHTML = node.innerHTML;
                     }
 
                         // document.getElementById("results").appendChild(node);
-                        document.getElementById("results").innerHTML += node.innerHTML;
+                        // document.getElementById("results").innerHTML += node.innerHTML;
                     
                 }
             };
