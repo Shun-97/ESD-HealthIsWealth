@@ -20,22 +20,26 @@ def recipe_image():
     if request.is_json:
         try:
             image_link = request.get_json()
-            print(image_link["link"]) #I will need to grab this data from front end, might need to change this
+            print(image_link) #I will need to grab this data from front end, might need to change this
             header = {'Content-Type': 'application/json'}
             data = {'link': image_link["link"]}
             food_result = requests.post(image_url,headers=header, json=data)
-            print('recipe_result:', food_result)
+            print('recipe_result:', str(food_result.json()))
             food = food_result.json()["result"][0]['name'] + " " +food_result.json()["result"][1]['name']
             print(food)
             food_query = { "food": food }
             print(food_query)
+            #recipe_result prints the SEARCH results after using recipe_url
             recipe_result = requests.post(recipe_url,headers=header, json=food_query)
+            
             print(recipe_result.json()["data"]["hits"][0]["recipe"]["label"])
 
             return jsonify({
                 "code": 201,
-                "data": recipe_result.json()["data"]["hits"][0]["recipe"]["url"]
-                }), 201
+                "data": recipe_result.json()["data"]["hits"][0]["recipe"]["url"],
+                "food": food,
+                "strjsonobj": json.dumps(food_result.json())
+            }), 201
 
 
         except Exception as e:
@@ -51,6 +55,7 @@ def recipe_image():
             }), 500
 
     # if reached here, not a JSON request.
+
     return jsonify({
         "code": 400,
         "message": "Invalid JSON input: " + str(request.get_data())
