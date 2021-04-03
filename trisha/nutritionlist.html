@@ -20,7 +20,7 @@
             Search food item: <input type="text" id="food">
             <button type="button" onclick="search()">Submit</button>
         </form>
-        
+        <br><br>
         <div id="results"></div>
     </div>
 
@@ -45,84 +45,94 @@
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
+
                     var data = JSON.parse(this.responseText);
                     console.log(data);
                     var items = data.items;
                     console.log(items);
                     var html_text = '';
+                    
+                    if (items.length){
 
-                    for (item of items) {
-                        var sugar_g = item.sugar_g;
-                        var fiber_g = item.fiber_g;
-                        var serving_size_g = item.serving_size_g;
-                        var sodium_mg = item.sodium_mg;
-                        var name = item.name;
-                        var potassium_mg = item.potassium_mg;
-                        var fat_saturated_g = item.fat_saturated_g;
-                        var fat_total_g = item.fat_total_g;
-                        var calories = item.calories;
-                        var cholesterol_mg = item.cholesterol_mg;
-                        var protein_g = item.protein_g;
-                        var carbohydrates_total_g = item.carbohydrates_total_g;
+                        for (item of items) {
+                            var sugar_g = item.sugar_g;
+                            var fiber_g = item.fiber_g;
+                            var serving_size_g = item.serving_size_g;
+                            var sodium_mg = item.sodium_mg;
+                            var name = item.name;
+                            var potassium_mg = item.potassium_mg;
+                            var fat_saturated_g = item.fat_saturated_g;
+                            var fat_total_g = item.fat_total_g;
+                            var calories = item.calories;
+                            var cholesterol_mg = item.cholesterol_mg;
+                            var protein_g = item.protein_g;
+                            var carbohydrates_total_g = item.carbohydrates_total_g;
 
+                            var node = document.createElement('div');
+                            node.innerHTML = `
+                            <div class="${name}">
+                                <h1 style='text-transform:capitalize;'><strong>${name}</strong></h1>
+                                <table id="nutritionTable${name}" class="table table-striped" border='1'>
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th>Serving Size (g)</th>
+                                            <td>${serving_size_g}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Sugar (g)</th>
+                                            <td>${sugar_g}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Fiber (g)</th>
+                                            <td>${fiber_g}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Sodium (mg)</th>
+                                            <td>${sodium_mg}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Potassium (mg)</th>
+                                            <td>${potassium_mg}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Saturated Fats (g)</th>
+                                            <td>${fat_saturated_g}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Total Fats (g)</th>
+                                            <td>${fat_total_g}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Calories</th>
+                                            <td>${calories}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Cholesterol (mg)</th>
+                                            <td>${cholesterol_mg}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Protein (g)</th>
+                                            <td>${protein_g}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Total Carbohydrates (g)</th>
+                                            <td>${carbohydrates_total_g}</td>
+                                        </tr>
+
+                                    </thead>
+                                </table>
+                            </div>
+                            `;
+                        }
+
+                    } else {
                         var node = document.createElement('div');
-                        node.innerHTML = `
-                        <div class="${name}">
-                            <h1>${name}</h1>
-                            <table id="nutritionTable${name}" class="table table-striped" border='1'>
-                                <thead class="thead-dark">
-                                    <tr>
-                                        <th>Serving Size (g)</th>
-                                        <td>${serving_size_g}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Sugar (g)</th>
-                                        <td>${sugar_g}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Fiber (g)</th>
-                                        <td>${fiber_g}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Sodium (mg)</th>
-                                        <td>${sodium_mg}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Potassium (mg)</th>
-                                        <td>${potassium_mg}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Saturated Fats (g)</th>
-                                        <td>${fat_saturated_g}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Total Fats (g)</th>
-                                        <td>${fat_total_g}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Calories</th>
-                                        <td>${calories}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Cholesterol (mg)</th>
-                                        <td>${cholesterol_mg}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Protein (g)</th>
-                                        <td>${protein_g}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Total Carbohydrates (g)</th>
-                                        <td>${carbohydrates_total_g}</td>
-                                    </tr>
-
-                                </thead>
-                            </table>
-                        </div>
-                        `;
-
-                        document.getElementById("results").appendChild(node);
+                        node.innerHTML = `<h2 style='color:red'>Error: Item <strong>${query}</strong> not found</h2>`;
                     }
+
+                        // document.getElementById("results").appendChild(node);
+                        document.getElementById("results").innerHTML += node.innerHTML;
+                    
                 }
             };
 
@@ -132,6 +142,7 @@
 
         }
         function search() {
+            document.getElementById('results').innerHTML = '';
             var query = document.getElementById('food').value;
             var result = searchapi(query);
             
