@@ -26,7 +26,7 @@ def recipe():
             query_url = recipe_url + "?q=" + food["food"] + "&app_id=" + app_id + "&app_key=" + app_key
             print(query_url)
             recipe_result = requests.get(query_url)
-            print('recipe_result:', recipe_result)
+            print('recipe_result:', recipe_result.json())
 
             return jsonify({
                 "code": 201,
