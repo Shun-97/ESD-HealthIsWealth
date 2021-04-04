@@ -1,3 +1,7 @@
+<?php
+require_once 'Microservice/sharing_MS/config.php';
+$url = "https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=".CLIENT_ID."&redirect_uri=".REDIRECT_URL."&scope=".SCOPES;
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -205,11 +209,6 @@
 <link rel="stylesheet" href="css/main.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
 integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
-<?php
-require_once 'sharing_MS/config.php';
-
-$url = "https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=".CLIENT_ID."&redirect_uri=".REDIRECT_URL."&scope=".SCOPES;
-?>
 <body>   
     <!-- NAVBAR HERE COPY AND PASTE THIS SHIT IDK HOW ELSE TO INTEGRATE TO OTHER PAGES LOL -->
     <div class="w3-top">
@@ -274,7 +273,7 @@ $url = "https://www.linkedin.com/oauth/v2/authorization?response_type=code&clien
     </div>
 </body>
 <script>
-    const get_curr_url = "http://127.0.0.1:5200/recipe_image";
+    const get_curr_url = "http://127.0.0.1:5200/ana/recipe_image";
     new Vue({
         el: '#app',
         data: {
@@ -290,7 +289,7 @@ $url = "https://www.linkedin.com/oauth/v2/authorization?response_type=code&clien
                         food: this.message
                 });
 
-                fetch("http://127.0.0.1:5100/recipe", {
+                fetch("http://127.0.0.1:5100/ana/recipe", {
                             method: "POST",
                             headers: {
                                 "Content-type": "application/json"
@@ -351,7 +350,7 @@ $url = "https://www.linkedin.com/oauth/v2/authorization?response_type=code&clien
                                                         
                                                         <a href="${findoutmore}" class="btn btn-primary">Find out more</a>
                                                         
-                                                        <a href="<?=$url?>" ><i class="fab fa-linkedin-in"></i></a>
+                                                        <a href="<?=$url?>"><i class="fab fa-linkedin-in"></i></a>
                                                     </div>
                                                     </span>
                                             </div>
@@ -391,7 +390,7 @@ $url = "https://www.linkedin.com/oauth/v2/authorization?response_type=code&clien
         }).then(data => data.json()).then(data => {
             console.log(data);
             const imgurLink = data.data.link;
-            fetch("http://127.0.0.1:5200/recipe_image", {
+            fetch(get_curr_url, {
                     method: "post",
                     headers: {
                         'Content-Type': "application/json",
