@@ -8,6 +8,9 @@ from flask_cors import CORS
 import os, sys
 from os import environ
 
+import AMQP_setup
+import pika
+import json
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
@@ -121,7 +124,9 @@ def login():
         # Check if user exist
         if not validate.data['userAccountByUsername']:
             # return {"message": "user don't exist"}
-
+            message = json.dumps({"message": "user don't exist"})
+            AMQP_setup.channel.basic_publish(exchange=AMQP_setup.exchangename, routing_key="account.error", 
+            body=message, properties=pika.BasicProperties(delivery_mode = 2)) 
             return {
                 "code": 500,
                 "data": {
