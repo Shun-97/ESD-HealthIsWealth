@@ -16,7 +16,22 @@ def receiveError():
     #it doesn't exit by default. Use Ctrl+C in the command window to terminate it.
 
 def callback(channel, methos, properties, body):
+    print("\nReceived an error by " + __file__)
+    processError(body)
+    print() # print a new line feed
     
 
 def processError(errorMsg):
+    print("Printing the error message: ")
+    try:
+        error = json.loads(errorMsg)
+        print("--JSON:", error)
+    except Exception as e:
+        print("--NOT JSON:", e)
+        print("--DATA:", errorMsg)
     print()
+
+if __name__ == "__main__":
+    print("\nThis is " + os.path.basename(__file__), end='')
+    print(": monitoring routing key '{}' in exchange '{}' ... ".format(monitorBindingKey, AMQP_setup.exchangename))
+    receiveError()
