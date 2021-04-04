@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <style>
         body {
@@ -70,7 +69,7 @@
             padding: 60px 0;
         }
 
-        .drag-text h3:hover {
+        .drag-text:hover {
             color: rgb(98, 200, 255);
         }
 
@@ -201,14 +200,17 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css">
 <script src="js/navbar.js"></script>
 <link rel="stylesheet" href="css/main.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
 integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
-<body>
+<?php
+require_once 'sharing_MS/config.php';
 
-    
+$url = "https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=".CLIENT_ID."&redirect_uri=".REDIRECT_URL."&scope=".SCOPES;
+?>
+<body>   
     <!-- NAVBAR HERE COPY AND PASTE THIS SHIT IDK HOW ELSE TO INTEGRATE TO OTHER PAGES LOL -->
     <div class="w3-top">
         <div class="w3-bar w3-white w3-card" id="myNavbar">
@@ -241,17 +243,18 @@ integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolfl
             information given accurate? Otherwise, please use our search function.</h3>
             <div class="mb-3">
                 <div class="search">
-                    <input type="text" v-model="message" value='' placeholder="Search.." name="search" id='srchforRec'>
+                    <input type="text" v-model="message" v:bind:value='message' placeholder="Search.." name="search" id='srchforRec'>
                     <button id='pSearch' v-on:click='srchRecipe'><i class="fa fa-search"></i></button>
                 </div>
             </div>
         <div class="image-upload-wrap">
 
-            <div class="drag-text">
-                <input class="file-upload-input" id='file' type='file' v-on:change="display" onchange="readURL(this);"
-                    accept="image/*" />
+                <span class="drag-text">
+                    <input class="file-upload-input" id='file' type='file' v-on:change="display" onchange="readURL(this);"
+                        accept="image/*" />
                 <h3>Drag and drop a file or select add Image</h3>
-            </div>
+                </span>
+            
         </div>
     </div>
     </section>
@@ -347,6 +350,8 @@ integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolfl
                                                         ${tablehere}
                                                         
                                                         <a href="${findoutmore}" class="btn btn-primary">Find out more</a>
+                                                        
+                                                        <a href="<?=$url?>" ><i class="fab fa-linkedin-in"></i></a>
                                                     </div>
                                                     </span>
                                             </div>
@@ -368,7 +373,9 @@ integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolfl
             function searchFor(i){
                 console.log(i);
                 zeText = document.getElementById(`imgsrch${i}`).innerText
-                document.getElementById('srchforRec').value = zeText    
+                console.log(zeText);
+                document.getElementById('srchforRec').value = zeText
+                return zeText
             }
     const file = document.getElementById('file')
     //const img=document.getElementById('img')
@@ -413,7 +420,7 @@ integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolfl
                             displaytab += `
                             <tr>
                                 <th>
-                                    <button class='btn btn-outline-info' id='imgsrch${i}' onclick="searchFor('${i}')">${textname}</button>
+                                    <button class='btn btn-outline-info' id='imgsrch${i}' onclick="searchFor(${i})">${textname}</button>
                                 </th>
                             </tr>
                         `;
