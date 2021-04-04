@@ -15,7 +15,7 @@ recipe_url  = "https://api.edamam.com/search"
 app_id = "9427d4d5"
 app_key = "3fd959075e22cb5c3be2e10ff0eb2b19"
 
-@app.route("/recipe", methods=["POST"])
+@app.route("/api/recipe", methods=["POST"])
 def recipe():
     if request.is_json:
         try:

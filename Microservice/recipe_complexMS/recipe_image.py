@@ -15,7 +15,7 @@ image_url= "http://localhost:5000/api/ana/"
 recipe_url = "http://0.0.0.0:5100/recipe"
 
 #Send a image link with attribute "link" in JSON format to this URL --> e.g. {"link": link_url}
-@app.route("/recipe_image", methods=["POST"])
+@app.route("/api/recipe_image", methods=["POST"])
 def recipe_image():
     if request.is_json:
         try:
