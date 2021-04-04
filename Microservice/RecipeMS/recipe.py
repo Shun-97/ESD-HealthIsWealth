@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 
 import os, sys
 from os import environ
@@ -16,6 +16,7 @@ app_id = "9427d4d5"
 app_key = "3fd959075e22cb5c3be2e10ff0eb2b19"
 
 @app.route("/api/recipe", methods=["POST"])
+@cross_origin()
 def recipe():
     if request.is_json:
         try:
@@ -56,4 +57,4 @@ def recipe():
 # Execute this program if it is run as a main script (not by 'import')
 if __name__ == "__main__":
     print("This is flask " + os.path.basename(__file__) + " for searching a recipe...")
-    app.run(host="0.0.0.0", port=5100, debug=True)
+app.run(host="0.0.0.0", port=5100, debug=True)
