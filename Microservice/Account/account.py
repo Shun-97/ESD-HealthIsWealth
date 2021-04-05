@@ -7,7 +7,11 @@ from datetime import timedelta
 from flask_cors import CORS
 import os, sys
 from os import environ
+import requests
 
+import AMQP_setup
+import pika
+import json
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
@@ -121,7 +125,9 @@ def login():
         # Check if user exist
         if not validate.data['userAccountByUsername']:
             # return {"message": "user don't exist"}
-
+            message = json.dumps({"message": username + ": user don't exist"})
+            AMQP_setup.channel.basic_publish(exchange=AMQP_setup.exchangename, routing_key="account.error", 
+            body=message, properties=pika.BasicProperties(delivery_mode = 2)) 
             return {
                 "code": 500,
                 "data": {
@@ -130,6 +136,9 @@ def login():
 
             # Check if password matches
         elif validate.data['userAccountByUsername'][0]['Password'] == password:
+            message = json.dumps({"message": username + ": Successful Login"})
+            AMQP_setup.channel.basic_publish(exchange=AMQP_setup.exchangename, routing_key="account.activity", 
+            body=message, properties=pika.BasicProperties(delivery_mode = 2)) 
             return {
                 "code": 201,
                 "data": {
@@ -138,6 +147,9 @@ def login():
                 }}
 
         else:
+            message = json.dumps({"message": username + ": Wrong Password"})
+            AMQP_setup.channel.basic_publish(exchange=AMQP_setup.exchangename, routing_key="account.error", 
+            body=message, properties=pika.BasicProperties(delivery_mode = 2)) 
             return {
                 "code": 500,
                 "data": {
@@ -158,6 +170,9 @@ def login():
 
             # Check if user exist
             if not validate.data['userAccountByUsername']:
+                message = json.dumps({"message": username + ": user don't exist"})
+                AMQP_setup.channel.basic_publish(exchange=AMQP_setup.exchangename, routing_key="account.error", 
+                body=message, properties=pika.BasicProperties(delivery_mode = 2)) 
                 return {
                     "code": 500,
                     "data": {
@@ -166,6 +181,9 @@ def login():
 
             # Check if password matches
             elif validate.data['userAccountByUsername'][0]['Password'] == password:
+                message = json.dumps({"message": username + ": Successful Login"})
+                AMQP_setup.channel.basic_publish(exchange=AMQP_setup.exchangename, routing_key="account.activity", 
+                body=message, properties=pika.BasicProperties(delivery_mode = 2)) 
                 return {
                     "code": 201,
                     "data": {
@@ -174,6 +192,9 @@ def login():
                     }}
 
             else:
+                message = json.dumps({"message": username + ": Wrong Password"})
+                AMQP_setup.channel.basic_publish(exchange=AMQP_setup.exchangename, routing_key="account.error", 
+                body=message, properties=pika.BasicProperties(delivery_mode = 2)) 
                 return {
                     "code": 500,
                     "data": {
@@ -189,7 +210,9 @@ def login():
             ex_str = str(e) + " at " + str(exc_type) + ": " + \
                 fname + ": line " + str(exc_tb.tb_lineno)
             print(ex_str)
-
+            message = json.dumps({"message": "internal error: " + ex_str})
+            AMQP_setup.channel.basic_publish(exchange=AMQP_setup.exchangename, routing_key="account.error", 
+            body=message, properties=pika.BasicProperties(delivery_mode = 2)) 
             return jsonify({
                 "code": 500,
                 "data": {
@@ -213,6 +236,9 @@ def register():
                 create = create_registration(username, email, password)
                 # If True (success)
                 if create[0]:
+                    message = json.dumps({"message": username + ": Account successfully created"})
+                    AMQP_setup.channel.basic_publish(exchange=AMQP_setup.exchangename, routing_key="account.activity", 
+                    body=message, properties=pika.BasicProperties(delivery_mode = 2)) 
                     return {
                         "code": 201,
                         "data": {
@@ -221,7 +247,10 @@ def register():
                         }}
 
                 else:
-                    error = "Failed to create account. Please try again"
+                    error = create[1]
+                    message = json.dumps({"message": username + " : " + error})
+                    AMQP_setup.channel.basic_publish(exchange=AMQP_setup.exchangename, routing_key="account.error", 
+                    body=message, properties=pika.BasicProperties(delivery_mode = 2)) 
                     return {
                         "code": 500,
                         "data": error
@@ -240,37 +269,19 @@ def register():
             ex_str = str(e) + " at " + str(exc_type) + ": " + \
                 fname + ": line " + str(exc_tb.tb_lineno)
             print(ex_str)
+            message = json.dumps({"message": "internal error: " + ex_str})
+            AMQP_setup.channel.basic_publish(exchange=AMQP_setup.exchangename, routing_key="account.error", 
+            body=message, properties=pika.BasicProperties(delivery_mode = 2)) 
 
             return jsonify({
                 "code": 500,
                 "message": "internal error: " + ex_str
             }), 500
 
-    # For ownself registration
-    elif request.method == 'POST':
-        # Grabbing data from the form
-        username = request.form['username'].lower()
-        email = request.form['email']
-        password = request.form['password']
-
-        # Create_registration will return a tuple. e.g. (True, graphql return dict data) or (False, error message)
-        create = create_registration(username, email, password)
-
-        # If True (success)
-        if create[0]:
-
-            return {
-                "code": 201,
-                "username": username,
-            }
-
-        else:
-            return {
-                "code": 500,
-                "message": "Failed to create account. Please try again"
-            }
-
     else:
+        message = json.dumps({"message": username + " : Account creation failed"})
+        AMQP_setup.channel.basic_publish(exchange=AMQP_setup.exchangename, routing_key="account.error", 
+        body=message, properties=pika.BasicProperties(delivery_mode = 2)) 
         return {
             "code": 500,
             "message": "Failed to create account. Please try again"
@@ -357,21 +368,30 @@ def updateUserAccount():
         weight = data["weight"]
         bmi = data["bmi"]
 
-        schema = graphene.Schema(query=Query, mutation=Mutation)
-        update_query = 'mutation{updateUseraccount(Username:"'+username+'",BMI:'+str(bmi) + \
-            ',Height:'+str(height)+',Weight:'+str(weight) + \
-            '){userAccount{Username BMI Height Weight}}}'
-        update = schema.execute(update_query)
-        print(update)
+        url = 'https://esd-healthiswell-69.hasura.app/v1/graphql'
+        myobj = {'x-hasura-admin-secret': 'Qbbq4TMG6uh8HPqe8pGd1MQZky85mRsw5za5RNNREreufUbTHTSYgaTUquaKtQuk',
+                'content-type': 'application/json'}
+        update_query = 'mutation MyMutation {update_UserAccount(where: {Username: {_eq: "'+username+'"}}, _set: {BMI: "'+str(bmi)+'", Height: "'+str(height)+'", Weight: "'+str(weight)+'"}) {returning { BMI Height Username Weight}}}'
+        update = requests.post(url, headers=myobj, json={'query': update_query})
+        update = update.json()
+        returning = update["data"]["update_UserAccount"]["returning"]
         #If the update is successful
-        if update.data:
+        if returning:
             #redirect to /profile to re-grab database info
+            print("???")
+            message = json.dumps({"message": username + " : Account successfully updated"})
+            AMQP_setup.channel.basic_publish(exchange=AMQP_setup.exchangename, routing_key="account.activity", 
+            body=message, properties=pika.BasicProperties(delivery_mode = 2))
+            print(message)
             return jsonify({
                 "code": 201,
-                "data": update.data
+                "data": returning
             }), 201 
 
     else:
+        message = json.dumps({"message": username + " : Account update failed, not JSON format"})
+        AMQP_setup.channel.basic_publish(exchange=AMQP_setup.exchangename, routing_key="account.error", 
+        body=message, properties=pika.BasicProperties(delivery_mode = 2)) 
         return jsonify({
                 "code": 500,
                 "message": "internal error: Not JSON format"
