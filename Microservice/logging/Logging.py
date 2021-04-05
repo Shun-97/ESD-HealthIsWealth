@@ -8,7 +8,7 @@ query = """mutation MyMutation {
 }"""
 
 
-url = 'https://esd-healthiswell-69.hasura.app/v1/graphql/'
+url = ' '
 myobj = {'x-hasura-admin-secret': 'Qbbq4TMG6uh8HPqe8pGd1MQZky85mRsw5za5RNNREreufUbTHTSYgaTUquaKtQuk',
          'content-type': 'application/json'}
 r = requests.post(url, headers=myobj, json={'query': query})

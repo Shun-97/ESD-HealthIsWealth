@@ -20,7 +20,7 @@
     <!-- Axios  -->
     <script src="https://unpkg.com/axios/dist/axios.js"></script> 
     <!-- Google Sign in -->
-    <meta name="google-signin-client_id" content="267437506767-erh0i11osm0ki4jk3roi516qqpesteip.apps.googleusercontent.com">
+    <meta name="google-signin-client_id" content="1051698943672-lrutkkrvnsu86ri9gdbe25m2c6hqha43.apps.googleusercontent.com">
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     <script type="text/javascript" src="http://platform.linkedin.com/in.js"></script>
     <title>Login Page</title>
@@ -64,30 +64,15 @@
   <!-- JS Part -->
   <script type="application/javascript">
     function onSignIn(googleUser){
-      console.log(JSON.stringify(googleUser.getBasicProfile()))
-      var profile = googleUser.getBasicProfile();
-      console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-      console.log('Name: ' + profile.getName());
-      console.log('Image URL: ' + profile.getImageUrl());
-      console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-      // The ID token you need to pass to your backend:
       var id_token = googleUser.getAuthResponse().id_token;
-      console.log("ID Token: " + id_token);
 
-      var username = profile.getName()
-      var password = profile.getId()
-      var email = profile.getEmail()
-      
-      //Send the data to login
-      //change to this URL for KONG --> http://0.0.0.0:8000/api/v1/login
-      var url = "http://0.0.0.0:5000/api/login/verification";
+      var url = "http://127.0.0.1:5110/api/google_signin";
       const data = JSON.stringify({
-        username: username,
-        password: password,
+        idtoken: id_token,
       });
       fetch(url,{
         method: "POST",
-        headers:{"Content-type": "application/json"},
+        headers:{"Content-type": "application/x-www-form-urlencoded"},
         body: data
       })
       .then(response => response.json())
