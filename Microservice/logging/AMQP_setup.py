@@ -12,7 +12,7 @@ connection = pika.BlockingConnection(
 
 channel = connection.channel()
 
-exchangename="order_topic"
+exchangename="account_topic"
 exchangetype="topic"
 channel.exchange_declare(exchange=exchangename, exchange_type=exchangetype, durable=True)
 
@@ -29,7 +29,7 @@ queue_name = 'Activity_Log'
 channel.queue_declare(queue=queue_name, durable=True)
 
 #bind Activity_Log queue
-channel.queue_bind(exchange=exchangename, queue=queue_name, routing_key='#') 
+channel.queue_bind(exchange=exchangename, queue=queue_name, routing_key='*.activity') 
 
 def check_setup():
     global connection, channel, hostname, port, exchangename, exchangetype
