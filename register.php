@@ -20,6 +20,8 @@
   <meta name="google-signin-client_id"
     content="1051698943672-lrutkkrvnsu86ri9gdbe25m2c6hqha43.apps.googleusercontent.com">
   <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
+
   <title>Register</title>
 </head>
 

@@ -5,7 +5,8 @@ from graphene_sqlalchemy import SQLAlchemyObjectType, SQLAlchemyConnectionField
 from flask_graphql import GraphQLView
 from datetime import timedelta
 from flask_cors import CORS
-import os, sys
+import os
+import sys
 from os import environ
 
 
@@ -18,6 +19,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = dbURL
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 db = SQLAlchemy(app)
+
 
 class UserAccount(db.Model):
     __tablename__ = 'UserAccount'
@@ -34,6 +36,7 @@ class UserAccount(db.Model):
 
 # Schema Objects
 
+
 class UserAccountObject(SQLAlchemyObjectType):
     class Meta:
         model = UserAccount
@@ -46,7 +49,8 @@ class Query(graphene.ObjectType):
     node = graphene.relay.Node.Field()
     all_userAccount = SQLAlchemyConnectionField(UserAccountObject)
 
-    userAccount_by_username = graphene.List(UserAccountObject, username=graphene.String())
+    userAccount_by_username = graphene.List(
+        UserAccountObject, username=graphene.String())
 
     @staticmethod
     def resolve_userAccount_by_username(parent, info, **args):
@@ -57,6 +61,7 @@ class Query(graphene.ObjectType):
         return userAccount_query.filter(UserAccount.Username == q).all()
 
 # Graphql Mutation
+
 
 class CreateUserAccount(graphene.Mutation):
     class Arguments:
@@ -70,7 +75,8 @@ class CreateUserAccount(graphene.Mutation):
     userAccount = graphene.Field(lambda: UserAccountObject)
 
     def mutate(self, info, Username, Password, Email, Weight=0, Height=0, BMI=0):
-        userAccount = UserAccount(Username=Username, Password=Password, Email=Email, Weight=Weight, Height=Height, BMI=BMI)
+        userAccount = UserAccount(Username=Username, Password=Password,
+                                  Email=Email, Weight=Weight, Height=Height, BMI=BMI)
 
         db.session.add(userAccount)
         db.session.commit()
@@ -88,7 +94,8 @@ class updateUserAccount(graphene.Mutation):
     userAccount = graphene.Field(UserAccountObject)
 
     def mutate(self, info, Username, Weight, Height, BMI):
-        userAccount = db.session.query(UserAccount).filter_by(Username=Username).first()
+        userAccount = db.session.query(
+            UserAccount).filter_by(Username=Username).first()
         userAccount.Height = Height
         userAccount.Weight = Weight
         userAccount.BMI = BMI
@@ -194,7 +201,7 @@ def login():
                 "code": 500,
                 "data": {
                     "message": "internal error: " + ex_str
-            }}), 500
+                }}), 500
 
 
 @app.route('/api/register/verification', methods=['POST'])
@@ -314,6 +321,7 @@ def username_exist(username):
     else:
         return (False, validate.data['userAccountByUsername'])
 
+
 @app.route('/api/userAccount', methods=['POST'])
 def getUserAccountByUsername():
     if request.is_json:
@@ -330,7 +338,7 @@ def getUserAccountByUsername():
         height = result.data["userAccountByUsername"][0]["Height"]
         weight = result.data["userAccountByUsername"][0]["Weight"]
         bmi = result.data["userAccountByUsername"][0]["BMI"]
-        result_return = { 
+        result_return = {
             "username": username,
             "height": height,
             "weight": weight,
@@ -338,18 +346,19 @@ def getUserAccountByUsername():
         }
         print(result_return)
         return jsonify({
-                "code": 201,
-                "data": result_return
-            }), 201   
+            "code": 201,
+            "data": result_return
+        }), 201
 
     else:
         return jsonify({
-                "code": 500,
-                "message": "internal error: Not Json format"
-            }), 500   
+            "code": 500,
+            "message": "internal error: Not Json format"
+        }), 500
+
 
 @app.route('/api/userAccount/update', methods=['POST'])
-def updateUserAccount():
+def updateUserAccount1():
     if request.is_json:
         data = request.get_json()
         username = data["username"]
@@ -363,19 +372,20 @@ def updateUserAccount():
             '){userAccount{Username BMI Height Weight}}}'
         update = schema.execute(update_query)
         print(update)
-        #If the update is successful
+        # If the update is successful
         if update.data:
-            #redirect to /profile to re-grab database info
+            # redirect to /profile to re-grab database info
             return jsonify({
                 "code": 201,
                 "data": update.data
-            }), 201 
+            }), 201
 
     else:
         return jsonify({
-                "code": 500,
-                "message": "internal error: Not JSON format"
-            }), 500  
+            "code": 500,
+            "message": "internal error: Not JSON format"
+        }), 500
+
 
 app.add_url_rule(
     '/graphql',
@@ -387,4 +397,4 @@ app.add_url_rule(
 )
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host="0.0.0.0", port=5100, debug=True)
