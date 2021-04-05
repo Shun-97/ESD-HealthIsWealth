@@ -347,7 +347,6 @@ $url = "https://www.linkedin.com/oauth/v2/authorization?response_type=code&clien
                                                     </th>
                                                 </tr>`;
                             for (let [key, value] of Object.entries(nutrientObj)) {
-
                                 tablehere += `
                                         <tr>
                                             <th> 
@@ -463,8 +462,8 @@ $url = "https://www.linkedin.com/oauth/v2/authorization?response_type=code&clien
                     displaytab += `</table>`;
                     document.getElementById("displayinfo").innerHTML = displaytab;
                 })
+            })
         })
-    })
 
     function readURL(input) {
         if (input.files && input.files[0]) {
