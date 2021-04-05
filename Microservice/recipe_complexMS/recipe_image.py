@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 
 import os, sys
 from os import environ
@@ -10,12 +10,12 @@ import json
 
 app = Flask(__name__)
 CORS(app)
-
-image_url= "http://localhost:5000/api/ana/"
-recipe_url = "http://0.0.0.0:5100/recipe"
+# app.config['CORS_HEADERS'] = 'Content-Type'
+image_url= "http://127.0.0.1:5000/api/ana"
+recipe_url = "http://127.0.0.1:5100/api/recipe"
 
 #Send a image link with attribute "link" in JSON format to this URL --> e.g. {"link": link_url}
-@app.route("/recipe_image", methods=["POST"])
+@app.route("/api/recipe_image", methods=["POST"])
 def recipe_image():
     if request.is_json:
         try:
