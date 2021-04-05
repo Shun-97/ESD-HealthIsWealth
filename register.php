@@ -18,7 +18,7 @@
   <script src="https://unpkg.com/axios/dist/axios.js"></script>
   <!-- Google Sign in -->
   <meta name="google-signin-client_id"
-    content="267437506767-erh0i11osm0ki4jk3roi516qqpesteip.apps.googleusercontent.com">
+    content="1051698943672-lrutkkrvnsu86ri9gdbe25m2c6hqha43.apps.googleusercontent.com">
   <script src="https://apis.google.com/js/platform.js" async defer></script>
   <title>Register</title>
 </head>
@@ -67,28 +67,17 @@
 <!-- JS Part -->
 <script>
   function onSignIn(googleUser) {
-    console.log(JSON.stringify(googleUser.getBasicProfile()))
-    var profile = googleUser.getBasicProfile();
-    // The ID token you need to pass to your backend:
     var id_token = googleUser.getAuthResponse().id_token;
-    console.log("ID Token: " + id_token);
 
-    //mapping data, not secure de, I know, just hacking this
-    var username = profile.getName()
-    var password = profile.getId()
-    var email = profile.getEmail()
-
-    var url = "http://0.0.0.0:5000/api/register/verification";
+    var url = "http://127.0.0.1:5110/api/google_signup";
     const data = JSON.stringify({
-      username: username,
-      password: password,
-      email: email
-    });
-    fetch(url, {
-      method: "POST",
-      headers: { "Content-type": "application/json" },
-      body: data
-    })
+        idtoken: id_token,
+      });
+      fetch(url,{
+        method: "POST",
+        headers:{"Content-type": "application/x-www-form-urlencoded"},
+        body: data
+      })
       .then(response => response.json())
       .then(data => {
         console.log(data)
