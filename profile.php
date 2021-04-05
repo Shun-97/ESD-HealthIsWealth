@@ -45,9 +45,9 @@
             <div class="w3-right w3-hide-small">
                 <a href="planmeal.html" class="w3-bar-item w3-button"><i class="fa fa-user"></i> Plan My Meal</a>
                 <a href="whatinmeal.html" class="w3-bar-item w3-button"><i class="fa fa-th"></i> What's In My Meal? </a>
-                <a href="schedule" class="w3-bar-item w3-button"><i class="fa fa-calendar" aria-hidden="true"
+                <a href="schedule.php" class="w3-bar-item w3-button"><i class="fa fa-calendar" aria-hidden="true"
                         style="font-size:25px"></i></a>
-                <a href="profile.html" class="w3-bar-item w3-button"><i class="fas fa-user-circle"
+                <a href="profile.php" class="w3-bar-item w3-button"><i class="fas fa-user-circle"
                         style="font-size:25px"></i></a>
             </div>
             <!-- Hide right-floated links on small screens and replace them with a menu icon -->

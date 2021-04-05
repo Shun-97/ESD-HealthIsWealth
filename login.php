@@ -85,7 +85,7 @@
         if (data.code == 201){
           localStorage.setItem("username", data.data.username)
           console.log()
-          localStorage.setItem('auth2', auth2)
+          // localStorage.setItem('auth2', data.data.auth)
           window.location.replace("./profile.php")
         }   
       })
