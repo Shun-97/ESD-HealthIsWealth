@@ -9,7 +9,7 @@ import requests
 import json
 
 app = Flask(__name__)
-CORS(app)
+cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 calories_url = "https://api.calorieninjas.com/v1/nutrition?query="
 api_key = "REtXb+Q4bQ2JMKCYXL7+3g==urfa511CyFMRg6g0"
@@ -29,6 +29,30 @@ def calories():
             
         # else:
         #     print("error") # error
+            
+    return response
+
+@app.route("/api/calories/create", methods=["POST"])
+@cross_origin()
+def calories_create():
+    if request.method == "POST":
+        jsondata = request.get_json(force=True)
+        description = jsondata['description']
+        username = jsondata['username']
+        total_calories = jsondata['total_calories']
+        print(jsondata)
+
+        query = "mutation MyMutation {insert_Meal(objects: {Description: \""+description+"\", Total_Calories: "+ str(total_calories)+", Username: \""+username+"\"}) {returning {Description Id Total_Calories Username}}}"
+        url = "https://esd-healthiswell-69.hasura.app/v1/graphql"
+        print(query)
+        headers = {
+            "content-type": "application/json",
+            "x-hasura-admin-secret": "Qbbq4TMG6uh8HPqe8pGd1MQZky85mRsw5za5RNNREreufUbTHTSYgaTUquaKtQuk"
+        }
+        response = requests.post(url, headers=headers, json={'query': query})
+        response = response.json()
+        print(response)
+
             
     return response
 
