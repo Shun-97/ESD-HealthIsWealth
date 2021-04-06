@@ -24,7 +24,7 @@ $url = "https://www.linkedin.com/oauth/v2/authorization?response_type=code&clien
             font-family: sans-serif;
             text-align: center;
             color: rgb(255, 255, 255) !important;
-            background-color: #555 !important;
+            background-color: #9e9e9e!important;
         }
 
         section {
@@ -189,7 +189,11 @@ $url = "https://www.linkedin.com/oauth/v2/authorization?response_type=code&clien
         }
 
         .makebigger {
-            font-size: 2rem;
+            font-size: 1.5rem;
+        }
+
+        .health:hover {
+            background-color: #555;
         }
 
         /* Add animation (fade in the popup) */
@@ -340,71 +344,58 @@ $url = "https://www.linkedin.com/oauth/v2/authorization?response_type=code&clien
                         body: jsonData
                     }).then(response => response.json())
                     .then(data => {
-                        resultlist = data.data.hits;
+                        retlist = data.data.hits
                         displaytab = `
-                                <table class="mt-5">
-                                        <tr>
-                                            <th class='w3-cursive w3-xxlarge w3-wide'>
-                                                Search Results 
-                                            </th>
-                                        </tr>`;
-                        for (i = 0; i < resultlist.length; i++) {
-                            temprecipe = resultlist[i].recipe;
-                            console.log(temprecipe);
-                            name_of_dish = temprecipe.label;
-                            console.log(name_of_dish);
-                            findoutmore = temprecipe.shareAs
-                            nutrientObj = temprecipe.totalNutrients
-                            console.log(findoutmore)
-                            console.log(nutrientObj)
-
-                            let tablehere = `<table class="table text-white">
-                                                <tr>
-                                                    <th>
-                                                        Nutrient
-                                                    </th>
-                                                    <th>
-                                                        Value
-                                                    </th>
-                                                </tr>`;
-                            for (let [key, value] of Object.entries(nutrientObj)) {
-                                tablehere += `
-                                        <tr>
-                                            <th> 
-                                                ${value.label}
-                                            </th>
-                                            <th>
-                                                ${value.quantity.toFixed(2) + " " + value.unit}
-                                            </th>
-                                        </tr>`;
-                            }
-                            tablehere += `</table>`;
-
-                            displaytab += `
+                        <h3 class="animate__heartBeat text-center w3-xxlarge w3-cursive w3-text-white mt-5 mb-5">
+                            We have found the following results that is the closest match to your search! 
+                        </h3>
+                            <table class="table table-borderless w3-grey makebigger" border="1">
                                     <tr>
-                                        <th>
-                                            <div class="popup" onclick="myFunction(${i})" style="font-size: 1.5rem !important;"> ${name_of_dish}
-                                                <span class="popuptext card" style="width: 23rem;" id="myPopup${i}">
-                                                    <div class="card-body scrollable">
-                                                        <h5 class="card-title w3-cursive w3-xxlarge w3-wide">${name_of_dish}</h5>
-  
-                                                        ${tablehere}
-                                                        
-                                                        <a href="${findoutmore}" class="btn btn-primary">Find out more</a>
-                                                        
-                                                        <a href="<?=$url?>"><i class="fab fa-linkedin-in"></i></a>
-                                                    </div>
-                                                    </span>
-                                            </div>
+                                        <th class='w3-cursive w3-xlarge w3-wide' style="width: 16.66%">
+                                            Food
                                         </th>
+                                        <th class='w3-cursive w3-xlarge w3-wide text-center' style="width: 35%">
+                                            Health Labels
+                                        </th>
+                                        <th class='w3-cursive w3-xlarge w3-wide' style="width:  30%">
+                                            Weight of the food
+                                        </th>
+                                        <th class='w3-cursive w3-xlarge w3-wide' style="width: 35%">
+                                            Link
+                                        </th>
+                                    </tr>
+                            </table>`;
+                            for (i = 0; i < retlist.length; i++) {
+                            tempstr = '';
+                            templen = retlist[i].recipe.healthLabels.length
+                            displaytab += `
+                            <table class="table table-borderless w3-grey makebigger" border="1">
+                            <tr>
+                                <td rowspan='${templen}' style="width: 16.66%"> ${retlist[i].recipe.label} </td>`;
+
+                            for(j=0;j<templen; j++){
+                                if(j == 0){
+                                    displaytab += `
+                                    <td class="text-center health" style="width: 35%">
+                                    ${retlist[i].recipe.healthLabels[j]} </td>
+                                    <td rowspan='${templen}' style="width:  30%"> ${retlist[i].recipe.totalWeight.toFixed(2)} g</td>
+                                    <td rowspan='${templen}' style="width:  18.33%"> <a href="${retlist[i].recipe.shareAs}"><button class="btn btn-primary">Find Out More!</button></a> </td>
                                     </tr>`;
-                        }
+                                } else {
+                                    displaytab += `
+                                    <tr><td class="text-center health" style="width: 35%">
+                                    ${retlist[i].recipe.healthLabels[j]} </td></tr>`;
+                                }
+
+                            }
                         displaytab += `</table>`;
-                        document.getElementById("displayinfo").innerHTML = displaytab;
+                        }
+                    
+                    document.getElementById("displayinfo").innerHTML = displaytab;
                     })
+                }
             }
-        },
-    })
+        })
 
     function myFunction(i) {
         var popup = document.getElementById(`myPopup${i}`);
@@ -436,7 +427,57 @@ $url = "https://www.linkedin.com/oauth/v2/authorization?response_type=code&clien
             body: formdata
         }).then(data => data.json()).then(data => {
             console.log(data);
+            console.log(data.data.hits)
+            retlist = data.data.hits
+            displaytab = `
+            <h3 class="animate__heartBeat text-center w3-xxlarge w3-cursive w3-text-white mt-5 mb-5">
+                We have found the following results that is the closest match to your picture! 
+            </h3>
+                <table class="table table-borderless w3-grey makebigger" border="1">
+                        <tr>
+                            <th class='w3-cursive w3-xlarge w3-wide' style="width: 16.66%">
+                                Food
+                            </th>
+                            <th class='w3-cursive w3-xlarge w3-wide text-center' style="width: 35%">
+                                Health Labels
+                            </th>
+                            <th class='w3-cursive w3-xlarge w3-wide' style="width:  30%">
+                                Weight of the food
+                            </th>
+                            <th class='w3-cursive w3-xlarge w3-wide' style="width: 35%">
+                                Link
+                            </th>
+                        </tr>
+                </table>`;
+                        for (i = 0; i < retlist.length; i++) {
+                            tempstr = '';
+                            templen = retlist[i].recipe.healthLabels.length
+                            displaytab += `
+                            <table class="table table-borderless w3-grey makebigger" border="1">
+                            <tr>
+                                <td rowspan='${templen}' style="width: 16.66%"> ${retlist[i].recipe.label} </td>`;
+
+                            for(j=0;j<templen; j++){
+                                if(j == 0){
+                                    displaytab += `
+                                    <td class="text-center health" style="width: 35%">
+                                    ${retlist[i].recipe.healthLabels[j]} </td>
+                                    <td rowspan='${templen}' style="width:  30%"> ${retlist[i].recipe.totalWeight.toFixed(2)} g</td>
+                                    <td rowspan='${templen}' style="width:  18.33%"> <a href="${retlist[i].recipe.shareAs}"><button class="btn btn-primary">Find Out More!</button></a> </td>
+                                    </tr>`;
+                                } else {
+                                    displaytab += `
+                                    <tr><td class="text-center health" style="width: 35%">
+                                    ${retlist[i].recipe.healthLabels[j]} </td></tr>`;
+                                }
+
+                            }
+                        displaytab += `</table>`;
+                        }
+                    
+                    document.getElementById("displayinfo").innerHTML = displaytab;
             })
+
         })
 
     function readURL(input) {
