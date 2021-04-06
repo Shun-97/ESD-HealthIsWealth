@@ -427,7 +427,7 @@ $url = "https://www.linkedin.com/oauth/v2/authorization?response_type=code&clien
         console.log(formdata);
         console.log(formdata.getAll('image'));
         console.log(ev.target.files[0]);
-        fetch("http://127.0.0.1:7130/api/imgr", {
+        fetch("http://127.0.0.1:7120/api/recipe_image", {
             method: "post",
             headers: {
                 'Access-Control-Allow-Origin': '*',
@@ -436,57 +436,6 @@ $url = "https://www.linkedin.com/oauth/v2/authorization?response_type=code&clien
             body: formdata
         }).then(data => data.json()).then(data => {
             console.log(data);
-            const imgurLink = data.data.data.link;
-            fetch(get_curr_url, {
-                    method: "post",
-                    headers: {
-                        'Content-Type': "application/json",
-                        "Accept": "application/json",
-                        // 'Access-Control-Allow-Origin': '*',
-                        // 'Access-Control-Allow-Methods': 'GET, POST, PATCH, PUT, DELETE, OPTIONS',   
-                    },
-                    body: JSON.stringify({
-                        "link": imgurLink
-                    })
-                }).then(data => data.json())
-                .then(data => {
-                    console.log(data);
-                    console.log(JSON.parse(data.strjsonobj));
-                    retobj = JSON.parse(data.strjsonobj);
-                    retlist = retobj.result;
-                    displaytab = `
-                <table class="makebigger">
-                        <tr>
-                            <th class='w3-cursive w3-xxxlarge w3-wide'>
-                                Suggestions
-                            </th>
-                        </tr>`;
-                    if (retlist.length < 10) {
-                        for (i = 0; i < retlist.length; i++) {
-                            displaytab += `
-                            <tr>
-                                <th>
-                                    <button class='btn btn-outline-info' id='imgsrch${i}' onclick="searchFor(${i})">${textname}</button>
-                                </th>
-                            </tr>
-                        `;
-                        }
-                    } else {
-                        for (i = 0; i < 10; i++) {
-                            let textname = retlist[i].name
-
-                            displaytab += `
-                            <tr>
-                                <th>
-                                    <button class='btn btn-outline-info' id='imgsrch${i}' onclick="searchFor(${i})">${textname}</button>
-                                </th>
-                            </tr>
-                        `;
-                        }
-                    }
-                    displaytab += `</table>`;
-                    document.getElementById("displayinfo").innerHTML = displaytab;
-                })
             })
         })
 

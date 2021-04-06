@@ -19,7 +19,7 @@ cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 # GraphQl Stuff
 # Database connection
-dbURL = "postgresql://qepnpscgacacmr:d338fb6ef24db3eed89c7a4200ac74e8cb5c1ffd22bf8e26194eb684c6b8e33d@ec2-52-21-252-142.compute-1.amazonaws.com:5432/ddo160cbfi69qt"
+dbURL = "postgresql://bguqlttywcdyul:dcb0d826221e6019e36aee4cad4ac193e2bfa2a727748b5445187f3c852554a7@ec2-3-233-43-103.compute-1.amazonaws.com:5432/dcploeccegb868"
 app.config['SQLALCHEMY_DATABASE_URI'] = dbURL
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
