@@ -30,7 +30,7 @@ def complex_image_search():
         print(imgr_result)
         return jsonify({
             "code": 201,
-            "data": lol
+            "data": imgr_result
         }), 201
     except Exception as e:
         # Unexpected error in code
@@ -51,6 +51,8 @@ def complex_image_search():
         "code": 400,
         "message": "Invalid JSON input: " + str(request.get_data())
     }), 400
+
+
 
 
 # Execute this program if it is run as a main script (not by 'import')
