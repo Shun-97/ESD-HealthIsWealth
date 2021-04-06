@@ -101,6 +101,9 @@
     </div>
 </body>
 <script>
+       if (localStorage.getItem('tele_id') == null) {
+            window.location.replace("landing_schedule.php")
+      }
     // console.log(localStorage)
     var googleEmail = ''
     function authenticate() {
