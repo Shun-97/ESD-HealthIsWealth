@@ -19,19 +19,42 @@ img_url = "http://127.0.0.1:7130/api/imgr"
 @app.route("/api/recipe_image", methods=["POST"])
 def complex_image_search():
     try:
+        # First Connection with Imgr API
         headers = {
             'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Methods': 'GET, POST, PATCH, PUT, DELETE, OPTIONS',
         }
         payload = request.files
+        # print(payload)
+        imgr_result = requests.post(
+            img_url, files=payload, headers=headers).json()
+        # print(imgr_result)
+        imgr_url = imgr_result['data']['data']['link']
 
-        imgr_result = requests.post(image_url, files=payload, headers=headers)
+        # Second Connection with recipt.py
+        headers = {
+            'Content-Type': "application/json",
+            "Accept": "application/json",
+        }
+        body = {
+            "link": imgr_url
+        }
+        image_result = requests.post(
+            image_url, json=body, headers=headers).json()
+        # print(recipe_result)
+        image_food = image_result['result'][0]['name']
 
-        print(imgr_result)
-        return jsonify({
-            "code": 201,
-            "data": lol
-        }), 201
+        # Third Connection with recipe_url
+        headers = {
+            "Content-type": "application/json"
+        }
+        body = {
+            "food": image_food
+        }
+        recipe_result = requests.post(
+            recipe_url, json=body, headers=headers).json()
+
+        return recipe_result
     except Exception as e:
         # Unexpected error in code
         exc_type, exc_obj, exc_tb = sys.exc_info()
