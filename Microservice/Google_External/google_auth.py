@@ -180,6 +180,7 @@ def google_sign():
                     "code": 201,
                     "data": {
                         "username": username,
+                        'auth': idinfo,
                         "registration": validate.data['userAccountByUsername']
                     }}
 
@@ -282,4 +283,4 @@ def google_signup():
 
 if __name__ == "__main__":
     print("This is flask " + os.path.basename(__file__) + " for google signin...")
-    app.run(host="127.0.0.1", port=5110, debug=True)
+    app.run(host="0.0.0.0", port=5110, debug=True)

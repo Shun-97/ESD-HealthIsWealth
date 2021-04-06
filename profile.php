@@ -27,6 +27,10 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- Axios  -->
     <script src="https://unpkg.com/axios/dist/axios.js"></script>
+    <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
+    <script src="js/google_session.js"></script>
+
+
     <title>Profile</title>
 </head>
 
@@ -43,7 +47,7 @@
                 <a href="whatinmeal.html" class="w3-bar-item w3-button"><i class="fa fa-th"></i> What's In My Meal? </a>
                 <a href="schedule.php" class="w3-bar-item w3-button"><i class="fa fa-calendar" aria-hidden="true"
                         style="font-size:25px"></i></a>
-                <a href="profile.html" class="w3-bar-item w3-button"><i class="fas fa-user-circle"
+                <a href="profile.php" class="w3-bar-item w3-button"><i class="fas fa-user-circle"
                         style="font-size:25px"></i></a>
             </div>
             <!-- Hide right-floated links on small screens and replace them with a menu icon -->
@@ -74,16 +78,20 @@
         <h3>Welcome! {{user}}</h3>
         <form method="POST">
             <div class="mb-3">
-                <label for="height" class="form-label">Height</label>
+                <label for="height" class="form-label">Height (in m)</label>
                 <input type="number" class="form-control" id="height" name="height" v-model="height">
             </div>
             <div class="mb-3">
-                <label for="wieght" class="form-label">Weight</label>
+                <label for="wieght" class="form-label">Weight (in kg)</label>
                 <input type="number" class="form-control" id="weight" name="weight" v-model="weight">
             </div>
             <div class="mb-3">
                 <label for="bmi" class="form-label">BMI</label>
                 <input type="number" class="form-control" id="bmi" name="bmi" v-model="bmi">
+            </div>
+            <div class="mb-3">
+                <label for="calories" class="form-label">Set your targeted calories per day</label>
+                <input type="number" class="form-control" id="calories" name="calories" v-model="calories">
             </div>
             <br>
         </form>
@@ -115,7 +123,12 @@ var app = new Vue({
         user: localStorage.getItem('username'),
         weight: 0.0,
         height: 0.0,
-        bmi: 0.0
+        calories: 0.0,
+    },
+    computed: {
+        bmi: function() {
+            return ((this.weight/(this.height)**2).toFixed(2))
+        }
     },
     methods: {
         logout: function(){
@@ -129,7 +142,7 @@ var app = new Vue({
             'username': this.user,
             })
             console.log(data)
-            fetch('http://127.0.0.1:5000/api/userAccount', {
+            fetch('http://127.0.0.1:5100/api/userAccount', {
             
                 method: 'POST',
                 headers: {
@@ -139,12 +152,14 @@ var app = new Vue({
             })
             .then((res) => res.json())
             .then((data) => {
-                console.log(data)
+                console.log(data.data)
                 if (data.code == 201){
                     console.log("success")
-                    this.height = data.data["height"]
-                    this.weight = data.data["weight"]
-                    this.bmi = data.data["bmi"]
+                    this.height = data.data[0]["Height"]
+                    this.weight = data.data[0]["Weight"]
+                    this.bmi = data.data[0]["BMI"]
+                    this.calories = data.data[0]["Requested_Calories"]
+
                 } 
             });
             },
@@ -154,9 +169,10 @@ var app = new Vue({
             'username': this.user,
             'weight': this.weight,
             'height': this.height,
-            'bmi': this.bmi
+            'bmi': this.bmi,
+            'calories': this.calories
             })
-            fetch('http://127.0.0.1:5000/api/userAccount/update', {
+            fetch('http://127.0.0.1:5100/api/userAccount/update', {
             
                 method: 'POST',
                 headers: {
@@ -172,6 +188,7 @@ var app = new Vue({
                     this.height = data.data[0]["Height"]
                     this.weight = data.data[0]["Weight"]
                     this.bmi = data.data[0]["BMI"]
+                    this.calories = data.data[0]["Requested_Calories"]
                 } 
             });
             }

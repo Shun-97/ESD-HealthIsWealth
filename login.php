@@ -23,6 +23,8 @@
     <meta name="google-signin-client_id" content="1051698943672-lrutkkrvnsu86ri9gdbe25m2c6hqha43.apps.googleusercontent.com">
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     <script type="text/javascript" src="http://platform.linkedin.com/in.js"></script>
+    <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
+
     <title>Login Page</title>
 </head>
 
@@ -82,6 +84,8 @@
         console.log(data.code)
         if (data.code == 201){
           localStorage.setItem("username", data.data.username)
+          console.log()
+          // localStorage.setItem('auth2', data.data.auth)
           window.location.replace("./profile.php")
         }   
       })
@@ -100,7 +104,7 @@
       })
       console.log(name,password,data)
       //change to this URL for KONG --> http://0.0.0.0:8000/api/v1/login
-      fetch('http://0.0.0.0:5000/api/login/verification', { 
+      fetch('http://127.0.0.1:5000/api/login/verification', { 
       
         method: 'POST',
         headers: {
