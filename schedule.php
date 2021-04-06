@@ -177,7 +177,8 @@
         duration: duration,
         difficulty: difficulty,
         starttime: telestart,
-        username: localStorage.getItem('username')
+        username: localStorage.getItem('username'),
+        telegramid: localStorage.getItem('tele_id')
       });
       fetch(url, {
         method: "POST",
