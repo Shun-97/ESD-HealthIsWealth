@@ -110,9 +110,7 @@
       return gapi.auth2.getAuthInstance()
         .signIn({ scope: "https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/calendar.events" })
         .then(function (data) {
-          console.log(data)
-          googleEmail = data['Rs']['At'];
-
+          googleEmail = data.getBasicProfile().getEmail();
           var calendarEl = document.getElementById('calendar');
 
           var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -134,7 +132,8 @@
     function loadClient() {
       gapi.client.setApiKey("AIzaSyCywHuX1P6klMUzzE9Qzv003axHgioqPUA");
       return gapi.client.load("https://content.googleapis.com/discovery/v1/apis/calendar/v3/rest")
-        .then(function () { console.log("GAPI client loaded for API"); },
+        .then(function () {
+          console.log("GAPI client loaded for API"); },
           function (err) { console.error("Error loading GAPI client for API", err); });
     }
 
@@ -155,8 +154,7 @@
     gapi.load("client:auth2", function () {
       gapi.auth2.init({ client_id: "1051698943672-lrutkkrvnsu86ri9gdbe25m2c6hqha43.apps.googleusercontent.com" });
       authenticate().then(loadClient)
-
-    });
+    })
     // calendar.function( dateClickInfo ) { console.log('ho') }
 
     function sendform() {
@@ -167,18 +165,19 @@
       date = dateTime.split('T')[0]
       let momentDate = moment(dateTime)
       let starttime = momentDate.format()
+      let telestart = momentDate.format('YYYY-MM-DD hh:mm:ss')
       let endtime = momentDate.add(duration, 'm').format()
 
 
-      let url = "http://127.0.0.1:5300/api/exercise";
+      let url = "http://127.0.0.1:5300/api/SetCalender";
 
 
       const data = JSON.stringify({
         date: date,
         duration: duration,
         difficulty: difficulty,
-        starttime: starttime,
-        endtime: endtime
+        starttime: telestart,
+        username: localStorage.getItem('username')
       });
       fetch(url, {
         method: "POST",
@@ -194,7 +193,7 @@
           // console.log(data)
           // console.log(data.code)
           if (data.code == 200) {
-            console.log(data)
+            
             // console.log(data['exercise_type'])
             // console.log(data['Description'])
 
@@ -270,6 +269,7 @@
           }
         })
 
+        
 
     }
   </script>
