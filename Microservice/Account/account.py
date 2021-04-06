@@ -121,54 +121,7 @@ schema = graphene.Schema(query=Query, mutation=Mutation)
 
 @app.route('/api/login/verification', methods=['POST'])
 def login():
-    if request.method == 'POST':
-        jsondata = request.get_json(force=True)
-        # return request.form
-        username = jsondata['username']
-        password = jsondata['password']
-
-        schema = graphene.Schema(query=Query)
-        query_string = '{userAccountByUsername(username:"' + \
-            username + '"){Username Password Email}}'
-        validate = schema.execute(query_string)
-        # print(validate)
-        # Check if user exist
-        if not validate.data['userAccountByUsername']:
-            # return {"message": "user don't exist"}
-            message = json.dumps({"message": username + ": user don't exist"})
-
-            AMQP_setup.channel.basic_publish(exchange=AMQP_setup.exchangename, routing_key="account.error",
-                                             body=message, properties=pika.BasicProperties(delivery_mode=2))
-
-            return {
-                "code": 500,
-                "data": {
-                    "message": 'Users do not exist'
-                }}
-
-            # Check if password matches
-        elif validate.data['userAccountByUsername'][0]['Password'] == password:
-            message = json.dumps({"message": username + ": Successful Login"})
-            AMQP_setup.channel.basic_publish(exchange=AMQP_setup.exchangename, routing_key="account.activity",
-                                             body=message, properties=pika.BasicProperties(delivery_mode=2))
-            return {
-                "code": 201,
-                "data": {
-                    "username": username,
-                    "registration": validate.data['userAccountByUsername']
-                }}
-
-        else:
-            message = json.dumps({"message": username + ": Wrong Password"})
-            AMQP_setup.channel.basic_publish(exchange=AMQP_setup.exchangename, routing_key="account.error",
-                                             body=message, properties=pika.BasicProperties(delivery_mode=2))
-            return {
-                "code": 500,
-                "data": {
-                    "message": 'Wrong Password'
-                }}
-            # return {"message": "user don't exist"}
-    elif request.is_json:
+    if request.is_json:
         try:
             google = request.get_json()
             print("Received")
@@ -363,6 +316,7 @@ def getUserAccountByUsername():
                             Requested_Calories
                             Username
                             Weight
+                            TelegramId
                         }}
                         }}"""
         update = requests.post(url, headers=myobj, json={
@@ -387,17 +341,19 @@ def getUserAccountByUsername():
 def updateUserAccount1():
     if request.is_json:
         data = request.get_json()
+        print(data)
         username = data["username"]
         height = data["height"]
         weight = data["weight"]
         bmi = data["bmi"]
         calories = data['calories']
+        TelegramId = data['telegramid']
 
         url = 'https://esd-healthiswell-69.hasura.app/v1/graphql'
         myobj = {'x-hasura-admin-secret': 'Qbbq4TMG6uh8HPqe8pGd1MQZky85mRsw5za5RNNREreufUbTHTSYgaTUquaKtQuk',
                  'content-type': 'application/json'}
         update_query = 'mutation MyMutation {update_UserAccount(where: {Username: {_eq: "'+username+'"}}, _set: {BMI: "'+str(
-            bmi)+'", Height: "'+str(height)+'", Weight: "'+str(weight)+'" , Requested_Calories: "'+str(calories)+'"}) {returning { BMI Height Username Weight Requested_Calories}}}'
+            bmi)+'", Height: "'+str(height)+'", Weight: "'+str(weight)+'" , Requested_Calories: "'+str(calories)+'" , TelegramId: "'+str(TelegramId)+'"}) {returning { BMI Height Username Weight Requested_Calories}}}'
         update = requests.post(url, headers=myobj, json={
                                'query': update_query})
         update = update.json()
@@ -426,6 +382,29 @@ def updateUserAccount1():
             "code": 500,
             "message": "internal error: Not JSON format"
         }), 500
+
+
+@app.route('/api/telegram/<string:username>', methods=['POST'])
+def getTelegramIDByUsername(username):
+    url = 'https://esd-healthiswell-69.hasura.app/v1/graphql'
+    myobj = {'x-hasura-admin-secret': 'Qbbq4TMG6uh8HPqe8pGd1MQZky85mRsw5za5RNNREreufUbTHTSYgaTUquaKtQuk',
+             'content-type': 'application/json'}
+    query = f"""query MyQuery {{
+                    UserAccount(where: {{Username: {{_eq: "{username}"}}}}) {{
+                        TelegramId
+                    }}
+                    }}"""
+    update = requests.post(url, headers=myobj, json={
+        'query': query})
+    update = update.json()
+    # print(update)
+
+    returndata = {
+        'code': 201,
+        'data': update['data']["UserAccount"]
+    }
+
+    return returndata
 
 
 app.add_url_rule(
