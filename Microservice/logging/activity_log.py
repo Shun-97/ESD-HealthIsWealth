@@ -4,7 +4,7 @@ import requests
 
 import AMQP_setup
 
-monitorBindingKey='*.activity'
+monitorBindingKey='#.activity'
 
 def receiveLog():
     AMQP_setup.check_setup()

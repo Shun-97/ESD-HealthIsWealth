@@ -134,8 +134,11 @@ def login():
         if not validate.data['userAccountByUsername']:
             # return {"message": "user don't exist"}
             message = json.dumps({"message": username + ": user don't exist"})
+
+
             AMQP_setup.channel.basic_publish(exchange=AMQP_setup.exchangename, routing_key="account.error",
                                              body=message, properties=pika.BasicProperties(delivery_mode=2))
+
             return {
                 "code": 500,
                 "data": {

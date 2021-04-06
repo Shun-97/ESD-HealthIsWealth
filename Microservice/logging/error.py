@@ -4,7 +4,7 @@ import requests
 
 import AMQP_setup
 
-monitorBindingKey = '*.error'
+monitorBindingKey = '#.error'
 
 def receiveError():
     AMQP_setup.check_setup()
