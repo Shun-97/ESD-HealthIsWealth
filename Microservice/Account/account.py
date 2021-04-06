@@ -18,7 +18,7 @@ app = Flask(__name__)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 # Database connection
-dbURL = "postgresql://qepnpscgacacmr:d338fb6ef24db3eed89c7a4200ac74e8cb5c1ffd22bf8e26194eb684c6b8e33d@ec2-52-21-252-142.compute-1.amazonaws.com:5432/ddo160cbfi69qt"
+dbURL = "postgresql://bguqlttywcdyul:dcb0d826221e6019e36aee4cad4ac193e2bfa2a727748b5445187f3c852554a7@ec2-3-233-43-103.compute-1.amazonaws.com:5432/dcploeccegb868"
 app.config['SQLALCHEMY_DATABASE_URI'] = dbURL
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
@@ -34,6 +34,7 @@ class UserAccount(db.Model):
     Height = db.Column(db.Float)
     Weight = db.Column(db.Float)
     BMI = db.Column(db.Float)
+    Requested_Calories = db.Column(db.Float)
 
     def __repr__(self):
         return '< UserAccount %r>' % self.Username
@@ -75,12 +76,13 @@ class CreateUserAccount(graphene.Mutation):
         Weight = graphene.Float(required=False)
         Height = graphene.Float(required=False)
         BMI = graphene.Float(required=False)
+        Requested_Calories = graphene.Float(required=False)
 
     userAccount = graphene.Field(lambda: UserAccountObject)
 
     def mutate(self, info, Username, Password, Email, Weight=0, Height=0, BMI=0):
         userAccount = UserAccount(Username=Username, Password=Password,
-                                  Email=Email, Weight=Weight, Height=Height, BMI=BMI)
+                                  Email=Email, Weight=Weight, Height=Height, BMI=BMI, Requested_Calories=Requested_Calories)
 
         db.session.add(userAccount)
         db.session.commit()
@@ -94,6 +96,7 @@ class updateUserAccount(graphene.Mutation):
         Weight = graphene.Float(required=False)
         Height = graphene.Float(required=False)
         BMI = graphene.Float(required=False)
+        Requested_Calories = graphene.Float(required=False)
 
     userAccount = graphene.Field(UserAccountObject)
 
@@ -133,8 +136,10 @@ def login():
         if not validate.data['userAccountByUsername']:
             # return {"message": "user don't exist"}
             message = json.dumps({"message": username + ": user don't exist"})
+
             AMQP_setup.channel.basic_publish(exchange=AMQP_setup.exchangename, routing_key="account.error",
                                              body=message, properties=pika.BasicProperties(delivery_mode=2))
+
             return {
                 "code": 500,
                 "data": {
@@ -346,25 +351,30 @@ def getUserAccountByUsername():
         username = data["username"]
         print(username)
 
-        schema = graphene.Schema(query=Query, mutation=Mutation)
-        query_string = '{userAccountByUsername(username:"' + \
-            username+'"){Username Weight Height BMI}}'
-        result = schema.execute(query_string)
+        url = 'https://esd-healthiswell-69.hasura.app/v1/graphql'
+        myobj = {'x-hasura-admin-secret': 'Qbbq4TMG6uh8HPqe8pGd1MQZky85mRsw5za5RNNREreufUbTHTSYgaTUquaKtQuk',
+                 'content-type': 'application/json'}
+        update_query = f"""query MyQuery {{
+                        UserAccount(where: {{Username: {{_eq: "{username}"}}}}) {{
+                            BMI
+                            Email
+                            Height
+                            Password
+                            Requested_Calories
+                            Username
+                            Weight
+                        }}
+                        }}"""
+        update = requests.post(url, headers=myobj, json={
+                               'query': update_query})
+        update = update.json()
+        # print(update)
 
-        height = result.data["userAccountByUsername"][0]["Height"]
-        weight = result.data["userAccountByUsername"][0]["Weight"]
-        bmi = result.data["userAccountByUsername"][0]["BMI"]
-        result_return = {
-            "username": username,
-            "height": height,
-            "weight": weight,
-            "bmi": bmi
+        returndata = {
+            'code': 201,
+            'data': update['data']["UserAccount"]
         }
-        print(result_return)
-        return jsonify({
-            "code": 201,
-            "data": result_return
-        }), 201
+        return returndata
 
     else:
         return jsonify({
@@ -381,15 +391,17 @@ def updateUserAccount1():
         height = data["height"]
         weight = data["weight"]
         bmi = data["bmi"]
+        calories = data['calories']
 
         url = 'https://esd-healthiswell-69.hasura.app/v1/graphql'
         myobj = {'x-hasura-admin-secret': 'Qbbq4TMG6uh8HPqe8pGd1MQZky85mRsw5za5RNNREreufUbTHTSYgaTUquaKtQuk',
                  'content-type': 'application/json'}
         update_query = 'mutation MyMutation {update_UserAccount(where: {Username: {_eq: "'+username+'"}}, _set: {BMI: "'+str(
-            bmi)+'", Height: "'+str(height)+'", Weight: "'+str(weight)+'"}) {returning { BMI Height Username Weight}}}'
+            bmi)+'", Height: "'+str(height)+'", Weight: "'+str(weight)+'" , Requested_Calories: "'+str(calories)+'"}) {returning { BMI Height Username Weight Requested_Calories}}}'
         update = requests.post(url, headers=myobj, json={
                                'query': update_query})
         update = update.json()
+        # print(update)
         returning = update["data"]["update_UserAccount"]["returning"]
         # If the update is successful
         if returning:

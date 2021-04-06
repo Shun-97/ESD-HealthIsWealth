@@ -31,7 +31,8 @@
       return gapi.auth2.getAuthInstance()
         .signIn({ scope: "https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/calendar.events" })
         .then(function (data) {
-          googleEmail = data['Qs']['zt'];
+          console.log(data)
+          googleEmail = data['Rs']['At'];
 
           var calendarEl = document.getElementById('calendar');
 

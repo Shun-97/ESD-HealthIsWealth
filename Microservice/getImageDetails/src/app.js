@@ -15,6 +15,7 @@ app.use((req, res, next) => {
                 statusCode: 400,
                 message: "Bad Request"
             });
+            return;
         }
 
         next();

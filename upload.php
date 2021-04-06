@@ -1,4 +1,17 @@
 <?php
+session_start();
+
+$msg = '';
+if(isset($_SESSION['msg'])){
+
+    $msg = $_SESSION['msg'];
+
+    // remove all session variables
+    session_unset();
+
+    // destroy the session
+    session_destroy();
+}
 require_once 'Microservice/sharing_MS/config.php';
 $url = "https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=".CLIENT_ID."&redirect_uri=".REDIRECT_URL."&scope=".SCOPES;
 ?>
@@ -263,6 +276,14 @@ $url = "https://www.linkedin.com/oauth/v2/authorization?response_type=code&clien
                     class="animate__heartBeat text-center w3-xxlarge w3-text-white w3-cursive mt-5 mb-5">Is the
                     information given accurate? Otherwise, please use our search function.</h3>
                 <div class="mb-3">
+                <?php
+                if($msg != ''){
+                    echo '
+                    <div class="alert alert-danger">
+                        <strong>' . $msg . '</strong>
+                    </div>';
+                }
+                ?>
                     <div class="search">
                         <input type="text" v-model="message" placeholder="Search.." name="search" id='srchforRec'>
                         <button id='pSearch' v-on:click='srchRecipe'><i class="fa fa-search"></i></button>
@@ -295,7 +316,7 @@ $url = "https://www.linkedin.com/oauth/v2/authorization?response_type=code&clien
     </div>
 </body>
 <script>
-    const get_curr_url = "http://127.0.0.1:5200/api/recipe_image";
+    const get_curr_url = "http://127.0.0.1:7120/api/recipe_image";
     new Vue({
         el: '#app',
         data: {
@@ -311,7 +332,7 @@ $url = "https://www.linkedin.com/oauth/v2/authorization?response_type=code&clien
                     food: this.message
                 });
 
-                fetch("http://127.0.0.1:5100/api/recipe", {
+                fetch("http://127.0.0.1:7140/api/recipe", {
                         method: "POST",
                         headers: {
                             "Content-type": "application/json"
@@ -401,17 +422,21 @@ $url = "https://www.linkedin.com/oauth/v2/authorization?response_type=code&clien
     const file = document.getElementById('file')
     //const img=document.getElementById('img')
     file.addEventListener('change', ev => {
-        const formdata = new FormData()
+        let formdata = new FormData()
         formdata.append("image", ev.target.files[0])
-        fetch("https://api.imgur.com/3/image/", {
+        console.log(formdata);
+        console.log(formdata.getAll('image'));
+        console.log(ev.target.files[0]);
+        fetch("http://127.0.0.1:7130/api/imgr", {
             method: "post",
             headers: {
-                Authorization: "Client-ID 0e1d07aeb2818f9"
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET, POST, PATCH, PUT, DELETE, OPTIONS',
             },
             body: formdata
         }).then(data => data.json()).then(data => {
             console.log(data);
-            const imgurLink = data.data.link;
+            const imgurLink = data.data.data.link;
             fetch(get_curr_url, {
                     method: "post",
                     headers: {
