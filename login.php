@@ -104,7 +104,7 @@
       })
       console.log(name,password,data)
       //change to this URL for KONG --> http://0.0.0.0:8000/api/v1/login
-      fetch('http://0.0.0.0:5000/api/login/verification', { 
+      fetch('http://127.0.0.1:5000/api/login/verification', { 
       
         method: 'POST',
         headers: {
