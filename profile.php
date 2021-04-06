@@ -198,7 +198,7 @@ var app = new Vue({
                     this.bmi = data.data[0]["BMI"]
                     this.calories = data.data[0]["Requested_Calories"]
                     this.telegramid = data.data[0]["TelegramId"]
-
+                    localStorage.setItem("tele_id", data.data[0]["TelegramId"])
                 } 
             });
             }

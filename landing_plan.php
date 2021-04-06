@@ -1,6 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <style>
+        #landing_plan{
+            background-position: center;
+            background-size: cover;
+            background-image: url("img/plan1.jpg");
+            min-height: 100%;   
+        }
+        .overlay {
+            z-index: 1;
+            height: 100%;
+            width: 100%;
+            position: fixed;
+            overflow: auto;
+            top: 0px;
+            left: 0px;
+            background: rgba(0, 0, 0, 0.4);
+        }
+        table tr td, table tr th{
+            background-color: rgba(5,5,5, 0.3) !important;
+        }
+    </style>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -65,16 +86,25 @@
     </nav>
     <!-- NAVBAR ENDS HERE COPY AND PASTE THIS SHIT IDK HOW ELSE TO INTEGRATE TO OTHER PAGES LOL -->
 
-    <div class="container" id="landing_plan" style="padding-top: 10rem;">
-        <button v-on:click="getData" class="btn btn-primary">Get data</button>
-
-        <ul>
-            <li v-for="food in data">{{food.Description}}</li>
-        </ul>
-        <a class="btn btn-primary" href="./planner.php">Create new meal plan</a>
+    <div class="w3-display-container w3-grayscale-min" id="landing_plan" style="padding-top: 10rem;">
+    <div class='overlay'>
+        <div class="w3-display-left w3-text-white" style="padding:48px">
+        <span class="w3-xxlarge w3-hide-small"> Good Day! How would you like to plan your meals today?</span><br>
+        <!-- <button class="btn btn-primary"> Do recommendation, based on receiving top 5 information of recent food, if calories are above 1.3k, recommend salad </button> -->
+        <table class="table table-dark table-condensed table-bordered">  
+        <tr>
+        <th class="w3-cursive w3-xlarge w3-wide">Recent Food that you consumed</th>
+        <th class="w3-cursive w3-xlarge w3-wide">Calories</th>
+        </tr>
+        <tr v-for="food in data">
+        <td class="active" >{{food.Description}} </td>
+        <td class="active"> {{food.Total_Calories.toFixed(2)}} Cal</td>
+        </tr>
+        </table>
+        <a class="btn btn-primary" href="./planner.php">Create New Meal Plan</a>
     </div>
-
-
+    </div>
+</div>
 </body>
 
 <!-- Bootstrap  -->
@@ -83,6 +113,8 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script> 
 
 <script>
+
+    //username: localStorage.getItem('username'),
     var app = new Vue({
         el: "#landing_plan",
         data: {
@@ -108,6 +140,9 @@
                     console.log(this.data)
                 })
             }
+        },
+        created: function(){
+            this.getData()
         }
 
     })

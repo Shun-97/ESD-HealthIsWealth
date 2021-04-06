@@ -1,6 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<style>
+        #landing_plan{
+            background-position: center;
+            background-size: cover;
+            background-image: url("img/plan1.jpg");
+            min-height: 100%;   
+        }
+        .overlay {
+            z-index: 1;
+            height: 100%;
+            width: 100%;
+            position: fixed;
+            overflow: auto;
+            top: 0px;
+            left: 0px;
+            background: rgba(0, 0, 0, 0.4);
+        }
+    </style>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -65,24 +83,95 @@
     </nav>
     <!-- NAVBAR ENDS HERE COPY AND PASTE THIS SHIT IDK HOW ELSE TO INTEGRATE TO OTHER PAGES LOL -->
 
-    <div class="container" id="landing_plan" style="padding-top: 10rem;">
-        <h1 class="display-4">Nutrition List Search</h1>
-        Search food item: <input type="text" id="query" v-model="query">
-        <button type="button" id="submit" v-on:click="fetchData">Search</button>
-        <div id="queryInfo">
-            <!-- To input query inforation and let users add the food -->
+    <div class="w3-display-container w3-grayscale-min" id="landing_plan" style="padding-top: 10rem;">
+        <div class='overlay'>
+        
+            <div class="w3-display-left w3-text-white" style="padding:48px">
+                <h1 class="display-4" style="padding-top: 10rem;">Nutrition List Search</h1>
+                    Search food item: <input type="text" id="query" v-model="query">
+                    <button type="button" class="btn btn-primary" id="submit" v-on:click="fetchData">Search</button>
+                        <div id="queryInfo">
+                <!-- To input query inforation and let users add the food -->
+                        </div>
+                        <br>
+                <h1 class="w3-cursive w3-xlarge w3-wide"><strong>Food to Add</strong>: {{foodName}}</h1>
+                <table class="table table-dark table-condensed table-bordered"> 
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>Nutritions List</th>
+                                        <td> Values </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Serving Size (g)</th>
+                                        <td>{{serving_size_g}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Sugar (g)</th>
+                                        <td>{{sugar_g}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Fiber (g)</th>
+                                        <td>{{fiber_g}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Sodium (mg)</th>
+                                        <td>{{sodium_mg}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Potassium (mg)</th>
+                                        <td>{{potassium_mg}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Saturated Fats (g)</th>
+                                        <td>{{fat_saturated_g}}</td>
+                                    </tr>
+                                    <tr>    
+                                        <th>Total Fats (g)</th>
+                                        <td>{{fat_total_g}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Calories</th>
+                                        <td>{{calories}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Cholesterol (mg)</th>
+                                        <td>{{cholesterol_mg}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Protein (g)</th>
+                                        <td>{{protein_g}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Total Carbohydrates (g)</th>
+                                        <td>{{carbohydrates_total_g}}</td>
+                                    </tr>
+
+                                </thead>
+                            </table>
+                <div style="display:none" id="addBtn">
+                    <button class="btn btn-primary mt-3" v-on:click="addFood">Add food item</button>
+                </div>
+                
+                <table class="table table-info table-condensed table-bordered mt-3"> 
+                    <thead class="thead-info">
+                        <tr>
+                            <th>Currently Added food</th>
+                        </tr>
+                        <tr v-for="food in data">
+                            <th> {{food}} </th>
+                        </tr>
+                    </thead>
+                </table>
+        <br>
+        
+        <table class="table table-info table-condensed table-bordered">  </table>
+        <button v-on:click="addToDatabase" class="btn btn-primary"> Create Meal Plan </button>
+        <a href="landing_plan.php"><button class="btn btn-warning"> Back </button></a>
+            </div>
         </div>
-        <div style="display:none" id="addBtn">
-            <button class="btn btn-primary" v-on:click="addFood">Add food item</button>
-        </div>
-        <ul>
-            <li v-for="food in data">{{food}}</li>
-        </ul>
-        <p>Total Calories: {{total_calories}}</p>
-        <button v-on:click="addToDatabase" class="btn btn-primary">Create Meal Plan</button>
     </div>
-
-
+</div>  
+<div id="dizplaymodal2"></div>
 </body>
 
 <!-- Bootstrap  -->
@@ -98,8 +187,18 @@
             data: [],
             total_calories: 0,
             query: "",
-            calories: 0,
-            foodName: ""
+            calories: "",
+            foodName: "Nothing yet",
+            serving_size_g: "",
+            sugar_g: "",
+            fiber_g: "",
+            sodium_mg: "",
+            potassium_mg: "",
+            fat_saturated_g: "",
+            fat_total_g: "",
+            cholesterol_mg: "",
+            protein_g: "",
+            carbohydrates_total_g: "",
         },
         methods: {
             fetchData : function(){ 
@@ -121,10 +220,20 @@
                 .then((response) => response.json())
                 .then((data) => {
                     console.log(data.items[0]);
-                    document.getElementById("queryInfo").innerHTML = data.items[0].calories +" "+ data.items[0].name;
+                    // document.getElementById("queryInfo").innerHTML = data.items[0].calories +" "+ data.items[0].name;
                     document.getElementById("addBtn").style.display = "inline";
                     this.calories = data.items[0].calories;
                     this.foodName = data.items[0].name;
+                    this.sugar_g = data.items[0].sugar_g;
+                    this.fiber_g = data.items[0].fiber_g;
+                    this.serving_size_g = data.items[0].serving_size_g;
+                    this.sodium_mg = data.items[0].sodium_mg;
+                    this.potassium_mg = data.items[0].potassium_mg;
+                    this.fat_saturated_g = data.items[0].fat_saturated_g;
+                    this.fat_total_g = data.items[0].fat_total_g;
+                    this.cholesterol_mg = data.items[0].cholesterol_mg;
+                    this.protein_g = data.items[0].protein_g;
+                    this.carbohydrates_total_g = data.items[0].carbohydrates_total_g;
 
                 })
             },
@@ -133,6 +242,24 @@
                 this.total_calories += this.calories;
                 console.log(this.data);
                 console.log(this.total_calories);
+                alertmodal = `
+                          <div class="modal fade" id="alrtz2" tabindex="-1">
+                            <div class="modal-dialog">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title text-Success"> Added! </h5>
+                                  <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    ${this.foodName} has been added into Meal Plan!
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                              </div>
+                            </div>`;
+                document.getElementById('dizplaymodal2').innerHTML = alertmodal;
+                $('#alrtz2').modal('show');
             },
             addToDatabase: function(){
                 data = JSON.stringify({
