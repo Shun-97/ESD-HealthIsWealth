@@ -44,6 +44,7 @@ def complex_image_search():
         # print(recipe_result)
         image_food = image_result['result'][0]['name']
 
+
         # Third Connection with recipe_url
         headers = {
             "Content-type": "application/json"
@@ -55,6 +56,7 @@ def complex_image_search():
             recipe_url, json=body, headers=headers).json()
 
         return recipe_result
+      
     except Exception as e:
         # Unexpected error in code
         exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -74,6 +76,8 @@ def complex_image_search():
         "code": 400,
         "message": "Invalid JSON input: " + str(request.get_data())
     }), 400
+
+
 
 
 # Execute this program if it is run as a main script (not by 'import')

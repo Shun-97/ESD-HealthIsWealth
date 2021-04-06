@@ -31,10 +31,10 @@ session_start();
   <div class="w3-top">
     <div class="w3-bar w3-white w3-card" id="myNavbar">
       <a href="#home" class="w3-bar-item w3-button w3-wide"><img src='./img/earthchan.png' height="48px"
-          width="48px">Health is Wealth</a>
+          width="48px">Health Is Wealth</a>
       <!-- Right-sided navbar links -->
       <div class="w3-right w3-hide-small">
-        <a href="planmeal.html" class="w3-bar-item w3-button"><i class="fa fa-user"></i> Plan My Meal</a>
+        <a href="landing_plan.php" class="w3-bar-item w3-button"><i class="fa fa-user"></i> Plan My Meal</a>
         <a href="upload.php" class="w3-bar-item w3-button"><i class="fa fa-th"></i> What's In My Meal? </a>
         <a href="schedule.php" class="w3-bar-item w3-button"><i class="fa fa-calendar" aria-hidden="true"
             style="font-size:25px"></i></a>
@@ -54,7 +54,7 @@ session_start();
   <nav class="w3-sidebar w3-bar-block w3-black w3-card w3-animate-left w3-hide-medium w3-hide-large"
     style="display:none" id="mySidebar">
     <a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-large w3-padding-16">Close ×</a>
-    <a href="planmeal.html" onclick="w3_close()" class="w3-bar-item w3-button">Plan My Meal</a>
+    <a href="landing_plan.php" onclick="w3_close()" class="w3-bar-item w3-button">Plan My Meal</a>
     <a href="upload.php" onclick="w3_close()" class="w3-bar-item w3-button">What's In My Meal?</a>
     <a href="schedule.php" onclick="w3_close()" class="w3-bar-item w3-button"><i class="fa fa-calendar"
         aria-hidden="true" style="font-size:25px"></i></a>
@@ -109,9 +109,9 @@ session_start();
         <p>Our application learns your behaviour and recommend you the healthiest choices</p>
       </div>
       <div class="w3-quarter">
-        <i class="fa fa-paypal w3-margin-bottom w3-jumbo"></i>
-        <p class="w3-large">Purchase with Ease & Convenience</p>
-        <p>Purchase the recommendations via a trusted platform, Paypal</p>
+        <i class="fas fa-running w3-margin-bottom w3-jumbo"></i>
+        <p class="w3-large">Understand your calories input and output!</p>
+        <p> Feeling that you are eating too much? Challenge yourself with our Exercising Application! </p>
       </div>
     </div>
   </div>
@@ -131,51 +131,73 @@ session_start();
     </div> -->
 
   <!-- Team Section -->
-  <div class="w3-container" style="padding:128px 16px" id="team">
+  <div class="w3-container w3-center" style="padding:128px 16px" id="team">
     <h3 class="w3-center">THE TEAM</h3>
-    <p class="w3-center w3-large">The ones who runs this company</p>
+    <p class="w3-center w3-large">The creators of this application</p>
     <div class="w3-row-padding w3-grayscale" style="margin-top:64px">
-      <div class="w3-col l3 m6 w3-margin-bottom">
+      <div class="w3-col l2 m6 w3-margin-bottom">
         <div class="w3-card">
-          <img src="/w3images/team2.jpg" alt="John" style="width:100%">
+          <img src="img/yc.jpg" alt="yc" style="width:100%">
           <div class="w3-container">
             <h3>Yeo Yao Cong</h3>
-            <p class="w3-opacity">CEO & Founder</p>
-            <p>Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.</p>
-            <p><button class="w3-button w3-light-grey w3-block"><i class="fa fa-envelope"></i> Contact</button></p>
+            <p class="w3-opacity"> Front-End </p>
+            <p> Dealing with your user interface and delivering optimal user experience to you </p>
+            <p><a href="https://www.linkedin.com/in/ycyc/"><button class="w3-button w3-light-grey w3-block"><i class="fa fa-envelope"></i> Contact</button></a></p>
           </div>
         </div>
       </div>
-      <div class="w3-col l3 m6 w3-margin-bottom">
+      <div class="w3-col l2 m6 w3-margin-bottom">
         <div class="w3-card">
-          <img src="/w3images/team1.jpg" alt="Jane" style="width:100%">
+          <img src="img/sh.jpg" alt="sh" style="width:100%">
           <div class="w3-container">
-            <h3>Anja Doe</h3>
-            <p class="w3-opacity">Art Director</p>
-            <p>Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.</p>
-            <p><button class="w3-button w3-light-grey w3-block"><i class="fa fa-envelope"></i> Contact</button></p>
+            <h3>Lee Shun Hui</h3>
+            <p class="w3-opacity">Back-End God</p>
+            <p> Connecting your Microservices more efficient than an API Gateway</p>
+            <p><a href="https://www.linkedin.com/in/leeshunhui/"><button class="w3-button w3-light-grey w3-block"><i class="fa fa-envelope"></i> Contact</button></p></a>
           </div>
         </div>
       </div>
-      <div class="w3-col l3 m6 w3-margin-bottom">
+      <div class="w3-col l2 m6 w3-margin-bottom">
         <div class="w3-card">
-          <img src="/w3images/team3.jpg" alt="Mike" style="width:100%">
+          <img src="img/tc.jpeg" alt="tc" style="width:100%">
           <div class="w3-container">
-            <h3>Mike Ross</h3>
-            <p class="w3-opacity">Web Designer</p>
-            <p>Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.</p>
-            <p><button class="w3-button w3-light-grey w3-block"><i class="fa fa-envelope"></i> Contact</button></p>
+            <h3>Trisha Chua</h3>
+            <p class="w3-opacity">API Digger</p>
+            <p> No API Endpoint is safe from my sights </p>
+            <p><a href="https://www.linkedin.com/in/trisha-chua/"><button class="w3-button w3-light-grey w3-block"><i class="fa fa-envelope"></i> Contact</button></a></p>
           </div>
         </div>
       </div>
-      <div class="w3-col l3 m6 w3-margin-bottom">
+      <div class="w3-col l2 m6 w3-margin-bottom">
         <div class="w3-card">
-          <img src="/w3images/team4.jpg" alt="Dan" style="width:100%">
+          <img src="img/lx.jpg" alt="lx" style="width:100%">
           <div class="w3-container">
-            <h3>Dan Star</h3>
+            <h3>Hong Li Xuan</h3>
             <p class="w3-opacity">Designer</p>
-            <p>Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.</p>
-            <p><button class="w3-button w3-light-grey w3-block"><i class="fa fa-envelope"></i> Contact</button></p>
+            <p> The architecture design of our web application is as sleek as the apple floating on Marina Bay Sands </p>
+            <p> <a href="https://www.linkedin.com/in/hong-li-xuan/"> <button class="w3-button w3-light-grey w3-block"><i class="fa fa-envelope"></i> Contact</button> </a> </p>
+          </div>
+        </div>
+      </div>
+      <div class="w3-col l2 m6 w3-margin-bottom">
+        <div class="w3-card">
+          <img src="img/ky.jpg" alt="ky" style="width:100%">
+          <div class="w3-container">
+            <h3>Kendrick Yeong</h3>
+            <p class="w3-opacity"> Marketing Master </p>
+            <p> Promoting our products and marketing them at a rate where you will be enticed within a second </p>
+            <p> <a href="https://www.linkedin.com/in/kendrick-yeong/"> <button class="w3-button w3-light-grey w3-block"><i class="fa fa-envelope"></i> Contact</button> </a> </p>
+          </div>
+        </div>
+      </div>
+      <div class="w3-col l2 m6 w3-margin-bottom">
+        <div class="w3-card">
+          <img src="img/lxek.jpg" alt="jlx" style="width:100%">
+          <div class="w3-container">
+            <h3>Professor Jiang & Professor Lum</h3>
+            <p class="w3-opacity"> Business Owners </p>
+            <p> Providing our development team with wise advices like how Macdonalds provided us with Mcgriggles </p>
+            <p> <a href="https://www.smu.edu.sg/faculty/profile/9617/JIANG-Lingxiao"> <button class="w3-button w3-light-grey w3-block"><i class="fa fa-envelope"></i> Contact</button> </a> </p>
           </div>
         </div>
       </div>
@@ -187,15 +209,10 @@ session_start();
   <footer class="w3-center w3-black w3-padding-64">
     <a href="#home" class="w3-button w3-light-grey"><i class="fa fa-arrow-up w3-margin-right"></i>To the top</a>
     <div class="w3-xlarge w3-section">
-      <i class="fa fa-facebook-official w3-hover-opacity"></i>
-      <i class="fa fa-instagram w3-hover-opacity"></i>
-      <i class="fa fa-snapchat w3-hover-opacity"></i>
-      <i class="fa fa-pinterest-p w3-hover-opacity"></i>
-      <i class="fa fa-twitter w3-hover-opacity"></i>
-      <i class="fa fa-linkedin w3-hover-opacity"></i>
+      <img src="img/earthchan.png" width='200px' height='200px'>
+      
     </div>
-    <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" title="W3.CSS" target="_blank"
-        class="w3-hover-text-green">w3.css</a></p>
+    <p>Powered by <a class="w3-hover-text-green"> G3T6 </a></p>
   </footer>
 
   <script>
