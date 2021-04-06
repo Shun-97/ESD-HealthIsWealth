@@ -22,14 +22,14 @@ queue_name = 'Error'
 channel.queue_declare(queue=queue_name, durable=True) 
 
 #bind Error queue
-channel.queue_bind(exchange=exchangename, queue=queue_name, routing_key='*.error')
+channel.queue_bind(exchange=exchangename, queue=queue_name, routing_key='#.error')
 
 #delcare Activity_Log queue
 queue_name = 'Activity_Log' 
 channel.queue_declare(queue=queue_name, durable=True)
 
 #bind Activity_Log queue
-channel.queue_bind(exchange=exchangename, queue=queue_name, routing_key='*.activity') 
+channel.queue_bind(exchange=exchangename, queue=queue_name, routing_key='#.activity') 
 
 def check_setup():
     global connection, channel, hostname, port, exchangename, exchangetype
