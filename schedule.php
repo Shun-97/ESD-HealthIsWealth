@@ -173,7 +173,9 @@
       const data = JSON.stringify({
         date: date,
         duration: duration,
-        difficulty: difficulty
+        difficulty: difficulty,
+        starttime: starttime,
+        endtime: endtime
       });
       fetch(url, {
         method: "POST",
