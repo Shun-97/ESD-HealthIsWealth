@@ -66,6 +66,11 @@
     <!-- NAVBAR ENDS HERE COPY AND PASTE THIS SHIT IDK HOW ELSE TO INTEGRATE TO OTHER PAGES LOL -->
 
     <div class="container" id="landing_plan" style="padding-top: 10rem;">
+        <button v-on:click="getData" class="btn btn-primary">Get data</button>
+
+        <ul>
+            <li v-for="food in data">{{food.Description}}</li>
+        </ul>
         <a class="btn btn-primary" href="./planner.php">Create new meal plan</a>
     </div>
 
@@ -81,9 +86,29 @@
     var app = new Vue({
         el: "#landing_plan",
         data: {
-            user: "admin",
+            username: "admin",
             data: ""
         },
+        methods: {
+            getData: function(){
+                data = JSON.stringify({
+                'username': this.username,
+                })
+                fetch("http://127.0.0.1:6100/api/meal",{
+                    method: 'POST',
+                    headers: {
+                        'content-type': 'application/json',
+
+                    },
+                    body: data
+                }).then((response)=> response.json())
+                .then((data)=>{
+                    console.log(data)
+                    this.data = data.data.Meal
+                    console.log(this.data)
+                })
+            }
+        }
 
     })
 </script>
