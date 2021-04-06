@@ -104,7 +104,7 @@
       "email": email
     })
     console.log(name,password,email,data)
-    fetch('http://0.0.0.0:5000/api/register/verification', {
+    fetch('http://127.0.0.1:5100/api/register/verification', {
     
       method: 'POST',
       headers: {

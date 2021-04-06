@@ -18,7 +18,7 @@ app = Flask(__name__)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 # Database connection
-dbURL = "postgresql://qepnpscgacacmr:d338fb6ef24db3eed89c7a4200ac74e8cb5c1ffd22bf8e26194eb684c6b8e33d@ec2-52-21-252-142.compute-1.amazonaws.com:5432/ddo160cbfi69qt"
+dbURL = "postgresql://bguqlttywcdyul:dcb0d826221e6019e36aee4cad4ac193e2bfa2a727748b5445187f3c852554a7@ec2-3-233-43-103.compute-1.amazonaws.com:5432/dcploeccegb868"
 app.config['SQLALCHEMY_DATABASE_URI'] = dbURL
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
@@ -34,6 +34,7 @@ class UserAccount(db.Model):
     Height = db.Column(db.Float)
     Weight = db.Column(db.Float)
     BMI = db.Column(db.Float)
+    Requested_Calories = db.Column(db.Float)
 
     def __repr__(self):
         return '< UserAccount %r>' % self.Username
@@ -75,6 +76,7 @@ class CreateUserAccount(graphene.Mutation):
         Weight = graphene.Float(required=False)
         Height = graphene.Float(required=False)
         BMI = graphene.Float(required=False)
+        Requested_Calories = graphene.Float(required=False)
 
     userAccount = graphene.Field(lambda: UserAccountObject)
 
@@ -134,7 +136,6 @@ def login():
         if not validate.data['userAccountByUsername']:
             # return {"message": "user don't exist"}
             message = json.dumps({"message": username + ": user don't exist"})
-
 
             AMQP_setup.channel.basic_publish(exchange=AMQP_setup.exchangename, routing_key="account.error",
                                              body=message, properties=pika.BasicProperties(delivery_mode=2))
@@ -367,6 +368,7 @@ def getUserAccountByUsername():
         update = requests.post(url, headers=myobj, json={
                                'query': update_query})
         update = update.json()
+        # print(update)
 
         returndata = {
             'code': 201,
