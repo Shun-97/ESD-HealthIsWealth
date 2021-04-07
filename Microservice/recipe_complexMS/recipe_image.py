@@ -11,8 +11,8 @@ import json
 app = Flask(__name__)
 CORS(app)
 # app.config['CORS_HEADERS'] = 'Content-Type'
-image_url = "http://127.0.0.1:7100/api/ana"
-# recipe_url = "http://127.0.0.1:7140/api/recipe"
+image_url = "http://getimagedetails:7100/api/ana"
+# recipe_url = "http://localhost:7140/api/recipe"
 img_url = "https://api.imgur.com/3/image/"
 authclient = "Client-ID 0e1d07aeb2818f9"
 
@@ -55,7 +55,7 @@ def complex_image_search():
         # print(image_food)
 
         # Insert History to database
-        grapql = 'http://127.0.0.1:5100/api/history/add'
+        grapql = 'http://account:5100/api/history/add'
 
         body = {
             'username': username,
