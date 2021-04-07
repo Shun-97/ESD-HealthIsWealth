@@ -27,7 +27,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
     <!-- Styling and JS -->
-    <script src="./js/navbar.js"></script>
     <link rel="stylesheet" href="./css/main.css">
     <!-- Font Awesome -->
     <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
@@ -35,8 +34,11 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
     <!-- jquery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
     <!-- Axios  -->
     <script src="https://unpkg.com/axios/dist/axios.js"></script> 
+    <script src="./js/navbar.js"></script>
+
 
 
     <title> Planner </title>
@@ -82,8 +84,8 @@
             style="font-size:25px"></i></a>
     </nav>
     <!-- NAVBAR ENDS HERE COPY AND PASTE THIS SHIT IDK HOW ELSE TO INTEGRATE TO OTHER PAGES LOL -->
-
-    <div class="w3-display-container w3-grayscale-min" id="landing_plan" style="padding-top: 10rem;">
+    
+    <div class="container-fluid w3-grayscale-min" id="landing_plan" style="padding-top: 10rem;">
         <div class='overlay'>
         
             <div class="w3-display-left w3-text-white" style="padding:48px">
@@ -164,7 +166,7 @@
                         </tr>
                     </thead>
                 </table>
-                <h3>Total Calories: {{total_calories}}</h3>
+                <h3 id='Total' v-bind:style="styleObject">Total Calories: {{total_calories}}</h3>
         <br>
         
         <table class="table table-info table-condensed table-bordered">  </table>
@@ -173,8 +175,9 @@
             </div>
         </div>
     </div>
+    <div id="dizplaymodal2"></div>
+
 </div>  
-<div id="dizplaymodal2"></div>
 </body>
 
 <!-- Bootstrap  -->
@@ -183,6 +186,9 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script> 
 
 <script>
+    if (localStorage.getItem('tele_id') == 0 || !localStorage.getItem('tele_id')) {
+        alert('No telegramID Found! Please input a telegramid in the profile page for the full experience')
+    }
     var app = new Vue({
         el: "#landing_plan",
         data: {
@@ -203,6 +209,24 @@
             cholesterol_mg: "",
             protein_g: "",
             carbohydrates_total_g: "",
+          },
+        computed: {
+            styleObject: function() {
+                if (this.total_calories > 1000) {
+                    style =  {
+                    'color': 'red',
+                    'font-weight': 'bold'
+                    }
+                    return style
+                }
+                else {
+                    style =  {
+                    'color': 'white',
+                    'font-weight': 'normal'
+                    }
+                    return style
+                }
+            }
         },
         methods: {
             fetchData : function(){ 
@@ -212,7 +236,7 @@
                 })
                 console.log(data)
 
-                fetch('http://127.0.0.1:6100/api/calories', {
+                fetch('http://127.0.0.1:6110/api/calories', {
 
                     method: 'POST',
                     headers: {
@@ -223,7 +247,10 @@
                 })
                 .then((response) => response.json())
                 .then((data) => {
-                    console.log(data.items[0]);
+                    console.log(data.items);
+                    if (data.items.length == 0) {
+                        alert('No item found. Please try again')
+                    }
                     // document.getElementById("queryInfo").innerHTML = data.items[0].calories +" "+ data.items[0].name;
                     document.getElementById("addBtn").style.display = "inline";
                     this.calories = data.items[0].calories;
@@ -247,6 +274,7 @@
                 this.total_calories += this.calories;
                 console.log(this.data);
                 console.log(this.total_calories);
+
                 alertmodal = `
                           <div class="modal fade" id="alrtz2" tabindex="-1">
                             <div class="modal-dialog">
@@ -257,6 +285,7 @@
                                 </div>
                                 <div class="modal-body">
                                     ${this.foodName} has been added into Meal Plan!
+                                    <div id='warning_display' style ='color: red; font-weight: bold'></div>
                                 </div>
                                 <div class="modal-footer">
                                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -264,15 +293,24 @@
                               </div>
                             </div>`;
                 document.getElementById('dizplaymodal2').innerHTML = alertmodal;
+
+                if (this.total_calories > 1000) {
+                    document.getElementById('warning_display').innerHTML = `WARNING, YOU HAVE EXCEEDED YOUR DAILY CALORIES INTAKE. 
+                                    PLEASE GET SOMETHING HEALTHLIER`
+                }
+                else {
+                    document.getElementById('warning_display').innerHTML = ''
+                }
                 $('#alrtz2').modal('show');
             },
             addToDatabase: function(){
                 data = JSON.stringify({
                 'username': this.username,
                 'total_calories': this.total_calories,
-                'description': this.data.join(",")
+                'description': this.data.join(","),
+                'telegramid': localStorage.getItem('tele_id')
                 })
-                fetch("http://127.0.0.1:6100/api/calories/create",{
+                fetch("http://127.0.0.1:6100/api/meal/planning",{
                     method: 'POST',
                     headers: {
                         'content-type': 'application/json',

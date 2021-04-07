@@ -12,6 +12,16 @@ if(isset($_SESSION['msg'])){
     // destroy the session
     session_destroy();
 }
+
+if(isset($_SESSION['sMsg'])){
+    $sMsg = $_SESSION['sMsg'];
+
+    // remove all session variables
+    session_unset();
+
+    // destroy the session
+    session_destroy();
+}
 require_once 'Microservice/sharing_MS/config.php';
 $url = "https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=".CLIENT_ID."&redirect_uri=".REDIRECT_URL."&scope=".SCOPES;
 ?>
@@ -287,6 +297,13 @@ $url = "https://www.linkedin.com/oauth/v2/authorization?response_type=code&clien
                         <strong>' . $msg . '</strong>
                     </div>';
                 }
+                if($sMsg != ''){
+                    echo '
+                    <div class="alert alert-success">
+                        <strong>' . $sMsg . '</strong>
+                    </div>
+                    ';
+                }
                 ?>
                     <div class="search">
                         <input type="text" v-model="message" placeholder="Search.." name="search" id='srchforRec'>
@@ -336,7 +353,7 @@ $url = "https://www.linkedin.com/oauth/v2/authorization?response_type=code&clien
                     food: this.message
                 });
 
-                fetch("http://127.0.0.1:7140/api/recipe", {
+                fetch("http://127.0.0.1:7120/api/recipe", {
                         method: "POST",
                         headers: {
                             "Content-type": "application/json"
@@ -379,7 +396,8 @@ $url = "https://www.linkedin.com/oauth/v2/authorization?response_type=code&clien
                                     <td class="text-center health" style="width: 35%">
                                     ${retlist[i].recipe.healthLabels[j]} </td>
                                     <td rowspan='${templen}' style="width:  30%"> ${retlist[i].recipe.totalWeight.toFixed(2)} g</td>
-                                    <td rowspan='${templen}' style="width:  18.33%"> <a href="${retlist[i].recipe.shareAs}"><button class="btn btn-primary">Find Out More!</button></a> </td>
+                                    <td rowspan='${templen}' style="width:  18.33%"> <a href="${retlist[i].recipe.shareAs}"><button class="btn btn-primary">Find Out More!</button> </a> <br> <br>
+                                    <a href="<?=$url?>"><i class="fab fa-linkedin-in"></i></a> </td>
                                     </tr>`;
                                 } else {
                                     displaytab += `
@@ -463,8 +481,10 @@ $url = "https://www.linkedin.com/oauth/v2/authorization?response_type=code&clien
                                     <td class="text-center health" style="width: 35%">
                                     ${retlist[i].recipe.healthLabels[j]} </td>
                                     <td rowspan='${templen}' style="width:  30%"> ${retlist[i].recipe.totalWeight.toFixed(2)} g</td>
-                                    <td rowspan='${templen}' style="width:  18.33%"> <a href="${retlist[i].recipe.shareAs}"><button class="btn btn-primary">Find Out More!</button></a> </td>
-                                    </tr>`;
+                                    <td rowspan='${templen}' style="width:  18.33%"> <a href="${retlist[i].recipe.shareAs}"><button class="btn btn-primary">Find Out More!</button></a> 
+                                    <br> <br>
+                                    <a href="<?=$url?>"><i class="fab fa-linkedin-in"></i></a>
+                                    </td></tr>`;
                                 } else {
                                     displaytab += `
                                     <tr><td class="text-center health" style="width: 35%">
