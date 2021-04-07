@@ -84,7 +84,7 @@
             <div class="w3-right w3-hide-small">
                 <a href="landing_plan.php" class="w3-bar-item w3-button"><i class="fa fa-user"></i> Plan My Meal</a>
                 <a href="upload.php" class="w3-bar-item w3-button"><i class="fa fa-th"></i> What's In My Meal? </a>
-                <a href="landing_schedule.php" class="w3-bar-item w3-button"><i class="fa fa-calendar" aria-hidden="true"
+                <a href="schedule.php" class="w3-bar-item w3-button"><i class="fa fa-calendar" aria-hidden="true"
                         style="font-size:25px"></i></a>
                 <a href="profile.php" class="w3-bar-item w3-button"><i class="fas fa-user-circle"
                         style="font-size:25px"></i></a>
@@ -103,7 +103,7 @@
         <a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-large w3-padding-16">Close ×</a>
         <a href="landing_plan.php" onclick="w3_close()" class="w3-bar-item w3-button">Plan My Meal</a>
         <a href="upload.php" onclick="w3_close()" class="w3-bar-item w3-button">What's In My Meal?</a>
-        <a href="landing_schedule.php" onclick="w3_close()" class="w3-bar-item w3-button"><i class="fa fa-calendar"
+        <a href="schedule.php" onclick="w3_close()" class="w3-bar-item w3-button"><i class="fa fa-calendar"
             aria-hidden="true" style="font-size:25px"></i></a>
         <a href="profile.php" onclick="w3_close()" class="w3-bar-item w3-button"><i class="fas fa-user-circle"
             style="font-size:25px"></i></a>
@@ -134,7 +134,7 @@
             <h3></h3>
             <div class="mb-3">
                 <label for="calories" class="form-label">Change your Telegram ID</label>
-                <input type="number" class="form-control" id="telegramid" name="telegramid" v-model="telegramid">
+                <input type="number" class="form-control" id="telegramid" name="telegramid" v-model="telegramid" value='<?=$telenum?>'>
             </div>
         </form>
         <br>
@@ -157,6 +157,7 @@
     crossorigin="anonymous"></script>
 <!-- <script src="{{url_for('static', filename='script.js')}}"></script> -->
 <!-- JS Part -->
+
 <script>
 console.log(localStorage.getItem('username'))
 
@@ -167,7 +168,7 @@ var app = new Vue({
         weight: 0.0,
         height: 0.0,
         calories: 0.0,
-        telegramid: 'NULL'
+        telegramid: ''
     },
     computed: {
         bmi: function() {
@@ -236,7 +237,7 @@ var app = new Vue({
                     this.bmi = data.data[0]["BMI"]
                     this.calories = data.data[0]["Requested_Calories"]
                     this.telegramid = data.data[0]["TelegramId"]
-        
+                    location.reload();
                 } 
             });
             }

@@ -40,6 +40,12 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
       integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
 </head>
+<script>
+  if (localStorage.getItem('username') == null) {
+            localStorage.setItem("alertMsg", "You need to be a validated user first before accessing the profile page!")
+            window.location.replace("index.php")
+      } 
+</script>
 <body>
 <div class="w3-top">
         <div class="w3-bar w3-white w3-card" id="myNavbar">
@@ -49,7 +55,7 @@
             <div class="w3-right w3-hide-small">
                 <a href="landing_plan.php" class="w3-bar-item w3-button"><i class="fa fa-user"></i> Plan My Meal</a>
                 <a href="upload.php" class="w3-bar-item w3-button"><i class="fa fa-th"></i> What's In My Meal? </a>
-                <a href="landing_schedule.php" class="w3-bar-item w3-button"><i class="fa fa-calendar" aria-hidden="true"
+                <a href="schedule.php" class="w3-bar-item w3-button"><i class="fa fa-calendar" aria-hidden="true"
                         style="font-size:25px"></i></a>
                 <a href="profile.php" class="w3-bar-item w3-button"><i class="fas fa-user-circle"
                         style="font-size:25px"></i></a>
@@ -68,7 +74,7 @@
         <a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-large w3-padding-16">Close ×</a>
         <a href="landing_plan.php" onclick="w3_close()" class="w3-bar-item w3-button">Plan My Meal</a>
         <a href="upload.php" onclick="w3_close()" class="w3-bar-item w3-button">What's In My Meal?</a>
-        <a href="landing_schedule.php" onclick="w3_close()" class="w3-bar-item w3-button"><i class="fa fa-calendar"
+        <a href="schedule.php" onclick="w3_close()" class="w3-bar-item w3-button"><i class="fa fa-calendar"
             aria-hidden="true" style="font-size:25px"></i></a>
         <a href="profile.php" onclick="w3_close()" class="w3-bar-item w3-button"><i class="fas fa-user-circle"
             style="font-size:25px"></i></a>
@@ -112,9 +118,9 @@
     </div>
 </body>
 <script>
-       if (localStorage.getItem('tele_id') == null) {
-            window.location.replace("landing_schedule.php")
-      }
+      //  if (localStorage.getItem('tele_id') == null) {
+      //       window.location.replace("landing_schedule.php")
+      // }
     // console.log(localStorage)
     var googleEmail = ''
     function authenticate() {

@@ -75,7 +75,7 @@
             <div class="w3-right w3-hide-small">
                 <a href="landing_plan.php" class="w3-bar-item w3-button"><i class="fa fa-user"></i> Plan My Meal</a>
                 <a href="upload.php" class="w3-bar-item w3-button"><i class="fa fa-th"></i> What's In My Meal? </a>
-                <a href="landing_schedule.php" class="w3-bar-item w3-button"><i class="fa fa-calendar" aria-hidden="true"
+                <a href="schedule.php" class="w3-bar-item w3-button"><i class="fa fa-calendar" aria-hidden="true"
                         style="font-size:25px"></i></a>
                 <a href="profile.php" class="w3-bar-item w3-button"><i class="fas fa-user-circle"
                         style="font-size:25px"></i></a>
@@ -94,7 +94,7 @@
         <a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-large w3-padding-16">Close ×</a>
         <a href="landing_plan.php" onclick="w3_close()" class="w3-bar-item w3-button">Plan My Meal</a>
         <a href="upload.php" onclick="w3_close()" class="w3-bar-item w3-button">What's In My Meal?</a>
-        <a href="landing_schedule.php" onclick="w3_close()" class="w3-bar-item w3-button"><i class="fa fa-calendar"
+        <a href="schedule.php" onclick="w3_close()" class="w3-bar-item w3-button"><i class="fa fa-calendar"
             aria-hidden="true" style="font-size:25px"></i></a>
         <a href="profile.php" onclick="w3_close()" class="w3-bar-item w3-button"><i class="fas fa-user-circle"
             style="font-size:25px"></i></a>

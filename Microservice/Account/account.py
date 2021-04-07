@@ -407,6 +407,7 @@ def getTelegramIDByUsername(username):
     return returndata
 
 
+
 @app.route('/api/add/id', methods=['POST'])
 def addTelegramIDByUsername():
     print('faasfasfsadasd')
@@ -448,17 +449,21 @@ def addHistory():
     myobj = {'x-hasura-admin-secret': 'Qbbq4TMG6uh8HPqe8pGd1MQZky85mRsw5za5RNNREreufUbTHTSYgaTUquaKtQuk',
              'content-type': 'application/json'}
     query = f"""mutation MyMutation {{
+
   insert_Search_History(objects: {{History: "{history}", Username: "{username}"}}){{
     affected_rows
   }}
 }}"""
     update = requests.post(url, headers=myobj, json={
         'query': query}).json()
+
     return update
 
 
 @app.route('/api/history/getall', methods=['POST'])
+
 def getall():
+
     url = 'https://esd-healthiswell-69.hasura.app/v1/graphql'
     myobj = {'x-hasura-admin-secret': 'Qbbq4TMG6uh8HPqe8pGd1MQZky85mRsw5za5RNNREreufUbTHTSYgaTUquaKtQuk',
              'content-type': 'application/json'}

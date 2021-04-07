@@ -29,7 +29,7 @@ $url = "https://www.linkedin.com/oauth/v2/authorization?response_type=code&clien
 <html>
 
 <head>
-    <style>
+  <style>
         body {
             font-family: sans-serif;
             text-align: center;
@@ -274,6 +274,12 @@ $url = "https://www.linkedin.com/oauth/v2/authorization?response_type=code&clien
   <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
 </head>
 
+<script>
+    if (localStorage.getItem('username') == null) {
+            localStorage.setItem("alertMsg", "You need to be a validated user first before accessing the profile page!")
+            window.location.replace("index.php")
+        }
+</script>
 
 <body>
     <!-- NAVBAR HERE COPY AND PASTE THIS SHIT IDK HOW ELSE TO INTEGRATE TO OTHER PAGES LOL -->
@@ -285,7 +291,7 @@ $url = "https://www.linkedin.com/oauth/v2/authorization?response_type=code&clien
             <div class="w3-right w3-hide-small">
                 <a href="landing_plan.php" class="w3-bar-item w3-button"><i class="fa fa-user"></i> Plan My Meal</a>
                 <a href="upload.php" class="w3-bar-item w3-button"><i class="fa fa-th"></i> What's In My Meal? </a>
-                <a href="landing_schedule.php" class="w3-bar-item w3-button"><i class="fa fa-calendar" aria-hidden="true"
+                <a href="schedule.php" class="w3-bar-item w3-button"><i class="fa fa-calendar" aria-hidden="true"
                         style="font-size:25px"></i></a>
                 <a href="profile.php" class="w3-bar-item w3-button"><i class="fas fa-user-circle"
                         style="font-size:25px"></i></a>
@@ -304,7 +310,7 @@ $url = "https://www.linkedin.com/oauth/v2/authorization?response_type=code&clien
         <a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-large w3-padding-16">Close ×</a>
         <a href="landing_plan.php" onclick="w3_close()" class="w3-bar-item w3-button">Plan My Meal</a>
         <a href="upload.php" onclick="w3_close()" class="w3-bar-item w3-button">What's In My Meal?</a>
-        <a href="landing_schedule.php" onclick="w3_close()" class="w3-bar-item w3-button"><i class="fa fa-calendar"
+        <a href="schedule.php" onclick="w3_close()" class="w3-bar-item w3-button"><i class="fa fa-calendar"
             aria-hidden="true" style="font-size:25px"></i></a>
         <a href="profile.php" onclick="w3_close()" class="w3-bar-item w3-button"><i class="fas fa-user-circle"
             style="font-size:25px"></i></a>
@@ -462,6 +468,7 @@ $url = "https://www.linkedin.com/oauth/v2/authorization?response_type=code&clien
     const file = document.getElementById('file')
     //const img=document.getElementById('img')
     file.addEventListener('change', ev => {
+    
         let formdata = new FormData()
         formdata.append("image", ev.target.files[0])
         formdata.append('username', localStorage.getItem('username'))
