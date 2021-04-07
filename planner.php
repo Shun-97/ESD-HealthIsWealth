@@ -186,6 +186,9 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script> 
 
 <script>
+    if (localStorage.getItem('tele_id') == 0 || !localStorage.getItem('tele_id')) {
+        alert('No telegramID Found! Please input a telegramid in the profile page for the full experience')
+    }
     var app = new Vue({
         el: "#landing_plan",
         data: {
@@ -233,7 +236,7 @@
                 })
                 console.log(data)
 
-                fetch('http://127.0.0.1:6100/api/calories', {
+                fetch('http://127.0.0.1:6110/api/calories', {
 
                     method: 'POST',
                     headers: {
@@ -244,7 +247,10 @@
                 })
                 .then((response) => response.json())
                 .then((data) => {
-                    console.log(data.items[0]);
+                    console.log(data.items);
+                    if (data.items.length == 0) {
+                        alert('No item found. Please try again')
+                    }
                     // document.getElementById("queryInfo").innerHTML = data.items[0].calories +" "+ data.items[0].name;
                     document.getElementById("addBtn").style.display = "inline";
                     this.calories = data.items[0].calories;
@@ -301,9 +307,10 @@
                 data = JSON.stringify({
                 'username': this.username,
                 'total_calories': this.total_calories,
-                'description': this.data.join(",")
+                'description': this.data.join(","),
+                'telegramid': localStorage.getItem('tele_id')
                 })
-                fetch("http://127.0.0.1:6100/api/calories/create",{
+                fetch("http://127.0.0.1:6100/api/meal/planning",{
                     method: 'POST',
                     headers: {
                         'content-type': 'application/json',
