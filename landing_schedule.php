@@ -188,7 +188,31 @@
   }
 
   function execute() {
+    telegramid =  document.getElementById('chatid').value
+    data = JSON.stringify({
+      'telegramid' : telegramid,
+      'username' : localStorage.getItem('username') 
+    })
+    console.log(data)
+    fetch('http://127.0.0.1:5100/api/add/id', {
+            
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json',     
+            },
+            body: data
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            console.log(data.data)
+            if (data.code == 201){
+                console.log("success")
+                this.telegramid = data["TelegramId"]
+                localStorage.setItem("tele_id", data["TelegramId"])
+            } 
+        });
+        }
 
-  }
+  
 </script>
 </html>
