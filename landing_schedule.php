@@ -168,7 +168,6 @@
 </div>
 <div class="w3-display-container w3-grayscale-min" style="padding-top: 10rem;" id="ins3">
     <div class="w3-display-center w3-text-white" style="padding:48px">
-        <form>
           <div class="form-group">
             <label for="chatid" class="w3-xxlarge">Chat ID</label>
             <br>
@@ -181,8 +180,7 @@
           </div>
           <br>
           <br>
-          <button type="submit" class="btn btn-primary">Start Challenging your Exercise Schedule now!</button>
-    </form>
+          <button onclick = execute() type="submit" class="btn btn-primary">Start Challenging your Exercise Schedule Today!</button>
     </div>
 </div>
 </body>
@@ -192,5 +190,33 @@
       username = document.getElementById('username');
       username.value = localStorage.getItem('username');
   }
+
+  function execute() {
+    telegramid =  document.getElementById('chatid').value
+    data = JSON.stringify({
+      'telegramid' : telegramid,
+      'username' : localStorage.getItem('username') 
+    })
+    console.log(data)
+    fetch('http://127.0.0.1:5100/api/add/id', {
+            
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json',     
+            },
+            body: data
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            console.log(data.data)
+            if (data.code == 201){
+                console.log("success")
+                this.telegramid = data["TelegramId"]
+                localStorage.setItem("tele_id", data["TelegramId"])
+            } 
+        });
+        }
+
+  
 </script>
 </html>

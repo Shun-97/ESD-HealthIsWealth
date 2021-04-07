@@ -273,12 +273,14 @@ $url = "https://www.linkedin.com/oauth/v2/authorization?response_type=code&clien
   <!-- Font Awesome -->
   <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
 </head>
+
 <script>
     if (localStorage.getItem('username') == null) {
             localStorage.setItem("alertMsg", "You need to be a validated user first before accessing the profile page!")
             window.location.replace("index.php")
         }
 </script>
+
 <body>
     <!-- NAVBAR HERE COPY AND PASTE THIS SHIT IDK HOW ELSE TO INTEGRATE TO OTHER PAGES LOL -->
     <div class="w3-top">
@@ -469,9 +471,10 @@ $url = "https://www.linkedin.com/oauth/v2/authorization?response_type=code&clien
     
         let formdata = new FormData()
         formdata.append("image", ev.target.files[0])
-        console.log(formdata);
-        console.log(formdata.getAll('image'));
-        console.log(ev.target.files[0]);
+        formdata.append('username', localStorage.getItem('username'))
+        // console.log(formdata.getAll('username'));
+        // console.log(formdata.getAll('image'));
+        // console.log(formdata);
         fetch("http://127.0.0.1:7120/api/recipe_image", {
             method: "post",
             headers: {

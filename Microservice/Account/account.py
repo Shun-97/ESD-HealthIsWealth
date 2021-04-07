@@ -407,8 +407,41 @@ def getTelegramIDByUsername(username):
     return returndata
 
 
+
+@app.route('/api/add/id', methods=['POST'])
+def addTelegramIDByUsername():
+    print('faasfasfsadasd')
+    data = request.get_json()
+    print(data)
+    TelegramId = data['telegramid']
+    username = data["username"]
+    url = 'https://esd-healthiswell-69.hasura.app/v1/graphql'
+    myobj = {'x-hasura-admin-secret': 'Qbbq4TMG6uh8HPqe8pGd1MQZky85mRsw5za5RNNREreufUbTHTSYgaTUquaKtQuk',
+             'content-type': 'application/json'}
+    query = f"""mutation MyMutation {{
+  update_UserAccount(where: {{Username: {{_eq: "{username}"}}}}, _set: {{TelegramId: "{TelegramId}"}}) {{
+    affected_rows
+    returning {{
+      TelegramId
+      Username
+    }}
+  }}
+}}"""
+    update = requests.post(url, headers=myobj, json={
+        'query': query})
+    update = update.json()
+    returnup = update['data']['update_UserAccount']['returning'][0]
+
+    returndata = {
+        'code': 201,
+        'data': returnup
+    }
+
+    return returndata
+
+
 @app.route('/api/history/add', methods=['POST'])
-def addHistory(username):
+def addHistory():
     data = request.get_json()
     username = data["username"]
     history = data["history"]
@@ -416,15 +449,21 @@ def addHistory(username):
     myobj = {'x-hasura-admin-secret': 'Qbbq4TMG6uh8HPqe8pGd1MQZky85mRsw5za5RNNREreufUbTHTSYgaTUquaKtQuk',
              'content-type': 'application/json'}
     query = f"""mutation MyMutation {{
-  insert_Search_History(objects: {{History: "{history}", Username: "{username}"}})
+
+  insert_Search_History(objects: {{History: "{history}", Username: "{username}"}}){{
+    affected_rows
+  }}
 }}"""
     update = requests.post(url, headers=myobj, json={
-        'query': query})
+        'query': query}).json()
+
     return update
 
 
 @app.route('/api/history/getall', methods=['POST'])
-def getall(username):
+
+def getall():
+
     url = 'https://esd-healthiswell-69.hasura.app/v1/graphql'
     myobj = {'x-hasura-admin-secret': 'Qbbq4TMG6uh8HPqe8pGd1MQZky85mRsw5za5RNNREreufUbTHTSYgaTUquaKtQuk',
              'content-type': 'application/json'}
