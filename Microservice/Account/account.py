@@ -407,6 +407,43 @@ def getTelegramIDByUsername(username):
     return returndata
 
 
+@app.route('/api/history/add', methods=['POST'])
+def addHistory(username):
+    data = request.get_json()
+    username = data["username"]
+    history = data["history"]
+    url = 'https://esd-healthiswell-69.hasura.app/v1/graphql'
+    myobj = {'x-hasura-admin-secret': 'Qbbq4TMG6uh8HPqe8pGd1MQZky85mRsw5za5RNNREreufUbTHTSYgaTUquaKtQuk',
+             'content-type': 'application/json'}
+    query = f"""mutation MyMutation {{
+  insert_Search_History(objects: {{History: "{history}", Username: "{username}"}})
+}}"""
+    update = requests.post(url, headers=myobj, json={
+        'query': query})
+    return update
+
+
+@app.route('/api/history/getall', methods=['POST'])
+def getall(username):
+    url = 'https://esd-healthiswell-69.hasura.app/v1/graphql'
+    myobj = {'x-hasura-admin-secret': 'Qbbq4TMG6uh8HPqe8pGd1MQZky85mRsw5za5RNNREreufUbTHTSYgaTUquaKtQuk',
+             'content-type': 'application/json'}
+    query = f"""query MyQuery {{
+  Search_History {{
+    History
+    Username
+  }}
+}}"""
+    update = requests.post(url, headers=myobj, json={
+        'query': query})
+    update = update.json()
+    returndata = {
+        'code': 201,
+        'data': update
+    }
+    return returndata
+
+
 app.add_url_rule(
     '/graphql',
     view_func=GraphQLView.as_view(

@@ -38,7 +38,7 @@ def setCalender():
                 'description': exercise_result['data']['Description'],
                 'duration': exercise_result['data']['exercise_time'],
                 'username': form_data['username'],
-                'telegramid': form_data['telegramid']
+                'telegramId': form_data['telegramid']
             }
             print(body)
             telegram_result = requests.post(

@@ -1,6 +1,6 @@
 FROM python:3-slim
-WORKDIR /usr/src/meal
+WORKDIR /usr/src/planning
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt 
-COPY ./Meals.py .
-CMD ["python","./Meals.py"]
+COPY ./Calories.py .
+CMD ["python","./Calories.py"]
