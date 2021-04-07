@@ -164,7 +164,6 @@
 </div>
 <div class="w3-display-container w3-grayscale-min" style="padding-top: 10rem;" id="ins3">
     <div class="w3-display-center w3-text-white" style="padding:48px">
-        <form>
           <div class="form-group">
             <label for="chatid" class="w3-xxlarge">Chat ID</label>
             <br>
@@ -177,8 +176,7 @@
           </div>
           <br>
           <br>
-          <button type="submit" class="btn btn-primary">Start Challenging your Exercise Schedule now!</button>
-    </form>
+          <button onclick = execute() type="submit" class="btn btn-primary">Start Challenging your Exercise Schedule Today!</button>
     </div>
 </div>
 </body>
@@ -187,6 +185,10 @@
       console.log(localStorage.getItem('username'));
       username = document.getElementById('username');
       username.value = localStorage.getItem('username');
+  }
+
+  function execute() {
+
   }
 </script>
 </html>
