@@ -14,8 +14,6 @@ services:
       dockerfile: Dockerfile
     image: honglixuan/account:esd
     restart: always
-    ports:
-      -"5100"
     environment:
       rabbit_host: rabbitmq
       rabbit_port: 5672
@@ -64,6 +62,8 @@ services:
       rabbit_host: rabbitmq
       rabbit_port: 5672
       PYTHONUNBUFFERED: 1
+    ports:
+      - "5310:5310"
  
  
   #######################################################
@@ -77,6 +77,8 @@ services:
     restart: always
     environment:
       PYTHONUNBUFFERED: 1
+    ports:
+      - "7120:7120"
 
   ####################################
   # RabbitMQ: The messaging broker   
@@ -104,6 +106,8 @@ services:
     restart: always
     environment:
       PYTHONUNBUFFERED: 1
+    ports:
+      - "5110:5110"
 
   #######################################################
   # getImageDetails : The getImageDetails  microservice
@@ -116,6 +120,8 @@ services:
     restart: always
     environment:
       PYTHONUNBUFFERED: 1
+    ports:
+      - "7100:7100"
 
  #######################################################
   # Activity : The Activity microservice
