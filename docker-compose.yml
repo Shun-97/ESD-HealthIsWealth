@@ -38,17 +38,32 @@ services:
   ###################################
   # Calories: The Calories microservice
   ###################################
-  calories:
+  meal:
     build:
       context: ./Microservice/Calories MS
       dockerfile: Dockerfile
-    image: honglixuan/calories:esd
+    image: honglixuan/meal:esd
     restart: always
     environment:
       PYTHONUNBUFFERED: 1
     ports:
       - "6100:6100"
 
+  ###################################
+  # Planning: The planning microservice
+  ###################################
+  planning:
+    build:
+      context: ./Microservice/Planning Complex ms
+      dockerfile: Dockerfile
+    image: honglixuan/planning:esd
+    restart: always
+    environment:
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "6110:6110"
+      
+      
   #######################################################
   # Exercise: The exercise  microservice
   #######################################################
