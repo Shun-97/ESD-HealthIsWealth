@@ -274,6 +274,7 @@ $url = "https://www.linkedin.com/oauth/v2/authorization?response_type=code&clien
   <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
 </head>
 
+
 <body>
     <!-- NAVBAR HERE COPY AND PASTE THIS SHIT IDK HOW ELSE TO INTEGRATE TO OTHER PAGES LOL -->
     <div class="w3-top">
@@ -463,9 +464,10 @@ $url = "https://www.linkedin.com/oauth/v2/authorization?response_type=code&clien
     file.addEventListener('change', ev => {
         let formdata = new FormData()
         formdata.append("image", ev.target.files[0])
-        console.log(formdata);
-        console.log(formdata.getAll('image'));
-        console.log(ev.target.files[0]);
+        formdata.append('username', localStorage.getItem('username'))
+        // console.log(formdata.getAll('username'));
+        // console.log(formdata.getAll('image'));
+        // console.log(formdata);
         fetch("http://127.0.0.1:7120/api/recipe_image", {
             method: "post",
             headers: {
