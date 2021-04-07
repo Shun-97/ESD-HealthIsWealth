@@ -1,0 +1,167 @@
+version: "3.8"
+
+volumes:
+  rabbitmq_data:
+
+services:
+ 
+  ###################################
+  # Account: The Account microservice
+  ###################################
+  account:
+    build:
+      context: ./Microservice/Account
+      dockerfile: Dockerfile
+    image: honglixuan/account:esd
+    restart: always
+    environment:
+      rabbit_host: rabbitmq
+      rabbit_port: 5672
+      PYTHONUNBUFFERED: 1
+
+  ###################################
+  # Calender Complex: The Calender Complex microservice
+  ###################################
+  calender_complex:
+    build:
+      context: ./Microservice/Calender Complex MS
+      dockerfile: Dockerfile
+    image: honglixuan/calender_complex:esd
+    restart: always
+    environment:
+      PYTHONUNBUFFERED: 1
+
+  ###################################
+  # Calories: The Calories microservice
+  ###################################
+  calories:
+    build:
+      context: ./Microservice/Calories MS
+      dockerfile: Dockerfile
+    image: honglixuan/calories:esd
+    restart: always
+    environment:
+      PYTHONUNBUFFERED: 1
+
+  #######################################################
+  # Exercise: The exercise  microservice
+  #######################################################
+  exercise:
+    build:
+      context: ./Microservice/Exercise
+      dockerfile: Dockerfile
+    image: honglixuan/exercise:esd
+    restart: always
+    environment:
+      rabbit_host: rabbitmq
+      rabbit_port: 5672
+      PYTHONUNBUFFERED: 1
+ 
+  #######################################################
+  # Recipe: The recipe  microservice
+  #######################################################
+  recipe:
+    build:
+      context: ./Microservice/RecipeMS
+      dockerfile: Dockerfile
+    image: honglixuan/recipe:esd
+    restart: always
+    environment:
+      PYTHONUNBUFFERED: 1
+ 
+  #######################################################
+  # Recipe_complex: The recipe complex microservice
+  #######################################################
+  recipe_complex:
+    build:
+      context: ./Microservice/recipe_complexMS
+      dockerfile: Dockerfile
+    image: honglixuan/recipe_complex:esd
+    restart: always
+    environment:
+      PYTHONUNBUFFERED: 1
+
+  ####################################
+  # RabbitMQ: The messaging broker   
+  ####################################
+  rabbitmq:
+    image: rabbitmq:3-management
+    hostname: esd-rabbit
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes: 
+      - rabbitmq_data:/var/lib/rabbitmq
+
+
+
+  #######################################################
+  # Google: The google  microservice
+  #######################################################
+  google:
+    build:
+      context: ./Microservice/Google_External
+      dockerfile: Dockerfile
+    image: honglixuan/google:esd
+    restart: always
+    environment:
+      PYTHONUNBUFFERED: 1
+
+  #######################################################
+  # getImageDetails : The getImageDetails  microservice
+  #######################################################
+  getimagedetails:
+    build:
+      context: ./Microservice/getImageDetails
+      dockerfile: Dockerfile
+    image: honglixuan/getimagedetails:esd
+    restart: always
+    environment:
+      PYTHONUNBUFFERED: 1
+
+
+ #######################################################
+  # Imgur : The Imgur microservice
+  #######################################################
+  imgur:
+    build:
+      context: ./Microservice/imgurAPI
+      dockerfile: Dockerfile
+    image: honglixuan/imgur:esd
+    restart: always
+    environment:
+      PYTHONUNBUFFERED: 1
+
+
+ #######################################################
+  # Activity : The Activity microservice
+  #######################################################
+  activity:
+    build:
+      context: ./Microservice/logging
+      dockerfile: activity.Dockerfile
+    image: honglixuan/activity:esd
+    restart: always
+    depends_on:
+      - rabbitmq
+    environment:
+      rabbit_host: rabbitmq
+      rabbit_port: 5672
+      PYTHONUNBUFFERED: 1
+
+ #######################################################
+  # Error : The Error microservice
+  #######################################################
+  error:
+    build:
+      context: ./Microservice/logging
+      dockerfile: error.Dockerfile
+    image: honglixuan/error:esd
+    restart: always
+    depends_on:
+        - rabbitmq
+    environment:
+      rabbit_host: rabbitmq
+      rabbit_port: 5672
+      PYTHONUNBUFFERED: 1
