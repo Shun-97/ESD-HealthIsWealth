@@ -156,12 +156,15 @@
                     <thead class="thead-info">
                         <tr>
                             <th>Currently Added food</th>
+                            <th>Actions</th>
                         </tr>
-                        <tr v-for="food in data">
+                        <tr v-for="(food,index) in data">
                             <th> {{food}} </th>
+                            <th><button v-on:click="deleteFood(index)" class="btn btn-danger">Delete</button></th>
                         </tr>
                     </thead>
                 </table>
+                <h3>Total Calories: {{total_calories}}</h3>
         <br>
         
         <table class="table table-info table-condensed table-bordered">  </table>
@@ -185,6 +188,7 @@
         data: {
             username: "admin",
             data: [],
+            calories_breakdown: [],
             total_calories: 0,
             query: "",
             calories: "",
@@ -239,6 +243,7 @@
             },
             addFood: function(){
                 this.data.push(this.foodName);
+                this.calories_breakdown.push(this.calories);
                 this.total_calories += this.calories;
                 console.log(this.data);
                 console.log(this.total_calories);
@@ -279,6 +284,14 @@
                     console.log(data)
                     window.location.replace("./landing_plan.php")
                 })
+            },
+            deleteFood: function(id){
+                this.data.splice(id,1);
+                this.calories_breakdown.splice(id,1);
+                this.total_calories = this.calories_breakdown.reduce(function(a, b){
+                return a + b;
+                    }, 0);
+
             }
         }
     })
