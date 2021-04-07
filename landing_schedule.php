@@ -103,7 +103,7 @@
     </div>
   </header>
 
-<div class="w3-display-container w3-grayscale-min" style="padding-top: 10rem;" id="ins2">
+<div class="container-fluid w3-grayscale-min" style="padding-top: 10rem;" id="ins2">
     <div class="w3-display-left w3-text-white" style="padding:48px">
       <span class="w3-jumbo w3-hide-small"> Why are you seeing this page? <img src="img/telebot.png"></span><br>
       <span class="w3-xxlarge w3-hide-large w3-hide-medium"> Why are you seeing this page? <img src="img/telebot.png"></span><br>
