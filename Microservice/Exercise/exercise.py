@@ -94,4 +94,4 @@ def recipe():
 if __name__ == "__main__":
     print("This is flask " + os.path.basename(__file__) +
           " for searching a recipe...")
-    app.run(host="0.0.0.0", port=5310, debug=True)
+    app.run(host="0.0.0.0", port=5320, debug=True)

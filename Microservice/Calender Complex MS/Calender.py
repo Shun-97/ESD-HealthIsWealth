@@ -9,7 +9,7 @@ import json
 app = Flask(__name__)
 CORS(app)
 
-exercise_url = 'http://127.0.0.1:5310/api/exercise'
+exercise_url = 'http://exercise:5320/api/exercise'
 telegram_url = 'https://g2t6-healthiswell.herokuapp.com/1717486923:AAH56XlVFTeHy-N459udrbX43bqfehL28GQ/setCalender'
 @app.route("/api/SetCalender", methods=["POST"])
 def setCalender():
