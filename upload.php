@@ -12,7 +12,7 @@ if(isset($_SESSION['msg'])){
     // destroy the session
     session_destroy();
 }
-
+$sMsg = '';
 if(isset($_SESSION['sMsg'])){
     $sMsg = $_SESSION['sMsg'];
 

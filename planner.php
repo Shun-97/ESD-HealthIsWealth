@@ -239,7 +239,7 @@
     var app = new Vue({
         el: "#landing_plan",
         data: {
-            username: "admin",
+            username: localStorage.getItem('username'),
             data: [],
             calories_breakdown: [],
             total_calories: 0,

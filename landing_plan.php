@@ -157,7 +157,7 @@
     var app = new Vue({
         el: "#landing_plan",
         data: {
-            username: "admin",
+            username: localStorage.getItem('username'),
             data: ""
         },
         methods: {

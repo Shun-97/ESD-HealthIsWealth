@@ -168,7 +168,7 @@ var app = new Vue({
         weight: 0.0,
         height: 0.0,
         calories: 0.0,
-        telegramid: ''
+        telegramid: '',
     },
     computed: {
         bmi: function() {
