@@ -13,26 +13,29 @@ CORS(app)
 # app.config['CORS_HEADERS'] = 'Content-Type'
 image_url = "http://127.0.0.1:7100/api/ana"
 recipe_url = "http://127.0.0.1:7140/api/recipe"
-img_url = "http://127.0.0.1:7130/api/imgr"
+img_url = "https://api.imgur.com/3/image/"
+authclient = "Client-ID 0e1d07aeb2818f9"
+
 
 # Send a image link with attribute "link" in JSON format to this URL --> e.g. {"link": link_url}
 @app.route("/api/recipe_image", methods=["POST"])
 def complex_image_search():
     try:
         # First Connection with Imgr API
+
         headers = {
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'GET, POST, PATCH, PUT, DELETE, OPTIONS',
+            "Authorization": authclient,
         }
         payload = request.files
         # print(payload)
+
         imgr_result = requests.post(
             img_url, files=payload, headers=headers).json()
         # print(imgr_result)
-        print(imgr_result)
-        imgr_url = imgr_result['data']['data']['link']
+        # print(imgr_result)
+        imgr_url = imgr_result['data']['link']
 
-        # Second Connection with recipt.py
+        # Second Connection with getImageDetails
         headers = {
             'Content-Type': "application/json",
             "Accept": "application/json",
@@ -44,18 +47,25 @@ def complex_image_search():
             image_url, json=body, headers=headers).json()
         # print(recipe_result)
         image_food = image_result['result'][0]['name']
-
+        # print(image_food)
         # Third Connection with recipe_url
-        headers = {
-            "Content-type": "application/json"
-        }
-        body = {
-            "food": image_food
-        }
-        recipe_result = requests.post(
-            recipe_url, json=body, headers=headers).json()
 
-        return recipe_result
+        recipe_url = "https://api.edamam.com/search"
+        app_id = "9427d4d5"
+        app_key = "3fd959075e22cb5c3be2e10ff0eb2b19"
+
+        query_url = recipe_url + "?q=" + \
+            image_food + "&app_id=" + app_id + "&app_key=" + app_key
+
+        # print(query_url)
+        recipe_result = requests.get(query_url)
+
+        # print(recipe_result)
+        return jsonify({
+            "code": 201,
+            "data": recipe_result.json()
+        }), 201
+
     except Exception as e:
         # Unexpected error in code
         exc_type, exc_obj, exc_tb = sys.exc_info()
