@@ -12,10 +12,13 @@ app = Flask(__name__)
 CORS(app)
 # app.config['CORS_HEADERS'] = 'Content-Type'
 image_url = "http://127.0.0.1:7100/api/ana"
-recipe_url = "http://127.0.0.1:7140/api/recipe"
+# recipe_url = "http://127.0.0.1:7140/api/recipe"
 img_url = "https://api.imgur.com/3/image/"
 authclient = "Client-ID 0e1d07aeb2818f9"
 
+recipe_url = "https://api.edamam.com/search"
+app_id = "9427d4d5"
+app_key = "3fd959075e22cb5c3be2e10ff0eb2b19"
 
 # Send a image link with attribute "link" in JSON format to this URL --> e.g. {"link": link_url}
 @app.route("/api/recipe_image", methods=["POST"])
@@ -50,9 +53,7 @@ def complex_image_search():
         # print(image_food)
         # Third Connection with recipe_url
 
-        recipe_url = "https://api.edamam.com/search"
-        app_id = "9427d4d5"
-        app_key = "3fd959075e22cb5c3be2e10ff0eb2b19"
+        
 
         query_url = recipe_url + "?q=" + \
             image_food + "&app_id=" + app_id + "&app_key=" + app_key
@@ -86,6 +87,42 @@ def complex_image_search():
         "message": "Invalid JSON input: " + str(request.get_data())
     }), 400
 
+@app.route("/api/recipe", methods=["POST"])
+def recipe():
+    if request.is_json:
+        try:
+            food = request.get_json()
+            print("hello")
+            # I will need to grab this data from front end, might need to change this
+            print(food)
+            query_url = recipe_url + "?q=" + \
+                food["food"] + "&app_id=" + app_id + "&app_key=" + app_key
+            print(query_url)
+            recipe_result = requests.get(query_url)
+            print('recipe_result:', recipe_result.json())
+            return jsonify({
+                "code": 201,
+                "data": recipe_result.json()
+            }), 201
+
+        except Exception as e:
+            # Unexpected error in code
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            ex_str = str(e) + " at " + str(exc_type) + ": " + \
+                fname + ": line " + str(exc_tb.tb_lineno)
+            print(ex_str)
+
+            return jsonify({
+                "code": 500,
+                "message": "recipe.py internal error: " + ex_str
+            }), 500
+
+    # if reached here, not a JSON request.
+    return jsonify({
+        "code": 400,
+        "message": "Invalid JSON input: " + str(request.get_data())
+    }), 400
 
 # Execute this program if it is run as a main script (not by 'import')
 if __name__ == "__main__":

@@ -85,7 +85,7 @@
     </nav>
     <!-- NAVBAR ENDS HERE COPY AND PASTE THIS SHIT IDK HOW ELSE TO INTEGRATE TO OTHER PAGES LOL -->
     
-    <div class="w3-display-container w3-grayscale-min" id="landing_plan" style="padding-top: 10rem;">
+    <div class="container-fluid w3-grayscale-min" id="landing_plan" style="padding-top: 10rem;">
         <div class='overlay'>
         
             <div class="w3-display-left w3-text-white" style="padding:48px">
