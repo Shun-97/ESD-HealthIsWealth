@@ -255,7 +255,11 @@ $url = "https://www.linkedin.com/oauth/v2/authorization?response_type=code&clien
 <link rel="stylesheet" href="css/main.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
-
+<script>
+if (localStorage.getItem('username') == null) {
+            window.location.replace("index.php")
+        }
+</script>
 <body>
     <!-- NAVBAR HERE COPY AND PASTE THIS SHIT IDK HOW ELSE TO INTEGRATE TO OTHER PAGES LOL -->
     <div class="w3-top">
@@ -433,9 +437,10 @@ $url = "https://www.linkedin.com/oauth/v2/authorization?response_type=code&clien
     file.addEventListener('change', ev => {
         let formdata = new FormData()
         formdata.append("image", ev.target.files[0])
-        console.log(formdata);
-        console.log(formdata.getAll('image'));
-        console.log(ev.target.files[0]);
+        formdata.append('username', localStorage.getItem('username'))
+        // console.log(formdata.getAll('username'));
+        // console.log(formdata.getAll('image'));
+        // console.log(formdata);
         fetch("http://127.0.0.1:7120/api/recipe_image", {
             method: "post",
             headers: {
