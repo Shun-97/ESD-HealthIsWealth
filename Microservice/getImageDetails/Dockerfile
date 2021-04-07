@@ -1,14 +1,15 @@
-FROM node:12.18.1
-ENV NODE_ENV=production
+FROM node:14.16.0
 
-WORKDIR /user/src/imageDet
+# Create app directory
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
 
-COPY ["package.json", "package-lock.json*", "./"]
+# Install app dependencies
+COPY package*.json /usr/src/app/
+RUN npm install
 
-RUN npm install --production
+# Bundle app source
+COPY . /usr/src/app
 
-COPY . .
-
-EXPOSE 6000
-
-CMD [ "node", "server.js" ]
+EXPOSE 7100
+CMD [ "npm", "run", "dev" ]
