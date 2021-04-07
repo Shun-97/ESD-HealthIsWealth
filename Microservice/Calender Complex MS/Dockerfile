@@ -1,6 +1,6 @@
 FROM python:3-slim
-WORKDIR /usr/src/google
+WORKDIR /usr/src/calendar_complexMS
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt 
-COPY ./google_auth.py .
-CMD ["python","./google_auth.py"]
+COPY ./Calender.py .
+CMD ["python","./Calender.py"]
