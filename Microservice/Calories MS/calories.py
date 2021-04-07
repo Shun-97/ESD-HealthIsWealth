@@ -79,6 +79,23 @@ def get_meal_by_username():
             
     return response
 
+#Delete Meal plan
+@app.route("/api/meal/<string:id>", methods=["DELETE"])
+def delete_meal(id):
+    if request.method == "DELETE":
+        query = "mutation MyMutation {delete_Meal(where: {Id: {_eq: "+id+"}}) {returning {Description Id Total_Calories Username}}}"
+        url = "https://esd-healthiswell-69.hasura.app/v1/graphql"
+
+        headers = {
+            "content-type": "application/json",
+            "x-hasura-admin-secret": "Qbbq4TMG6uh8HPqe8pGd1MQZky85mRsw5za5RNNREreufUbTHTSYgaTUquaKtQuk"
+        }
+        response = requests.post(url, headers=headers, json={'query': query})
+        response = response.json()
+        print(response)
+
+            
+    return response
 
 if __name__ == "__main__":
     print("")

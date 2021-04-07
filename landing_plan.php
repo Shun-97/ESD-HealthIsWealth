@@ -95,10 +95,12 @@
         <tr>
         <th class="w3-cursive w3-xlarge w3-wide">Recent Food that you consumed</th>
         <th class="w3-cursive w3-xlarge w3-wide">Calories</th>
+        <th class="w3-cursive w3-xlarge w3-wide">Actions</th>
         </tr>
         <tr v-for="food in data">
         <td class="active" >{{food.Description}} </td>
         <td class="active"> {{food.Total_Calories.toFixed(2)}} Cal</td>
+        <td><button v-on:click="deleteMeal(food.Id)" class="btn btn-danger">Delete</button></td>
         </tr>
         </table>
         <a class="btn btn-primary" href="./planner.php">Create New Meal Plan</a>
@@ -138,6 +140,19 @@
                     console.log(data)
                     this.data = data.data.Meal
                     console.log(this.data)
+                })
+            },
+            deleteMeal: function(id){
+                console.log(id);
+                fetch("http://127.0.0.1:6100/api/meal/"+id,{
+                    method: 'DELETE',
+                    headers: {
+                        'content-type': 'application/json',
+
+                    },
+                }).then((response)=> response.json())
+                .then((data)=>{
+                    location.reload();
                 })
             }
         },
