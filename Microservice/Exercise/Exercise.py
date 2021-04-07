@@ -23,7 +23,8 @@ def recipe():
             date = exercise_data['date']
             duration = exercise_data['duration']
             difficulty = exercise_data['difficulty']
-            message = json.dumps({"message": "--- Data Successfully obtained via Input Fields ---"})
+            message = json.dumps(
+                {"message": "--- Data Successfully obtained via Input Fields ---"})
             AMQP_setup.channel.basic_publish(exchange=AMQP_setup.exchangename, routing_key="exercise.activity",
                                              body=message, properties=pika.BasicProperties(delivery_mode=2))
             message = json.dumps({"message": "--- Calling GraphQL ---"})
@@ -48,11 +49,13 @@ def recipe():
             result = r.json()['data']['ExerciseFatty_Exercises']
 
             # from the array chose one
-            message = json.dumps({"message": "--- Obtaining Exercise Challenge from GraphQL ---"})
+            message = json.dumps(
+                {"message": "--- Obtaining Exercise Challenge from GraphQL ---"})
             AMQP_setup.channel.basic_publish(exchange=AMQP_setup.exchangename, routing_key="exercise.activity",
                                              body=message, properties=pika.BasicProperties(delivery_mode=2))
             randomint = random.randrange(0, len(result))
-            message = json.dumps({"message": "--- Successfully sent to the user ---"})
+            message = json.dumps(
+                {"message": "--- Successfully sent to the user ---"})
             AMQP_setup.channel.basic_publish(exchange=AMQP_setup.exchangename, routing_key="exercise.activity",
                                              body=message, properties=pika.BasicProperties(delivery_mode=2))
             return {
@@ -66,7 +69,8 @@ def recipe():
             ex_str = str(e) + " at " + str(exc_type) + ": " + \
                 fname + ": line " + str(exc_tb.tb_lineno)
             print(ex_str)
-            message = json.dumps({"message": "--- internal error:" + ex_str + "---"})
+            message = json.dumps(
+                {"message": "--- internal error:" + ex_str + "---"})
             AMQP_setup.channel.basic_publish(exchange=AMQP_setup.exchangename, routing_key="exercise.error",
                                              body=message, properties=pika.BasicProperties(delivery_mode=2))
             return jsonify({
@@ -76,9 +80,10 @@ def recipe():
 
     # if reached here, not a JSON request.
     else:
-        message = json.dumps({"message": "--- NOT JSON Object!:" + ex_str + "---"})
+        message = json.dumps(
+            {"message": "--- NOT JSON Object!:" + ex_str + "---"})
         AMQP_setup.channel.basic_publish(exchange=AMQP_setup.exchangename, routing_key="exercise.error",
-                                             body=message, properties=pika.BasicProperties(delivery_mode=2))
+                                         body=message, properties=pika.BasicProperties(delivery_mode=2))
         return jsonify({
             "code": 400,
             "message": "Invalid JSON input: " + str(request.get_data())
@@ -89,4 +94,4 @@ def recipe():
 if __name__ == "__main__":
     print("This is flask " + os.path.basename(__file__) +
           " for searching a recipe...")
-    app.run(host="0.0.0.0", port=5300, debug=True)
+    app.run(host="0.0.0.0", port=5310, debug=True)
