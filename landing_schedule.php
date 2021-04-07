@@ -89,7 +89,12 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
-
+<script>
+  if (localStorage.getItem('username') == null) {
+            localStorage.setItem("alertMsg", "You need to be a validated user first before accessing the profile page!")
+            window.location.replace("index.php")
+        }
+</script>
 <body>
 <div class="w3-top">
         <div class="w3-bar w3-white w3-card" id="myNavbar">
@@ -99,7 +104,7 @@
             <div class="w3-right w3-hide-small">
                 <a href="landing_plan.php" class="w3-bar-item w3-button"><i class="fa fa-user"></i> Plan My Meal</a>
                 <a href="upload.php" class="w3-bar-item w3-button"><i class="fa fa-th"></i> What's In My Meal? </a>
-                <a href="landing_schedule.php" class="w3-bar-item w3-button"><i class="fa fa-calendar" aria-hidden="true"
+                <a href="schedule.php" class="w3-bar-item w3-button"><i class="fa fa-calendar" aria-hidden="true"
                         style="font-size:25px"></i></a>
                 <a href="profile.php" class="w3-bar-item w3-button"><i class="fas fa-user-circle"
                         style="font-size:25px"></i></a>
@@ -118,13 +123,12 @@
         <a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-large w3-padding-16">Close ×</a>
         <a href="landing_plan.php" onclick="w3_close()" class="w3-bar-item w3-button">Plan My Meal</a>
         <a href="upload.php" onclick="w3_close()" class="w3-bar-item w3-button">What's In My Meal?</a>
-        <a href="landing_schedule.php" onclick="w3_close()" class="w3-bar-item w3-button"><i class="fa fa-calendar"
+        <a href="schedule.php" onclick="w3_close()" class="w3-bar-item w3-button"><i class="fa fa-calendar"
             aria-hidden="true" style="font-size:25px"></i></a>
         <a href="profile.php" onclick="w3_close()" class="w3-bar-item w3-button"><i class="fas fa-user-circle"
             style="font-size:25px"></i></a>
     </nav>
     <!-- NAVBAR ENDS HERE COPY AND PASTE THIS SHIT IDK HOW ELSE TO INTEGRATE TO OTHER PAGES LOL -->
-
 
   <header class="w3-display-container w3-grayscale-min" style="padding-top: 10rem;" id="home">
     <div class="w3-display-left w3-text-white" style="padding:48px">
@@ -169,7 +173,7 @@
             <label for="chatid" class="w3-xxlarge">Chat ID</label>
             <br>
             <br>
-            <input type="email" class="form-control" id="chatid" placeholder="Enter chatid">
+            <input type="number" class="form-control" id="chatid" placeholder="Enter chatid">
             <small id="emailHelp" class="form-text text-info">Your chat id is private and is only available to us </small>
           </div>
           <div class="form-group">

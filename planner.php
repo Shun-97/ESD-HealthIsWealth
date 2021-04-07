@@ -91,6 +91,12 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
+<script>
+    if (localStorage.getItem('username') == null) {
+            localStorage.setItem("alertMsg", "You need to be a validated user first before accessing the profile page!")
+            window.location.replace("index.php")
+        }
+</script>
 <body>
 <div class="w3-top">
         <div class="w3-bar w3-white w3-card" id="myNavbar">
@@ -100,7 +106,7 @@
             <div class="w3-right w3-hide-small">
                 <a href="landing_plan.php" class="w3-bar-item w3-button"><i class="fa fa-user"></i> Plan My Meal</a>
                 <a href="upload.php" class="w3-bar-item w3-button"><i class="fa fa-th"></i> What's In My Meal? </a>
-                <a href="landing_schedule.php" class="w3-bar-item w3-button"><i class="fa fa-calendar" aria-hidden="true"
+                <a href="schedule.php" class="w3-bar-item w3-button"><i class="fa fa-calendar" aria-hidden="true"
                         style="font-size:25px"></i></a>
                 <a href="profile.php" class="w3-bar-item w3-button"><i class="fas fa-user-circle"
                         style="font-size:25px"></i></a>
@@ -119,7 +125,7 @@
         <a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-large w3-padding-16">Close ×</a>
         <a href="landing_plan.php" onclick="w3_close()" class="w3-bar-item w3-button">Plan My Meal</a>
         <a href="upload.php" onclick="w3_close()" class="w3-bar-item w3-button">What's In My Meal?</a>
-        <a href="landing_schedule.php" onclick="w3_close()" class="w3-bar-item w3-button"><i class="fa fa-calendar"
+        <a href="schedule.php" onclick="w3_close()" class="w3-bar-item w3-button"><i class="fa fa-calendar"
             aria-hidden="true" style="font-size:25px"></i></a>
         <a href="profile.php" onclick="w3_close()" class="w3-bar-item w3-button"><i class="fas fa-user-circle"
             style="font-size:25px"></i></a>
@@ -322,22 +328,21 @@
                               <div class="modal-content">
                                 <div class="modal-header">
                                   <h5 class="modal-title text-Success"> Added! </h5>
-                                  <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                                  
                                 </div>
                                 <div class="modal-body">
                                     ${this.foodName} has been added into Meal Plan!
                                     <div id='warning_display' style ='color: red; font-weight: bold'></div>
                                 </div>
                                 <div class="modal-footer">
-                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <span class="text-muted">Click anywhere outside the box to close this</span>
                                 </div>
                               </div>
                             </div>`;
                 document.getElementById('dizplaymodal2').innerHTML = alertmodal;
-
                 if (this.total_calories > 1000) {
                     document.getElementById('warning_display').innerHTML = `WARNING, YOU HAVE EXCEEDED YOUR DAILY CALORIES INTAKE. 
-                                    PLEASE GET SOMETHING HEALTHLIER`
+                                    PLEASE GET SOMETHING HEALTHIER`
                 }
                 else {
                     document.getElementById('warning_display').innerHTML = ''

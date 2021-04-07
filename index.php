@@ -3,6 +3,9 @@
 session_start();
 
 <head>
+<script> 
+  console.log(localStorage.getItem('alertMsg'))
+</script>
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -59,7 +62,7 @@ session_start();
             <div class="w3-right w3-hide-small">
                 <a href="landing_plan.php" class="w3-bar-item w3-button"><i class="fa fa-user"></i> Plan My Meal</a>
                 <a href="upload.php" class="w3-bar-item w3-button"><i class="fa fa-th"></i> What's In My Meal? </a>
-                <a href="landing_schedule.php" class="w3-bar-item w3-button"><i class="fa fa-calendar" aria-hidden="true"
+                <a href="schedule.php" class="w3-bar-item w3-button"><i class="fa fa-calendar" aria-hidden="true"
                         style="font-size:25px"></i></a>
                 <a href="profile.php" class="w3-bar-item w3-button"><i class="fas fa-user-circle"
                         style="font-size:25px"></i></a>
@@ -78,7 +81,7 @@ session_start();
         <a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-large w3-padding-16">Close ×</a>
         <a href="landing_plan.php" onclick="w3_close()" class="w3-bar-item w3-button">Plan My Meal</a>
         <a href="upload.php" onclick="w3_close()" class="w3-bar-item w3-button">What's In My Meal?</a>
-        <a href="landing_schedule.php" onclick="w3_close()" class="w3-bar-item w3-button"><i class="fa fa-calendar"
+        <a href="schedule.php" onclick="w3_close()" class="w3-bar-item w3-button"><i class="fa fa-calendar"
             aria-hidden="true" style="font-size:25px"></i></a>
         <a href="profile.php" onclick="w3_close()" class="w3-bar-item w3-button"><i class="fas fa-user-circle"
             style="font-size:25px"></i></a>
@@ -87,6 +90,7 @@ session_start();
 
   <header class="bgimg-1 w3-display-container w3-grayscale-min" id="home">
     <div class="w3-display-left w3-text-white" style="padding:48px">
+    
       <span class="w3-jumbo w3-hide-small">Start planning your meals</span><br>
       <span class="w3-xxlarge w3-hide-large w3-hide-medium">Start planning your meals</span><br>
       <span class="w3-large">For a better health, Eat with choice</span>
@@ -110,6 +114,7 @@ session_start();
 
   <!-- About Section -->
   <div class="w3-container" style="padding-top: 10rem;" id="about">
+  <div id="show"></div>
     <h3 class="w3-center">Health is Wealth</h3>
     <p class="w3-center w3-large">Solutions for your daily lives</p>
     <div class="w3-row-padding w3-center" style="margin-top:64px">
@@ -224,7 +229,7 @@ session_start();
       </div>
     </div>
   </div>
-  <div id="dizplaymodal2"></div>
+  
 
   <!-- Footer -->
   <footer class="w3-center w3-black w3-padding-64">
@@ -284,24 +289,11 @@ session_start();
 
     if (localStorage.getItem('alertMsg') != null) {
             var alertMsg = localStorage.getItem('alertMsg')
-            console.log(alertMsg);
-            alertmodal = `
-                          <div class="modal show" id="alrtz2" tabindex="-1">
-                            <div class="modal-dialog">
-                              <div class="modal-content">
-                                <div class="modal-header">
-                                  <h5 class="modal-title text-Success"> Added! </h5>
-                                  <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <div style ='color: red; font-weight: bold'>${alertMsg}</div>
-                                </div>
-                                <div class="modal-footer">
-                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                </div>
-                              </div>
-                            </div>`;
-          document.getElementById('dizplaymodal2').innerHTML = alertmodal;
+            alertmodal = `<div class="alert alert-danger" role="alert">
+                              ${alertMsg}
+                          </div>`;
+          document.getElementById('show').innerHTML = alertmodal;
+          localStorage.clear();
         }
 
   </script>
