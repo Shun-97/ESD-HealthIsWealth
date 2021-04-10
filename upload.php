@@ -374,7 +374,7 @@ $url = "https://www.linkedin.com/oauth/v2/authorization?response_type=code&clien
     </div>
 </body>
 <script>
-    const get_curr_url = "http://127.0.0.1:7120/api/recipe_image";
+    const get_curr_url = "http://0.0.0.0:8000/api/v1/recipeimage";
     new Vue({
         el: '#app',
         data: {
@@ -390,7 +390,7 @@ $url = "https://www.linkedin.com/oauth/v2/authorization?response_type=code&clien
                     food: this.message
                 });
 
-                fetch("http://127.0.0.1:7120/api/recipe", {
+                fetch("http://0.0.0.0:8000/api/v1/recipe", {
                         method: "POST",
                         headers: {
                             "Content-type": "application/json"
@@ -475,7 +475,7 @@ $url = "https://www.linkedin.com/oauth/v2/authorization?response_type=code&clien
         // console.log(formdata.getAll('username'));
         // console.log(formdata.getAll('image'));
         // console.log(formdata);
-        fetch("http://127.0.0.1:7120/api/recipe_image", {
+        fetch("http://0.0.0.0:8000/api/v1/recipeimage", {
             method: "post",
             headers: {
                 'Access-Control-Allow-Origin': '*',
