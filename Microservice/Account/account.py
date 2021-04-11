@@ -80,7 +80,7 @@ class CreateUserAccount(graphene.Mutation):
 
     userAccount = graphene.Field(lambda: UserAccountObject)
 
-    def mutate(self, info, Username, Password, Email, Weight=0, Height=0, BMI=0, Requested_Calories=0):
+    def mutate(self, info, Username, Password, Email, Weight=0, Height=0, BMI=0):
         userAccount = UserAccount(Username=Username, Password=Password,
                                   Email=Email, Weight=Weight, Height=Height, BMI=BMI, Requested_Calories=Requested_Calories)
 
@@ -262,13 +262,12 @@ def create_registration(username, email, password):
     schema = graphene.Schema(query=Query, mutation=Mutation)
     # Check if username already exist in the database
     exist = username_exist(username)
-    print("hello")
+
     # Check if user exist
     if exist[0]:
         return (False, exist[1])  # error msg
 
     else:
-        print("here?")
         # Query
         create_userAccount = 'mutation{createUseraccount(Email:"'+email+'", Username:"' + \
             username+'",Password:"'+password + \

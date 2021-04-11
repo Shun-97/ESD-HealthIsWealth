@@ -187,7 +187,7 @@ var app = new Vue({
             'username': this.user,
             })
             console.log(data)
-            fetch('http://0.0.0.0:8000/api/v1/useraccount', {
+            fetch('http://127.0.0.1:5100/api/userAccount', {
             
                 method: 'POST',
                 headers: {
@@ -219,7 +219,7 @@ var app = new Vue({
             'calories': this.calories,
             'telegramid': this.telegramid
             })
-            fetch('http://0.0.0.0:8000/api/v1/useraccount/update', {
+            fetch('http://127.0.0.1:5100/api/userAccount/update', {
             
                 method: 'POST',
                 headers: {

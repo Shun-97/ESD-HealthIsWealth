@@ -144,7 +144,7 @@
   function onSignIn(googleUser) {
     var id_token = googleUser.getAuthResponse().id_token;
 
-    var url = "http://0.0.0.0:8000/api/v1/google/create";
+    var url = "http://127.0.0.1:5110/api/google_signup";
     const data = JSON.stringify({
         idtoken: id_token,
       });
@@ -177,7 +177,7 @@
       "email": email
     })
     console.log(name,password,email,data)
-    fetch('http://0.0.0.0:8000/api/v1/useraccount/create', {
+    fetch('http://127.0.0.1:5100/api/register/verification', {
     
       method: 'POST',
       headers: {

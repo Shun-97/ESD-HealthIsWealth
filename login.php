@@ -141,7 +141,7 @@
     function onSignIn(googleUser){
       var id_token = googleUser.getAuthResponse().id_token;
 
-      var url = "http://0.0.0.0:8000/api/v1/google/login";
+      var url = "http://127.0.0.1:5110/api/google_signin";
       const data = JSON.stringify({
         idtoken: id_token,
       });
@@ -153,8 +153,11 @@
       .then(response => response.json())
       //grab the returned response
       .then(data => {
+        console.log(data)
+        console.log(data.code)
         if (data.code == 201){
           localStorage.setItem("username", data.data.username)
+          console.log()
           // localStorage.setItem('auth2', data.data.auth)
           window.location.replace("./profile.php")
         }   
@@ -172,8 +175,9 @@
         'username': name,
         'password': password
       })
+      console.log(name,password,data)
       //change to this URL for KONG --> http://0.0.0.0:8000/api/v1/login
-      fetch('http://0.0.0.0:8000/api/v1/login', { 
+      fetch('http://127.0.0.1:5100/api/login/verification', { 
       
         method: 'POST',
         headers: {
@@ -183,6 +187,8 @@
       })
       .then((res) => res.json())
       .then((data) => {
+        console.log(data)
+        console.log(data.code)
         if (data.code == 201){
           localStorage.setItem("username", data.data.username)
           window.location.replace("./profile.php")

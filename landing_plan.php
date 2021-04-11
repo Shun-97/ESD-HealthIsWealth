@@ -165,7 +165,7 @@
                 data = JSON.stringify({
                 'username': this.username,
                 })
-                fetch("http://0.0.0.0:8000/api/v1/meal",{
+                fetch("http://127.0.0.1:6100/api/meal",{
                     method: 'POST',
                     headers: {
                         'content-type': 'application/json',
@@ -174,22 +174,19 @@
                     body: data
                 }).then((response)=> response.json())
                 .then((data)=>{
+                    console.log(data)
                     this.data = data.data.Meal
                     console.log(this.data)
                 })
             },
             deleteMeal: function(id){
                 console.log(id);
-                data = JSON.stringify({
-                'id': id.toString(),
-                })
-                fetch("http://0.0.0.0:8000/api/v1/meal/delete",{
-                    method: 'POST',
+                fetch("http://127.0.0.1:6100/api/meal/"+id,{
+                    method: 'DELETE',
                     headers: {
                         'content-type': 'application/json',
 
                     },
-                    body: data,
                 }).then((response)=> response.json())
                 .then((data)=>{
                     location.reload();
