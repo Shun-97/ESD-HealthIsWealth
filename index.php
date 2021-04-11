@@ -166,7 +166,7 @@ session_start();
           <img src="img/yc.jpg" alt="yc" style="width:100%">
           <div class="w3-container">
             <h3>Yeo Yao Cong</h3>
-            <p class="w3-opacity"> Front-End Jesus</p>
+            <p class="w3-opacity"> Front-End </p>
             <p> Dealing with your user interface and delivering optimal user experience to you </p>
             <p><a href="https://www.linkedin.com/in/ycyc/"><button class="w3-button w3-light-grey w3-block"><i class="fa fa-envelope"></i> Contact</button></a></p>
           </div>
@@ -177,7 +177,7 @@ session_start();
           <img src="img/sh.jpg" alt="sh" style="width:100%">
           <div class="w3-container">
             <h3>Lee Shun Hui</h3>
-            <p class="w3-opacity">Back-End</p>
+            <p class="w3-opacity">Back-End God</p>
             <p> Connecting your Microservices more efficient than an API Gateway</p>
             <p><a href="https://www.linkedin.com/in/leeshunhui/"><button class="w3-button w3-light-grey w3-block"><i class="fa fa-envelope"></i> Contact</button></p></a>
           </div>
