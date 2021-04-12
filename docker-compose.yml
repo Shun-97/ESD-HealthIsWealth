@@ -12,7 +12,7 @@ services:
   ###################################
   account:
     build:
-      context: ./Microservice/Account
+      context: ./Microservice/accountManagement
       dockerfile: Dockerfile
     image: honglixuan/account:esd
     restart: always
@@ -26,7 +26,7 @@ services:
   ###################################
   calender_complex:
     build:
-      context: ./Microservice/Calender Complex MS
+      context: ./Microservice/planExerciseSchedule
       dockerfile: Dockerfile
     image: honglixuan/calender_complex:esd
     restart: always
@@ -38,7 +38,7 @@ services:
   ###################################
   meal:
     build:
-      context: ./Microservice/Calories MS
+      context: ./Microservice/getFoodInfo
       dockerfile: Dockerfile
     image: honglixuan/meal:esd
     restart: always
@@ -50,7 +50,7 @@ services:
   ###################################
   planning:
     build:
-      context: ./Microservice/Planning Complex ms
+      context: ./Microservice/createMeal
       dockerfile: Dockerfile
     image: honglixuan/planning:esd
     restart: always
@@ -63,7 +63,7 @@ services:
   #######################################################
   exercise:
     build:
-      context: ./Microservice/Exercise
+      context: ./Microservice/getExercise
       dockerfile: Dockerfile
     image: honglixuan/exercise:esd
     restart: always
@@ -78,7 +78,7 @@ services:
   #######################################################
   recipe_complex:
     build:
-      context: ./Microservice/recipe_complexMS
+      context: ./Microservice/getRecipe
       dockerfile: Dockerfile
     image: honglixuan/recipe_complex:esd
     restart: always
@@ -105,7 +105,7 @@ services:
   #######################################################
   google:
     build:
-      context: ./Microservice/Google_External
+      context: ./Microservice/googleAuthentication
       dockerfile: Dockerfile
     image: honglixuan/google:esd
     restart: always
