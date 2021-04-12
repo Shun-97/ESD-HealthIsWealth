@@ -121,9 +121,11 @@
         <button id ='login_button' class="btn btn-primary">Login</button>
         <!-- <button class="btn btn-primary" v-on:click="validatePassword()">Login</button> -->
     </form>
-    <!-- <button v-on:click="register()">click me</button> -->
     <br>
-    <label id="error" class="text-danger"></label>
+    <!-- <button v-on:click="register()">click me</button> -->
+    <div id = 'login_status'>
+    </div>
+    <br>
     <a href="register.php">Don't have an account? Sign up here!</a>
     <div>
     <span class="g-signin2" data-onsuccess="onSignIn"></span>
@@ -139,9 +141,15 @@
   <!-- JS Part -->
   <script type="application/javascript">
     function onSignIn(googleUser){
+      let login_status = document.getElementById('login_status');
+      login_status.innerHTML = `
+      <div class="alert alert-warning" role="alert">
+        Loading... ... ...
+      </div>`
+
       var id_token = googleUser.getAuthResponse().id_token;
 
-      var url = "http://0.0.0.0:8000/api/v1/google/login";
+      var url = "http://localhost:8000/api/v1/google/login";
       const data = JSON.stringify({
         idtoken: id_token,
       });
@@ -154,18 +162,34 @@
       //grab the returned response
       .then(data => {
         if (data.code == 201){
+          login_status.innerHTML = `
+          <div class="alert alert-success" role="alert">
+            Success!
+          </div>`
           localStorage.setItem("username", data.data.username)
           // localStorage.setItem('auth2', data.data.auth)
           window.location.replace("./profile.php")
-        }   
+        }
+        if (data.code == 500){
+          login_status.innerHTML = `
+          <div class="alert alert-danger" role="alert">
+            ${data.data.message}
+          </div>`
+          }   
       })
 
 
     }
 
     document.getElementById('login_button').addEventListener('click',function(event) { 
+      let login_status = document.getElementById('login_status');
+      login_status.innerHTML = `
+      <div class="alert alert-warning" role="alert">
+        Loading... ... ...
+      </div>`
+
       event.preventDefault();
-      console.log('LOL')
+      // console.log('LOL')
       name = document.getElementById('username').value
       password = document.getElementById('password').value
       data = JSON.stringify({
@@ -173,7 +197,7 @@
         'password': password
       })
       //change to this URL for KONG --> http://0.0.0.0:8000/api/v1/login
-      fetch('http://0.0.0.0:8000/api/v1/login', { 
+      fetch('http://localhost:8000/api/v1/login', { 
       
         method: 'POST',
         headers: {
@@ -184,13 +208,21 @@
       .then((res) => res.json())
       .then((data) => {
         if (data.code == 201){
+          login_status.innerHTML = `
+          <div class="alert alert-success" role="alert">
+            Success!
+          </div>`
           localStorage.setItem("username", data.data.username)
           window.location.replace("./profile.php")
         } 
         if (data.code == 500){
-          document.getElementById('error').innerHTML = data.data.message
+          login_status.innerHTML = `
+          <div class="alert alert-danger" role="alert">
+            ${data.data.message}
+          </div>`
+          }
         }
-      });
+      );
     })         
     
       

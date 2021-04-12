@@ -283,7 +283,7 @@
                 })
                 console.log(data)
 
-                fetch('http://0.0.0.0:8000/api/v1/calories', {
+                fetch('http://localhost:8000/api/v1/calories', {
 
                     method: 'POST',
                     headers: {
@@ -356,7 +356,7 @@
                 'description': this.data.join(","),
                 'telegramid': localStorage.getItem('tele_id')
                 })
-                fetch("http://0.0.0.0:8000/api/v1/meal/create",{
+                fetch("http://localhost:8000/api/v1/meal/create",{
                     method: 'POST',
                     headers: {
                         'content-type': 'application/json',
