@@ -99,9 +99,11 @@ def get_meal_by_username():
     return response
 
 # Delete Meal plan
-@app.route("/api/meal/<string:id>", methods=["DELETE"])
-def delete_meal(id):
-    if request.method == "DELETE":
+@app.route("/api/meal/delete", methods=["POST"])
+def delete_meal():
+    if request.method == "POST":
+        jsondata = request.get_json(force=True)
+        id = jsondata["id"]
         query = "mutation MyMutation {delete_Meal(where: {Id: {_eq: " + \
             id+"}}) {returning {Description Id Total_Calories Username}}}"
         url = "https://esd-healthiswell-69.hasura.app/v1/graphql"

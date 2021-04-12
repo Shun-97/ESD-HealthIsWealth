@@ -11,8 +11,8 @@ import json
 app = Flask(__name__)
 CORS(app)
 # app.config['CORS_HEADERS'] = 'Content-Type'
-image_url = "http://127.0.0.1:7100/api/ana"
-# recipe_url = "http://127.0.0.1:7140/api/recipe"
+image_url = "http://getimagedetails:7100/api/ana"
+# recipe_url = "http://localhost:7140/api/recipe"
 img_url = "https://api.imgur.com/3/image/"
 authclient = "Client-ID 0e1d07aeb2818f9"
 
@@ -25,12 +25,14 @@ app_key = "3fd959075e22cb5c3be2e10ff0eb2b19"
 def complex_image_search():
     try:
         # First Connection with Imgr API
-
         headers = {
             "Authorization": authclient,
         }
+
         payload = request.files
+        username = request.form['username']
         # print(payload)
+        # print(username)
 
         imgr_result = requests.post(
             img_url, files=payload, headers=headers).json()
@@ -51,10 +53,17 @@ def complex_image_search():
         # print(recipe_result)
         image_food = image_result['result'][0]['name']
         # print(image_food)
+
+        # Insert History to database
+        grapql = 'http://account:5100/api/history/add'
+
+        body = {
+            'username': username,
+            'history': image_food
+        }
+        requests.post(
+            grapql, json=body)
         # Third Connection with recipe_url
-
-        
-
         query_url = recipe_url + "?q=" + \
             image_food + "&app_id=" + app_id + "&app_key=" + app_key
 
@@ -86,6 +95,7 @@ def complex_image_search():
         "code": 400,
         "message": "Invalid JSON input: " + str(request.get_data())
     }), 400
+
 
 @app.route("/api/recipe", methods=["POST"])
 def recipe():
@@ -123,6 +133,7 @@ def recipe():
         "code": 400,
         "message": "Invalid JSON input: " + str(request.get_data())
     }), 400
+
 
 # Execute this program if it is run as a main script (not by 'import')
 if __name__ == "__main__":

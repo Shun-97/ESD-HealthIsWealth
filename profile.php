@@ -5,6 +5,7 @@
     <script>
 
         if (localStorage.getItem('username') == null) {
+            localStorage.setItem("alertMsg", "You need to be a validated user first before accessing the profile page!")
             window.location.replace("index.php")
         }
     </script>
@@ -29,22 +30,60 @@
     <script src="https://unpkg.com/axios/dist/axios.js"></script>
     <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
     <!-- <script src="js/google_session.js"></script> -->
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <!-- CSS only -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+        <!-- JavaScript Bundle with Popper -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous">
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+        <script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css">
+        <script src="js/navbar.js"></script>
+        <link rel="stylesheet" href="css/main.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+            <!-- Vue JS -->
+              <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+
+  <!-- Styling and JS -->
+  <script src="./js/navbar.js"></script>
+  <link rel="stylesheet" href="./css/main.css">
+
+
+  <!-- Font Awesome -->
+  <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
 
     <title>Profile</title>
 </head>
 
 
 <body>
-    <!-- NAVBAR HERE COPY AND PASTE THIS SHIT IDK HOW ELSE TO INTEGRATE TO OTHER PAGES LOL -->
-    <div class="w3-top">
+<div class="w3-top">
         <div class="w3-bar w3-white w3-card" id="myNavbar">
-            <a href="#home" class="w3-bar-item w3-button w3-wide"><img src='./img/earthchan.png' height="48px"
+            <a href="index.php" class="w3-bar-item w3-button w3-wide"><img src='./img/earthchan.png' height="48px"
                     width="48px">Health is Wealth</a>
             <!-- Right-sided navbar links -->
             <div class="w3-right w3-hide-small">
-                <a href="planmeal.html" class="w3-bar-item w3-button"><i class="fa fa-user"></i> Plan My Meal</a>
-                <a href="whatinmeal.html" class="w3-bar-item w3-button"><i class="fa fa-th"></i> What's In My Meal? </a>
+                <a href="landing_plan.php" class="w3-bar-item w3-button"><i class="fa fa-user"></i> Plan My Meal</a>
+                <a href="upload.php" class="w3-bar-item w3-button"><i class="fa fa-th"></i> What's In My Meal? </a>
                 <a href="schedule.php" class="w3-bar-item w3-button"><i class="fa fa-calendar" aria-hidden="true"
                         style="font-size:25px"></i></a>
                 <a href="profile.php" class="w3-bar-item w3-button"><i class="fas fa-user-circle"
@@ -58,22 +97,20 @@
             </a>
         </div>
     </div>
-
-    <!-- Sidebar on small screens when clicking the menu icon -->
+     <!-- Sidebar on small screens when clicking the menu icon -->
     <nav class="w3-sidebar w3-bar-block w3-black w3-card w3-animate-left w3-hide-medium w3-hide-large"
         style="display:none" id="mySidebar">
-        <a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-large w3-padding-16">Close
-            ×</a>
-        <a href="planmeal.html" onclick="w3_close()" class="w3-bar-item w3-button">Plan My Meal</a>
-        <a href="whatinmeal.html" onclick="w3_close()" class="w3-bar-item w3-button">What's In My Meal?</a>
-        <a href="schedule.html" onclick="w3_close()" class="w3-bar-item w3-button"><i class="fa fa-calendar"
-                aria-hidden="true" style="font-size:25px"></i></a>
-        <a href="profile.html" onclick="w3_close()" class="w3-bar-item w3-button"><i class="fas fa-user-circle"
-                style="font-size:25px"></i></a>
+        <a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-large w3-padding-16">Close ×</a>
+        <a href="landing_plan.php" onclick="w3_close()" class="w3-bar-item w3-button">Plan My Meal</a>
+        <a href="upload.php" onclick="w3_close()" class="w3-bar-item w3-button">What's In My Meal?</a>
+        <a href="schedule.php" onclick="w3_close()" class="w3-bar-item w3-button"><i class="fa fa-calendar"
+            aria-hidden="true" style="font-size:25px"></i></a>
+        <a href="profile.php" onclick="w3_close()" class="w3-bar-item w3-button"><i class="fas fa-user-circle"
+            style="font-size:25px"></i></a>
     </nav>
     <!-- NAVBAR ENDS HERE COPY AND PASTE THIS SHIT IDK HOW ELSE TO INTEGRATE TO OTHER PAGES LOL -->
 
-    <div class="container" id="app">
+    <div class="container" style="padding-top: 10rem;" id="app">
         <h1>Profile</h1>
         <h3>Welcome! {{user}}</h3>
         <form method="POST">
@@ -97,13 +134,13 @@
             <h3></h3>
             <div class="mb-3">
                 <label for="calories" class="form-label">Change your Telegram ID</label>
-                <input type="number" class="form-control" id="telegramid" name="telegramid" v-model="telegramid">
+                <input type="number" class="form-control" id="telegramid" name="telegramid" v-model="telegramid" value='<?=$telenum?>'>
             </div>
         </form>
         <br>
         <button class="btn btn-primary" v-on:click="updateUserAccount">Save</button>
         <!-- <label id="error" class="text-danger">{{error}}</label> --> 
-        <button class="btn btn-primary" v-on:click="logout">Logout</button>
+        <button class="btn btn-danger" v-on:click="logout">Logout</button>
     </div>
 
 </body>
@@ -120,6 +157,7 @@
     crossorigin="anonymous"></script>
 <!-- <script src="{{url_for('static', filename='script.js')}}"></script> -->
 <!-- JS Part -->
+
 <script>
 console.log(localStorage.getItem('username'))
 
@@ -130,7 +168,7 @@ var app = new Vue({
         weight: 0.0,
         height: 0.0,
         calories: 0.0,
-        telegramid: 'NULL'
+        telegramid: '',
     },
     computed: {
         bmi: function() {
@@ -149,7 +187,7 @@ var app = new Vue({
             'username': this.user,
             })
             console.log(data)
-            fetch('http://127.0.0.1:5100/api/userAccount', {
+            fetch('http://0.0.0.0:8000/api/v1/useraccount', {
             
                 method: 'POST',
                 headers: {
@@ -181,7 +219,7 @@ var app = new Vue({
             'calories': this.calories,
             'telegramid': this.telegramid
             })
-            fetch('http://127.0.0.1:5100/api/userAccount/update', {
+            fetch('http://0.0.0.0:8000/api/v1/useraccount/update', {
             
                 method: 'POST',
                 headers: {
@@ -199,7 +237,7 @@ var app = new Vue({
                     this.bmi = data.data[0]["BMI"]
                     this.calories = data.data[0]["Requested_Calories"]
                     this.telegramid = data.data[0]["TelegramId"]
-        
+                    location.reload();
                 } 
             });
             }
@@ -211,4 +249,5 @@ var app = new Vue({
 })
 
 </script>
+
 </html>

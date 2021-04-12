@@ -40,19 +40,24 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
       integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
 </head>
+<script>
+  if (localStorage.getItem('username') == null) {
+            localStorage.setItem("alertMsg", "You need to be a validated user first before accessing the profile page!")
+            window.location.replace("index.php")
+      } 
+</script>
 <body>
-    <!-- NAVBAR HERE COPY AND PASTE THIS SHIT IDK HOW ELSE TO INTEGRATE TO OTHER PAGES LOL -->
-    <div class="w3-top">
+<div class="w3-top">
         <div class="w3-bar w3-white w3-card" id="myNavbar">
-            <a href="#home" class="w3-bar-item w3-button w3-wide"><img src='./img/earthchan.png' height="48px"
+            <a href="index.php" class="w3-bar-item w3-button w3-wide"><img src='./img/earthchan.png' height="48px"
                     width="48px">Health is Wealth</a>
             <!-- Right-sided navbar links -->
             <div class="w3-right w3-hide-small">
-                <a href="planmeal.html" class="w3-bar-item w3-button"><i class="fa fa-user"></i> Plan My Meal</a>
-                <a href="whatinmeal.html" class="w3-bar-item w3-button"><i class="fa fa-th"></i> What's In My Meal? </a>
-                <a href="schedule" class="w3-bar-item w3-button"><i class="fa fa-calendar" aria-hidden="true"
+                <a href="landing_plan.php" class="w3-bar-item w3-button"><i class="fa fa-user"></i> Plan My Meal</a>
+                <a href="upload.php" class="w3-bar-item w3-button"><i class="fa fa-th"></i> What's In My Meal? </a>
+                <a href="schedule.php" class="w3-bar-item w3-button"><i class="fa fa-calendar" aria-hidden="true"
                         style="font-size:25px"></i></a>
-                <a href="profile.html" class="w3-bar-item w3-button"><i class="fas fa-user-circle"
+                <a href="profile.php" class="w3-bar-item w3-button"><i class="fas fa-user-circle"
                         style="font-size:25px"></i></a>
             </div>
             <!-- Hide right-floated links on small screens and replace them with a menu icon -->
@@ -63,6 +68,18 @@
             </a>
         </div>
     </div>
+     <!-- Sidebar on small screens when clicking the menu icon -->
+    <nav class="w3-sidebar w3-bar-block w3-black w3-card w3-animate-left w3-hide-medium w3-hide-large"
+        style="display:none" id="mySidebar">
+        <a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-large w3-padding-16">Close ×</a>
+        <a href="landing_plan.php" onclick="w3_close()" class="w3-bar-item w3-button">Plan My Meal</a>
+        <a href="upload.php" onclick="w3_close()" class="w3-bar-item w3-button">What's In My Meal?</a>
+        <a href="schedule.php" onclick="w3_close()" class="w3-bar-item w3-button"><i class="fa fa-calendar"
+            aria-hidden="true" style="font-size:25px"></i></a>
+        <a href="profile.php" onclick="w3_close()" class="w3-bar-item w3-button"><i class="fas fa-user-circle"
+            style="font-size:25px"></i></a>
+    </nav>
+    <!-- NAVBAR ENDS HERE COPY AND PASTE THIS SHIT IDK HOW ELSE TO INTEGRATE TO OTHER PAGES LOL -->
     <div class="container text-center" style="padding-top: 10rem;">
     <div id='calendar'></div>
     <!-- Modal form -->
@@ -101,9 +118,9 @@
     </div>
 </body>
 <script>
-       if (localStorage.getItem('tele_id') == null) {
-            window.location.replace("landing_schedule.php")
-      }
+      //  if (localStorage.getItem('tele_id') == null) {
+      //       window.location.replace("landing_schedule.php")
+      // }
     // console.log(localStorage)
     var googleEmail = ''
     function authenticate() {
@@ -169,7 +186,7 @@
       let endtime = momentDate.add(duration, 'm').format()
 
 
-      let url = "http://127.0.0.1:5300/api/SetCalender";
+      let url = "http://0.0.0.0:8000/api/v1/setcalender";
 
 
       const data = JSON.stringify({

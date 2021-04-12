@@ -1,11 +1,11 @@
-POST http://127.0.0.1:5200/api/recipe_image 
+POST http://localhost:5200/api/recipe_image 
 Content-Type: application/json
 
 {
     "link": "https://i.imgur.com/8J3XpiD.jpg"
 }
 
-# POST http://127.0.0.1:5100/recipe
+# POST http://localhost:5100/recipe
 # Content-Type: application/json
 
 # {
