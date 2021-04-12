@@ -11,6 +11,8 @@ import graphene
 
 # import requests
 import json
+import AMQP_setup
+import pika
 import os
 import sys
 from os import environ
@@ -177,6 +179,9 @@ def google_sign():
 
             # Check if password matches
             elif validate.data['userAccountByUsername'][0]['Password'] == password:
+                message = json.dumps({"message": "google authentication is a success for user" + username )
+                AMQP_setup.channel.basic_publish(exchange=AMQP_setup.exchangename, routing_key="googleauth.activity",
+                                                 body=message, properties=pika.BasicProperties(delivery_mode=2))
                 return {
                     "code": 201,
                     "data": {

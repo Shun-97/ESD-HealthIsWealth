@@ -4,7 +4,8 @@ from flask_cors import CORS, cross_origin
 import os
 import sys
 from os import environ
-
+import AMQP_setup
+import pika
 import requests
 import json
 
@@ -39,7 +40,9 @@ def complex_image_search():
         # print(imgr_result)
         # print(imgr_result)
         imgr_url = imgr_result['data']['link']
-
+        message = json.dumps({"message": username + "has uploaded a picture into imgur successfully and obtain a link"})
+        AMQP_setup.channel.basic_publish(exchange=AMQP_setup.exchangename, routing_key="image.activity",
+                                body=message, properties=pika.BasicProperties(delivery_mode=2))
         # Second Connection with getImageDetails
         headers = {
             'Content-Type': "application/json",
@@ -69,7 +72,9 @@ def complex_image_search():
 
         # print(query_url)
         recipe_result = requests.get(query_url)
-
+        message = json.dumps({"message": username + "has an image link added to his upload history!"})
+        AMQP_setup.channel.basic_publish(exchange=AMQP_setup.exchangename, routing_key="image.activity",
+                                body=message, properties=pika.BasicProperties(delivery_mode=2))
         # print(recipe_result)
         return jsonify({
             "code": 201,

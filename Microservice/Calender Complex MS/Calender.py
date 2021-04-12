@@ -5,6 +5,8 @@ import os
 import sys
 import requests
 import json
+import AMQP_setup
+import pika
 
 app = Flask(__name__)
 CORS(app)
@@ -26,7 +28,10 @@ def setCalender():
             exercise_result = requests.post(
                 exercise_url, json=form_data, headers=headers).json()
             # print(exercise_result)
-
+            message = json.dumps(
+            {"message": "Data send to exercise microservice and obtained a result!"})
+            AMQP_setup.channel.basic_publish(exchange=AMQP_setup.exchangename, routing_key="calendar.activity",
+                                                 body=message, properties=pika.BasicProperties(delivery_mode=2))
             # Send to telegram
             headers = {
                 'Content-Type': "application/json",
@@ -40,6 +45,10 @@ def setCalender():
                 'username': form_data['username'],
                 'telegramId': form_data['telegramid']
             }
+            message = json.dumps(
+            {"message": "Telegram bot has received the JSON Information"})
+            AMQP_setup.channel.basic_publish(exchange=AMQP_setup.exchangename, routing_key="calendar.activity",
+                                                 body=message, properties=pika.BasicProperties(delivery_mode=2))
             print(body)
             telegram_result = requests.post(
                 telegram_url, json=body, headers=headers)
@@ -54,7 +63,8 @@ def setCalender():
             print(ex_str)
             message = json.dumps(
                 {"message": "--- internal error:" + ex_str + "---"})
-
+            AMQP_setup.channel.basic_publish(exchange=AMQP_setup.exchangename, routing_key="calendar.error",
+                                                 body=message, properties=pika.BasicProperties(delivery_mode=2))
             return jsonify({
                 "code": 500,
                 "message": "recipe.py internal error: " + ex_str
@@ -64,7 +74,8 @@ def setCalender():
     else:
         message = json.dumps(
             {"message": "--- NOT JSON Object!:" + ex_str + "---"})
-
+        AMQP_setup.channel.basic_publish(exchange=AMQP_setup.exchangename, routing_key="calendar.error",
+                                                 body=message, properties=pika.BasicProperties(delivery_mode=2))
         return jsonify({
             "code": 400,
             "message": "Invalid JSON input: " + str(request.get_data())

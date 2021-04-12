@@ -182,6 +182,7 @@
                 console.log(id);
                 data = JSON.stringify({
                 'id': id.toString(),
+                'username' : username.toString(),
                 })
                 fetch("http://localhost:8000/api/v1/meal/delete",{
                     method: 'POST',
