@@ -198,7 +198,7 @@
       'username' : localStorage.getItem('username') 
     })
     console.log(data)
-    fetch('http://0.0.0.0:8000/api/v1/tele/add', {
+    fetch('http://localhost:8000/api/v1/tele/add', {
             
             method: 'POST',
             headers: {

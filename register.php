@@ -122,7 +122,9 @@
             </div> -->
       <button type="submit" class="btn btn-primary" id="signUp" v-on:click="register()">Sign up!</button>
       <!-- <button v-on:click="register()">click me</button> -->
-      <label id="error" class="text-danger"></label>
+      <br>
+      <div id = 'register_status'>
+      </div>
       <br>
       <a href="./login.php">Have an account? Login here!</a>
       <div class="g-signin2" data-onsuccess="onSignIn"></div>
@@ -142,9 +144,14 @@
 <!-- JS Part -->
 <script>
   function onSignIn(googleUser) {
+    let register_status = document.getElementById('register_status');
+    register_status.innerHTML = `
+      <div class="alert alert-warning" role="alert">
+        Loading... ... ...
+      </div>`
     var id_token = googleUser.getAuthResponse().id_token;
 
-    var url = "http://0.0.0.0:8000/api/v1/google/create";
+    var url = "http://localhost:8000/api/v1/google/create";
     const data = JSON.stringify({
         idtoken: id_token,
       });
@@ -158,14 +165,29 @@
         console.log(data)
         console.log(data.code)
         if (data.code == 201) {
+          register_status.innerHTML = `
+          <div class="alert alert-success" role="alert">
+            Success!
+          </div>`
           //redirect to profile if successful
           localStorage.setItem("username", data.data.username)
           window.location.replace("./profile.php")
         }
+        if (data.code == 500){
+          register_status.innerHTML = `
+          <div class="alert alert-danger" role="alert">
+            ${data.data.message}
+          </div>`
+          }   
       })
     }
 
-  document.getElementById('signUp').addEventListener('click',function(event) { 
+  document.getElementById('signUp').addEventListener('click',function(event) {
+    let register_status = document.getElementById('register_status');
+    register_status.innerHTML = `
+      <div class="alert alert-warning" role="alert">
+        Loading... ... ...
+      </div>` 
     event.preventDefault();
     console.log('LOL')
     name = document.getElementById('username').value
@@ -177,7 +199,7 @@
       "email": email
     })
     console.log(name,password,email,data)
-    fetch('http://0.0.0.0:8000/api/v1/useraccount/create', {
+    fetch('http://localhost:8000/api/v1/useraccount/create', {
     
       method: 'POST',
       headers: {
@@ -190,11 +212,18 @@
       console.log(data)
       console.log(data.code)
       if (data.code == 201){
+        register_status.innerHTML = `
+          <div class="alert alert-success" role="alert">
+            Success!
+          </div>`
         localStorage.setItem("username", data.data.username)
         window.location.replace("./profile.php")
         } 
       if (data.code == 500){
-        document.getElementById('error').innerHTML = data.data
+        register_status.innerHTML = `
+          <div class="alert alert-danger" role="alert">
+            ${data.data.message}
+          </div>`
       }
       });
     })   

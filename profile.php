@@ -134,7 +134,7 @@
             <h3></h3>
             <div class="mb-3">
                 <label for="calories" class="form-label">Change your Telegram ID</label>
-                <input type="number" class="form-control" id="telegramid" name="telegramid" v-model="telegramid" value='<?=$telenum?>'>
+                <input type="number" class="form-control" id="telegramid" name="telegramid" v-model="telegramid">
             </div>
         </form>
         <br>
@@ -187,7 +187,7 @@ var app = new Vue({
             'username': this.user,
             })
             console.log(data)
-            fetch('http://0.0.0.0:8000/api/v1/useraccount', {
+            fetch('http://localhost:8000/api/v1/useraccount', {
             
                 method: 'POST',
                 headers: {
@@ -219,7 +219,7 @@ var app = new Vue({
             'calories': this.calories,
             'telegramid': this.telegramid
             })
-            fetch('http://0.0.0.0:8000/api/v1/useraccount/update', {
+            fetch('http://localhost:8000/api/v1/useraccount/update', {
             
                 method: 'POST',
                 headers: {

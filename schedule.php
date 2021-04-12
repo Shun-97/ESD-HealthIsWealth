@@ -186,7 +186,7 @@
       let endtime = momentDate.add(duration, 'm').format()
 
 
-      let url = "http://0.0.0.0:8000/api/v1/setcalender";
+      let url = "http://localhost:8000/api/v1/setcalender";
 
 
       const data = JSON.stringify({
