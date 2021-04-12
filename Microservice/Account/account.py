@@ -151,6 +151,13 @@ def login():
                     {"message": username + ": Successful Login"})
                 AMQP_setup.channel.basic_publish(exchange=AMQP_setup.exchangename, routing_key="account.activity",
                                                  body=message, properties=pika.BasicProperties(delivery_mode=2))
+                message = json.dumps(
+                    {"userLog": username + "has logged in",
+                    "theusername": username,
+                    "logType": "successful execution" 
+                    })
+                AMQP_setup.channel.basic_publish(exchange=AMQP_setup.exchangename, routing_key="login.user",
+                                                 body=message, properties=pika.BasicProperties(delivery_mode=2))
                 return {
                     "code": 201,
                     "data": {
@@ -462,7 +469,6 @@ def addHistory():
 
 
 @app.route('/api/history/getall', methods=['POST'])
-
 def getall():
 
     url = 'https://esd-healthiswell-69.hasura.app/v1/graphql'
