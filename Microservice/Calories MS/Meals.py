@@ -6,7 +6,8 @@ import sys
 from os import environ
 
 import requests
-
+import AMQP_setup
+import pika
 import json
 
 app = Flask(__name__)
@@ -41,7 +42,10 @@ def planning():
             }
             telegram_result = requests.post(
                 telegram_url, json=body, headers=headers)
-
+            message = json.dumps(
+            {"message": "Data is sending to Telegram Bot"})
+            AMQP_setup.channel.basic_publish(exchange=AMQP_setup.exchangename, routing_key="meal.activity",
+                                                 body=message, properties=pika.BasicProperties(delivery_mode=2))
             # Insert to Meal Table
             query = "mutation MyMutation {insert_Meal(objects: {Description: \""+description+"\", Total_Calories: " + str(
                 total_calories)+", Username: \""+username+"\"}) {returning {Description Id Total_Calories Username}}}"
@@ -54,6 +58,10 @@ def planning():
             response = requests.post(
                 url, headers=headers, json={'query': query})
             print(response)
+            message = json.dumps(
+            {"message": "Meal is successfully inserted into the Meal Table in the Database!"})
+            AMQP_setup.channel.basic_publish(exchange=AMQP_setup.exchangename, routing_key="meal.activity",
+                                                 body=message, properties=pika.BasicProperties(delivery_mode=2))
             returnresponse = {
                 'code': 201,
                 'response': response.json()}
@@ -68,7 +76,7 @@ def planning():
             fname + ": line " + str(exc_tb.tb_lineno)
         print(ex_str)
         message = json.dumps({"message": "internal error: " + ex_str})
-        AMQP_setup.channel.basic_publish(exchange=AMQP_setup.exchangename, routing_key="account.error",
+        AMQP_setup.channel.basic_publish(exchange=AMQP_setup.exchangename, routing_key="meal.error",
                                          body=message, properties=pika.BasicProperties(delivery_mode=2))
         return jsonify({
             "code": 500,
@@ -95,7 +103,10 @@ def get_meal_by_username():
         response = requests.post(url, headers=headers, json={'query': query})
         response = response.json()
         print(response)
-
+        message = json.dumps(
+            {"message": username + "obtains all meal from database successfully"})
+        AMQP_setup.channel.basic_publish(exchange=AMQP_setup.exchangename, routing_key="meals.activity",
+                                                 body=message, properties=pika.BasicProperties(delivery_mode=2))
     return response
 
 # Delete Meal plan
@@ -104,6 +115,9 @@ def delete_meal():
     if request.method == "POST":
         jsondata = request.get_json(force=True)
         id = jsondata["id"]
+        username = jsondata['username']
+        # query = "mutation MyMutation {delete_Meal(where: {Username: {_eq: " + \
+        #    username +"}, Id: {_eq: " + id + "}}) {returning {Description Id Total_Calories Username}}}"
         query = "mutation MyMutation {delete_Meal(where: {Id: {_eq: " + \
             id+"}}) {returning {Description Id Total_Calories Username}}}"
         url = "https://esd-healthiswell-69.hasura.app/v1/graphql"
@@ -115,7 +129,10 @@ def delete_meal():
         response = requests.post(url, headers=headers, json={'query': query})
         response = response.json()
         print(response)
-
+        message = json.dumps(
+            {"message": username + "has deleted a row of id : "+ id})
+        AMQP_setup.channel.basic_publish(exchange=AMQP_setup.exchangename, routing_key="meals.activity",
+                                                 body=message, properties=pika.BasicProperties(delivery_mode=2))
     return response
 
 

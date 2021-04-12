@@ -7,6 +7,8 @@ from os import environ
 
 import requests
 import json
+import AMQP_setup
+import pika
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
@@ -36,9 +38,6 @@ def calories():
         ex_str = str(e) + " at " + str(exc_type) + ": " + \
             fname + ": line " + str(exc_tb.tb_lineno)
         print(ex_str)
-        message = json.dumps({"message": "internal error: " + ex_str})
-        AMQP_setup.channel.basic_publish(exchange=AMQP_setup.exchangename, routing_key="account.error",
-                                         body=message, properties=pika.BasicProperties(delivery_mode=2))
         return jsonify({
             "code": 500,
             "data": {
