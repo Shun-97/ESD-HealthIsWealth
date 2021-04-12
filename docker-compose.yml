@@ -6,7 +6,19 @@ volumes:
   kongadata:
 
 services:
- 
+   ####################################
+  # RabbitMQ: The messaging broker   
+  ####################################
+  rabbitmq:
+    image: rabbitmq:3-management
+    hostname: esd-rabbit
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes: 
+      - rabbitmq_data:/var/lib/rabbitmq
+
   ###################################
   # Account: The Account microservice
   ###################################
@@ -31,6 +43,8 @@ services:
     image: honglixuan/calender_complex:esd
     restart: always
     environment:
+      rabbit_host: rabbitmq
+      rabbit_port: 5672
       PYTHONUNBUFFERED: 1
 
   ###################################
@@ -43,6 +57,8 @@ services:
     image: honglixuan/meal:esd
     restart: always
     environment:
+      rabbit_host: rabbitmq
+      rabbit_port: 5672
       PYTHONUNBUFFERED: 1
 
   ###################################
@@ -55,6 +71,8 @@ services:
     image: honglixuan/planning:esd
     restart: always
     environment:
+      rabbit_host: rabbitmq
+      rabbit_port: 5672
       PYTHONUNBUFFERED: 1
       
       
@@ -83,22 +101,9 @@ services:
     image: honglixuan/recipe_complex:esd
     restart: always
     environment:
+      rabbit_host: rabbitmq
+      rabbit_port: 5672
       PYTHONUNBUFFERED: 1
-
-  ####################################
-  # RabbitMQ: The messaging broker   
-  ####################################
-  rabbitmq:
-    image: rabbitmq:3-management
-    hostname: esd-rabbit
-    restart: always
-    ports:
-      - "5672:5672"
-      - "15672:15672"
-    volumes: 
-      - rabbitmq_data:/var/lib/rabbitmq
-
-
 
   #######################################################
   # Google: The google  microservice
@@ -110,6 +115,8 @@ services:
     image: honglixuan/google:esd
     restart: always
     environment:
+      rabbit_host: rabbitmq
+      rabbit_port: 5672
       PYTHONUNBUFFERED: 1
 
   #######################################################

@@ -16,7 +16,7 @@ telegram_url = 'https://g2t6-healthiswell.herokuapp.com/1717486923:AAH56XlVFTeHy
 
 
 # Create meal plan
-@app.route("/api/meal/planning", methods=["POST"])
+@app.route("/api/meal/create", methods=["POST"])
 @cross_origin()
 def planning():
     try:
@@ -43,28 +43,33 @@ def planning():
             telegram_result = requests.post(
                 telegram_url, json=body, headers=headers)
             message = json.dumps(
-            {"message": "Data is sending to Telegram Bot"})
+                {"message": "Data is sending to Telegram Bot"})
             AMQP_setup.channel.basic_publish(exchange=AMQP_setup.exchangename, routing_key="meal.activity",
-                                                 body=message, properties=pika.BasicProperties(delivery_mode=2))
+                                             body=message, properties=pika.BasicProperties(delivery_mode=2))
+
             # Insert to Meal Table
-            query = "mutation MyMutation {insert_Meal(objects: {Description: \""+description+"\", Total_Calories: " + str(
-                total_calories)+", Username: \""+username+"\"}) {returning {Description Id Total_Calories Username}}}"
-            url = "https://esd-healthiswell-69.hasura.app/v1/graphql"
+            url = "http://localhost:6120/api/meal/insert"
+
+            body = {
+                'description': description,
+                'username': username,
+                'total_calories': total_calories,
+            }
 
             headers = {
-                "content-type": "application/json",
-                "x-hasura-admin-secret": "Qbbq4TMG6uh8HPqe8pGd1MQZky85mRsw5za5RNNREreufUbTHTSYgaTUquaKtQuk"
+                'Content-Type': "application/json",
+                "Accept": "application/json",
             }
-            response = requests.post(
-                url, headers=headers, json={'query': query})
-            print(response)
+            getMeals_result = requests.post(
+                url, headers=headers, json=body)
+            # print(response)
             message = json.dumps(
-            {"message": "Meal is successfully inserted into the Meal Table in the Database!"})
+                {"message": "Meal is successfully inserted into the Meal Table in the Database!"})
             AMQP_setup.channel.basic_publish(exchange=AMQP_setup.exchangename, routing_key="meal.activity",
-                                                 body=message, properties=pika.BasicProperties(delivery_mode=2))
+                                             body=message, properties=pika.BasicProperties(delivery_mode=2))
             returnresponse = {
                 'code': 201,
-                'response': response.json()}
+                'response': getMeals_result.json()}
             # print(response)
             return returnresponse
 
@@ -83,57 +88,6 @@ def planning():
             "data": {
                 "message": "internal error: " + ex_str
             }}), 500
-
-
-# Get all the meal plans created by user
-@app.route("/api/meal", methods=["POST"])
-def get_meal_by_username():
-    if request.method == "POST":
-        jsondata = request.get_json(force=True)
-        username = jsondata["username"]
-
-        query = "query MyQuery {Meal(where: {Username: {_eq: \"" + \
-            username+"\"}}) {Description Id Total_Calories Username}}"
-        url = "https://esd-healthiswell-69.hasura.app/v1/graphql"
-        print(query)
-        headers = {
-            "content-type": "application/json",
-            "x-hasura-admin-secret": "Qbbq4TMG6uh8HPqe8pGd1MQZky85mRsw5za5RNNREreufUbTHTSYgaTUquaKtQuk"
-        }
-        response = requests.post(url, headers=headers, json={'query': query})
-        response = response.json()
-        print(response)
-        message = json.dumps(
-            {"message": username + "obtains all meal from database successfully"})
-        AMQP_setup.channel.basic_publish(exchange=AMQP_setup.exchangename, routing_key="meals.activity",
-                                                 body=message, properties=pika.BasicProperties(delivery_mode=2))
-    return response
-
-# Delete Meal plan
-@app.route("/api/meal/delete", methods=["POST"])
-def delete_meal():
-    if request.method == "POST":
-        jsondata = request.get_json(force=True)
-        id = jsondata["id"]
-        username = jsondata['username']
-        # query = "mutation MyMutation {delete_Meal(where: {Username: {_eq: " + \
-        #    username +"}, Id: {_eq: " + id + "}}) {returning {Description Id Total_Calories Username}}}"
-        query = "mutation MyMutation {delete_Meal(where: {Id: {_eq: " + \
-            id+"}}) {returning {Description Id Total_Calories Username}}}"
-        url = "https://esd-healthiswell-69.hasura.app/v1/graphql"
-
-        headers = {
-            "content-type": "application/json",
-            "x-hasura-admin-secret": "Qbbq4TMG6uh8HPqe8pGd1MQZky85mRsw5za5RNNREreufUbTHTSYgaTUquaKtQuk"
-        }
-        response = requests.post(url, headers=headers, json={'query': query})
-        response = response.json()
-        print(response)
-        message = json.dumps(
-            {"message": username + "has deleted a row of id : "+ id})
-        AMQP_setup.channel.basic_publish(exchange=AMQP_setup.exchangename, routing_key="meals.activity",
-                                                 body=message, properties=pika.BasicProperties(delivery_mode=2))
-    return response
 
 
 if __name__ == "__main__":

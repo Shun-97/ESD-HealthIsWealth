@@ -153,9 +153,9 @@ def login():
                                                  body=message, properties=pika.BasicProperties(delivery_mode=2))
                 message = json.dumps(
                     {"userLog": username + "has logged in",
-                    "theusername": username,
-                    "logType": "successful execution" 
-                    })
+                     "theusername": username,
+                     "logType": "successful execution"
+                     })
                 AMQP_setup.channel.basic_publish(exchange=AMQP_setup.exchangename, routing_key="login.user",
                                                  body=message, properties=pika.BasicProperties(delivery_mode=2))
                 return {
@@ -275,7 +275,7 @@ def create_registration(username, email, password):
         return (False, exist[1])  # error msg
 
     else:
-        print("here?")
+        # print("here?")
         # Query
         create_userAccount = 'mutation{createUseraccount(Email:"'+email+'", Username:"' + \
             username+'",Password:"'+password + \
@@ -415,7 +415,6 @@ def getTelegramIDByUsername(username):
     return returndata
 
 
-
 @app.route('/api/add/id', methods=['POST'])
 def addTelegramIDByUsername():
     print('faasfasfsadasd')
@@ -445,48 +444,6 @@ def addTelegramIDByUsername():
         'data': returnup
     }
 
-    return returndata
-
-
-@app.route('/api/history/add', methods=['POST'])
-def addHistory():
-    data = request.get_json()
-    username = data["username"]
-    history = data["history"]
-    url = 'https://esd-healthiswell-69.hasura.app/v1/graphql'
-    myobj = {'x-hasura-admin-secret': 'Qbbq4TMG6uh8HPqe8pGd1MQZky85mRsw5za5RNNREreufUbTHTSYgaTUquaKtQuk',
-             'content-type': 'application/json'}
-    query = f"""mutation MyMutation {{
-
-  insert_Search_History(objects: {{History: "{history}", Username: "{username}"}}){{
-    affected_rows
-  }}
-}}"""
-    update = requests.post(url, headers=myobj, json={
-        'query': query}).json()
-
-    return update
-
-
-@app.route('/api/history/getall', methods=['POST'])
-def getall():
-
-    url = 'https://esd-healthiswell-69.hasura.app/v1/graphql'
-    myobj = {'x-hasura-admin-secret': 'Qbbq4TMG6uh8HPqe8pGd1MQZky85mRsw5za5RNNREreufUbTHTSYgaTUquaKtQuk',
-             'content-type': 'application/json'}
-    query = f"""query MyQuery {{
-  Search_History {{
-    History
-    Username
-  }}
-}}"""
-    update = requests.post(url, headers=myobj, json={
-        'query': query})
-    update = update.json()
-    returndata = {
-        'code': 201,
-        'data': update
-    }
     return returndata
 
 
