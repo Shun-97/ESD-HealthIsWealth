@@ -43,6 +43,54 @@ html {
 
 /* End of Main CSS */
 
+/* Start of landing_plan CSS */
+
+#landing_plan{
+    background-position: center;
+    background-size: cover;
+    background-image: url("../img/plan1.jpg");
+    min-height: 100%;   
+}
+.overlay {
+    z-index: 1;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    overflow: auto;
+    top: 0px;
+    left: 0px;
+    background: rgba(0, 0, 0, 0.4);
+}
+table tr td, table tr th{
+    background-color: rgba(5,5,5, 0.3) !important;
+}
+
+/* End of landing_plan CSS */
+
+/* Start of landing_schedule CSS */
+header {
+    background-position: center;
+    background-size: cover;
+    background-image: url("../img/ins.jpg");
+    min-height: 100%;
+  }
+
+  #ins2 {
+    background-position: center;
+    background-size: cover;
+    background-image: url("../img/ins2.jpg");
+    min-height: 100%;
+  }
+
+  #ins3{
+    background-position: center;
+    background-size: cover;
+    background-image: url("../img/ins3.jpg");
+    min-height: 100%;
+  }
+
+/* End of landing_schedule CSS */
+
 
 /* Start of copy paste for navbar */
 @import url('https://fonts.googleapis.com/css?family=Quicksand:400,500,700');
