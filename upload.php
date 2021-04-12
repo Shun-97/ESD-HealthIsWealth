@@ -22,7 +22,7 @@ if(isset($_SESSION['sMsg'])){
     // destroy the session
     session_destroy();
 }
-require_once 'Microservice/sharing_MS/config.php';
+require_once 'Microservice/sharetoLinkedIn/config.php';
 $url = "https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=".CLIENT_ID."&redirect_uri=".REDIRECT_URL."&scope=".SCOPES;
 ?>
 <!DOCTYPE html>
@@ -229,11 +229,12 @@ $url = "https://www.linkedin.com/oauth/v2/authorization?response_type=code&clien
     </style>
     <!-- Required meta tags -->
 <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- <meta http-equiv="X-UA-Compatible" content="IE=edge"> -->
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
   <!-- Main loader -->
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
 <script src="js/ScriptLoader.js"></script>
 <script src="js/navbar.js"></script>
 <link rel="stylesheet" href="css/main.css">

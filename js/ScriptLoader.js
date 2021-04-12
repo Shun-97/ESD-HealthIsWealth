@@ -1,11 +1,13 @@
+load_script();
+
 document.addEventListener("DOMContentLoaded", function () {
+
    loadHeader();
 
    // Toggle between showing and hiding the sidebar when clicking the menu icon
    var mySidebar = document.getElementById("mySidebar");
 });
 
-load_script();
 
 function load_script() { //specify commonly used JS and CSS here. Generates for every page.
    var js_scripts = [
@@ -16,7 +18,7 @@ function load_script() { //specify commonly used JS and CSS here. Generates for 
       //fontawesome
       "https://kit.fontawesome.com/a076d05399.js",
       "https://unpkg.com/axios/dist/axios.js",
-      "https://code.jquery.com/jquery-3.3.1.slim.min.js",
+      // "https://code.jquery.com/jquery-3.3.1.slim.min.js",
       "https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
 
    ];
