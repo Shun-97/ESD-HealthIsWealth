@@ -22,11 +22,11 @@ services:
   ###################################
   # Account: The Account microservice
   ###################################
-  account:
+  accountManagement:
     build:
       context: ./Microservice/accountManagement
       dockerfile: Dockerfile
-    image: honglixuan/account:esd
+    image: honglixuan/accountmanagement:esd
     restart: always
     environment:
       rabbit_host: rabbitmq
@@ -34,13 +34,13 @@ services:
       PYTHONUNBUFFERED: 1
 
   ###################################
-  # Calender Complex: The Calender Complex microservice
+  # planExerciseSchedule: The planExerciseSchedule microservice
   ###################################
-  calender_complex:
+  planExerciseSchedule:
     build:
       context: ./Microservice/planExerciseSchedule
       dockerfile: Dockerfile
-    image: honglixuan/calender_complex:esd
+    image: honglixuan/planexerciseschedule:esd
     restart: always
     environment:
       rabbit_host: rabbitmq
@@ -48,13 +48,13 @@ services:
       PYTHONUNBUFFERED: 1
 
   ###################################
-  # Calories: The Calories microservice
+  # getFoodInfo: The getFoodInfo microservice
   ###################################
-  meal:
+  getFoodInfo:
     build:
       context: ./Microservice/getFoodInfo
       dockerfile: Dockerfile
-    image: honglixuan/meal:esd
+    image: honglixuan/getfoodinfo:esd
     restart: always
     environment:
       rabbit_host: rabbitmq
@@ -62,13 +62,13 @@ services:
       PYTHONUNBUFFERED: 1
 
   ###################################
-  # Planning: The planning microservice
+  # createMeal: The createMealmicroservice
   ###################################
-  planning:
+  createMeal:
     build:
       context: ./Microservice/createMeal
       dockerfile: Dockerfile
-    image: honglixuan/planning:esd
+    image: honglixuan/createmeal:esd
     restart: always
     environment:
       rabbit_host: rabbitmq
@@ -77,13 +77,13 @@ services:
       
       
   #######################################################
-  # Exercise: The exercise  microservice
+  # getExercise: The getExercise  microservice
   #######################################################
-  exercise:
+  getExercise:
     build:
       context: ./Microservice/getExercise
       dockerfile: Dockerfile
-    image: honglixuan/exercise:esd
+    image: honglixuan/getexercise:esd
     restart: always
     environment:
       rabbit_host: rabbitmq
@@ -92,13 +92,13 @@ services:
  
  
   #######################################################
-  # Recipe_complex: The recipe complex microservice
+  # getRecipe: The getRecipe microservice
   #######################################################
-  recipe_complex:
+  getRecipe:
     build:
       context: ./Microservice/getRecipe
       dockerfile: Dockerfile
-    image: honglixuan/recipe_complex:esd
+    image: honglixuan/getrecipe:esd
     restart: always
     environment:
       rabbit_host: rabbitmq
@@ -106,13 +106,13 @@ services:
       PYTHONUNBUFFERED: 1
 
   #######################################################
-  # Google: The google  microservice
+  # googleAuthentication: The googleAuthentication  microservice
   #######################################################
-  google:
+  googleAuthentication:
     build:
       context: ./Microservice/googleAuthentication
       dockerfile: Dockerfile
-    image: honglixuan/google:esd
+    image: honglixuan/googleauthentication:esd
     restart: always
     environment:
       rabbit_host: rabbitmq
@@ -163,6 +163,37 @@ services:
       rabbit_port: 5672
       PYTHONUNBUFFERED: 1
 
+ #######################################################
+  # getMealHistory : The getMealHistory microservice
+  #######################################################
+  getMealHistory:
+    build:
+      context: ./Microservice/getMealHistory
+      dockerfile: Dockerfile
+    image: honglixuan/getmealhistory:esd
+    restart: always
+    depends_on:
+        - rabbitmq
+    environment:
+      rabbit_host: rabbitmq
+      rabbit_port: 5672
+      PYTHONUNBUFFERED: 1
+
+ #######################################################
+  # getMeals : The getMeals microservice
+  #######################################################
+  getMeals:
+    build:
+      context: ./Microservice/getMeals
+      dockerfile: Dockerfile
+    image: honglixuan/getmeals:esd
+    restart: always
+    depends_on:
+        - rabbitmq
+    environment:
+      rabbit_host: rabbitmq
+      rabbit_port: 5672
+      PYTHONUNBUFFERED: 1
 
     #######################################
   # Postgres: The database used by Kong

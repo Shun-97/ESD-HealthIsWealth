@@ -48,7 +48,8 @@ def planning():
                                              body=message, properties=pika.BasicProperties(delivery_mode=2))
 
             # Insert to Meal Table
-            url = "http://localhost:6120/api/meal/insert"
+            # url = "http://localhost:6120/api/meal/insert"
+            url = "http://localhost:8000/api/v1/meal/insert"
 
             body = {
                 'description': description,
