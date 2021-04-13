@@ -59,7 +59,7 @@ def complex_image_search():
         # print(image_food)
 
         # Insert History to database
-        grapql = 'http://account:5100/api/history/add'
+        grapql = 'http://accountManagement:5100/api/history/add'
 
         body = {
             'username': username,
