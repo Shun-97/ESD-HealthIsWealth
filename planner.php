@@ -235,6 +235,10 @@
                 $('#alrtz2').modal('show');
             },
             addToDatabase: function(){
+                if (this.total_calories == 0) {
+                    alert("You did not select anything!")
+                    return
+                }
                 data = JSON.stringify({
                 'username': this.username,
                 'total_calories': this.total_calories,

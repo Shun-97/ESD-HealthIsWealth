@@ -89,7 +89,8 @@ services:
       rabbit_host: rabbitmq
       rabbit_port: 5672
       PYTHONUNBUFFERED: 1
- 
+    ports:
+      - "5320:5320"
  
   #######################################################
   # getRecipe: The getRecipe microservice
@@ -168,9 +169,9 @@ services:
   #######################################################
   getMealHistory:
     build:
-      context: ./Microservice/getMealHistory
+      context: ./Microservice/getSearchHistory
       dockerfile: Dockerfile
-    image: honglixuan/getmealhistory:esd
+    image: honglixuan/getsearchhistory:esd
     restart: always
     depends_on:
         - rabbitmq
@@ -178,7 +179,8 @@ services:
       rabbit_host: rabbitmq
       rabbit_port: 5672
       PYTHONUNBUFFERED: 1
-
+    ports:
+        - "6120:6120"
  #######################################################
   # getMeals : The getMeals microservice
   #######################################################
@@ -194,6 +196,8 @@ services:
       rabbit_host: rabbitmq
       rabbit_port: 5672
       PYTHONUNBUFFERED: 1
+    ports:
+      - "6130:6130"
 
     #######################################
   # Postgres: The database used by Kong
