@@ -115,6 +115,7 @@
       $('#exercise_form').modal('show')
       date_form = document.getElementById('date_form')
       date_form.value = date + 'T00:00'
+
     }
     // document.addEventListener('DOMContentLoaded', function () {
 
@@ -207,7 +208,7 @@
                                   Description: ${description}
                                 </div>
                                 <div class="modal-footer">
-                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick = 'location.reload()'>Close</button>
                                 </div>
                               </div>
                             </div>`;
