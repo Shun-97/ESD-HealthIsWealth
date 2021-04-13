@@ -36,7 +36,7 @@ def processError(errorMsg):
 #find a way to grab username from frontend.... gg
 def saveToDatabase(errorMsg):
     errorMsg = json.loads(errorMsg)
-    query = 'mutation MyMutation {insert_Logging(objects: {Type: "error", Description: "'+errorMsg["message"]+'"}){affected_rows}}'
+    query = 'mutation MyMutation {insert_Error(objects: {Description: "'+errorMsg["message"]+'"}){affected_rows}}'
     url = 'https://esd-healthiswell-69.hasura.app/v1/graphql'
     myobj = {'x-hasura-admin-secret': 'Qbbq4TMG6uh8HPqe8pGd1MQZky85mRsw5za5RNNREreufUbTHTSYgaTUquaKtQuk',
             'content-type': 'application/json'}
