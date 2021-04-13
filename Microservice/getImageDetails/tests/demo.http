@@ -1,0 +1,13 @@
+POST http://localhost:5200/api/recipe_image 
+Content-Type: application/json
+
+{
+    "link": "https://i.imgur.com/8J3XpiD.jpg"
+}
+
+# POST http://localhost:5100/recipe
+# Content-Type: application/json
+
+# {
+#     "food" : "cream cake"
+# }
