@@ -11,10 +11,11 @@ import pika
 app = Flask(__name__)
 CORS(app)
 
-exercise_url = 'http://exercise:5320/api/exercise'
+# exercise_url = 'http://getExercise:5320/api/exercise'
+exercise_url = 'http://localhost:8000/api/v1/exercise'
 telegram_url = 'https://g2t6-healthiswell.herokuapp.com/1717486923:AAH56XlVFTeHy-N459udrbX43bqfehL28GQ/setCalender'
-@app.route("/api/SetCalender", methods=["POST"])
-def setCalender():
+@app.route("/api/SetCalendar", methods=["POST"])
+def setCalendar():
     if request.is_json:
         try:
             # Send to exercise microservice

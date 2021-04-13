@@ -59,8 +59,8 @@
                 data = JSON.stringify({
                 'username': this.username,
                 })
-                fetch("http://localhost:6120/api/meal/getAll",{
-                // fetch("http://localhost:8000/api/v1/meal",{
+                // fetch("http://localhost:6120/api/meal/getAll",{
+                fetch("http://localhost:8000/api/v1/meal",{
                     method: 'POST',
                     headers: {
                         'content-type': 'application/json',
@@ -79,9 +79,9 @@
                 'id': id.toString(),
                 'username' : this.username.toString(),
                 })
-                fetch("http://localhost:6120/api/meal/delete",{
+                // fetch("http://localhost:6120/api/meal/delete",{
 
-                // fetch("http://localhost:8000/api/v1/meal/delete",{
+                fetch("http://localhost:8000/api/v1/meal/delete",{
                     method: 'POST',
                     headers: {
                         'content-type': 'application/json',
