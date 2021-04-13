@@ -26,7 +26,7 @@ def processLog(log):
 
 def saveToDatabase(successMsg):
     successMsg = json.loads(successMsg)
-    query = 'mutation MyMutation {insert_Logging(objects: {Type: "activity", Description: "'+successMsg["message"]+'"}){affected_rows}}'
+    query = 'mutation MyMutation {insert_Activity(objects: {Description: "'+successMsg["message"]+'"}){affected_rows}}'
     url = 'https://esd-healthiswell-69.hasura.app/v1/graphql'
     myobj = {'x-hasura-admin-secret': 'Qbbq4TMG6uh8HPqe8pGd1MQZky85mRsw5za5RNNREreufUbTHTSYgaTUquaKtQuk',
             'content-type': 'application/json'}
