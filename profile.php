@@ -109,6 +109,7 @@ var app = new Vue({
                     this.calories = data.data[0]["Requested_Calories"]
                     this.telegramid = data.data[0]["TelegramId"]
                     localStorage.setItem("tele_id", data.data[0]["TelegramId"])
+                    localStorage.setItem("Calories", data.data[0]["Requested_Calories"])
                 } 
             });
             },
