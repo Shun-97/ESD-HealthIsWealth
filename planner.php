@@ -257,7 +257,7 @@
                 }).then((response)=> response.json())
                 .then((data)=>{
                     console.log(data)
-                    // window.location.replace("./landing_plan.php")
+                    window.location.replace("./landing_plan.php")
                 })
             },
             deleteFood: function(id){
