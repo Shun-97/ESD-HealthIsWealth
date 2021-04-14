@@ -13,10 +13,10 @@ use GuzzleHttp\Client;
 // $routing_key = 'linkedin.shared';
 
 try {
-    $msg = new AMQPMessage("---- Logging in to LinkedIn ----");
+    // $msg = new AMQPMessage("---- Logging in to LinkedIn ----");
 
     // $channel->basic_publish($msg, 'linkedin_shared', $routing_key, array('delivery_mode' => 2));
-    // $client = new Client(['base_uri' => 'https://www.linkedin.com']);
+    $client = new Client(['base_uri' => 'https://www.linkedin.com']);
     $response = $client->request('POST', '/oauth/v2/accessToken', [
         'form_params' => [
                 "grant_type" => "authorization_code",
