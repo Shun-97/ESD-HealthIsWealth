@@ -34,7 +34,7 @@ def insert_meal_by_username():
     response = response.json()
     # print(response)
     message = json.dumps(
-            {"message": username + "obtains all meal from database successfully"})
+            {"message": username + "Sends Meals to Database Successfully"})
     AMQP_setup.channel.basic_publish(exchange=AMQP_setup.exchangename, routing_key="meals.activity",
                                          body=message, properties=pika.BasicProperties(delivery_mode=2))
     return response
