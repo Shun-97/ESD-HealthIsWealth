@@ -71,7 +71,6 @@ try {
             ]);
         
             // if ($response->getStatusCode() !== 201) {
-
                 // $msg = new AMQPMessage('!!!!!!! - Error: '. $response->getLastBody()->errors[0]->message, array('delivery_mode' => 2));
                 // $channel->basic_publish($msg, 'linkedin_shared', $routing_key);
             // }
