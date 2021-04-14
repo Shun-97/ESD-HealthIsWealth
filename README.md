@@ -43,6 +43,14 @@ C:/Users/<YourUsername>/Downloads/ESD-HealthIsWealth
 
 After navigating to the project directory, perform docker-compose up.
 
+Once everything is up and running, navigate to localhost:1337
+
+Create a new admin account if necessary, and put the following details for your connection:
+Name: default
+Kong Admin URL: http://kong:8001
+
+Navigate to snapshot, located at the side bar and import the json file located at kong/development.json.
+
 # ALTERNATIVE
 You may proceed to our website at http://34.121.60.190.xip.io/ if you will like to use our deployed application rather than view individual components
 
@@ -110,11 +118,11 @@ Imgur
 
 ##### Comprehensive Function
 
-Upon uploading the image, the image will then be uploaded to the imgur server. It will then return a JSON object to our microservice. Subsequently, we will extract the imgur link of the image from the JSON object, before passing the link into Clarifai API which scans what the image could be. It will then return a JSON object result which we will extract the highest possible result, concatenating them into a string, before passing them to back to our complex microservice which communicate with the EDAMAM API. Our complex microservice will then return a list of possible recipe which can be deduced from the results. Displaying all health information and recipe information to the user. Providing them with a link to share to their LinkedIn account too!
+Upon uploading the image, the image will then be uploaded to the imgur server. It will then return a JSON object to our microservice. Subsequently, we will extract the imgur link of the image from the JSON object, before passing the link into Clarifai API which scans what the image could be. It will then return a JSON object result which we will extract the highest possible result, before passing them to back to our complex microservice which communicate with the EDAMAM API. Our complex microservice will then return a list of possible recipe which can be deduced from the results. Displaying all health information and recipe information to the user. Providing them with a link to share to their LinkedIn account too!
 
 #### Exercise Scheduling Functionality
 
--- We allow users to exercise and challenge their calories output by taking up our random exercise generator challenge. All the users need to do is to input their preference of Easy, Medium or Hard. The functionality will generate an exercise and input it into their Google Calendar, and they will be notified on Telegram.
+-- We allow users to exercise and challenge their calories output by taking up our random exercise generator challenge. All the users need to do is to input their preference of Easy, Medium or Hard and their preferred duration of exercise. The functionality will generate an exercise and input it into their Google Calendar, and they will be notified on Telegram.
 
 ##### Comprehensive Function
 
@@ -122,7 +130,7 @@ Upon selecting a date, the user will be prompted with a modal overlay which prom
 
 #### Plan a Meal Functionality
 
--- We allow users to plan a meal for the day, indicating how much nutrition the food they intend to consume offers. Subsequently, if the food they plan to eat has too much calorie intake, the system will prompt them that they are not allowed to plan for more food as there is a health concern. Upon creating their meal plan, it will then be saved into the database for the user to track what food they have consumed and they will be notified on Telegram that their meal is planned!
+-- We allow users to plan a meal for the day, indicating how much nutrition the food they intend to consume offers. Subsequently, if the food they plan to eat has too much calorie intake based on their preference, the system will prompt them that they are should not plan for more food as there is a health concern. Upon creating their meal plan, it will then be saved into the database for the user to track what food they have consumed and they will be notified on Telegram that their meal is planned!
 
 ##### Comprehensive Function
 
@@ -144,5 +152,7 @@ See also the list of [contributors](https://github.com/Shun-97/ESD-HealthIsWealt
 
 
 ## Acknowledgments
+- FullCalendar (https://fullcalendar.io/)
+- Moments.js (https://momentjs.com/docs/)
 
-* We did not plagiarize any code from our friends, seniors nor any online repository
+* Other than that, We did not plagiarize any code from our friends, seniors nor any online repository
