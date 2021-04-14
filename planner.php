@@ -226,7 +226,7 @@
                               </div>
                             </div>`;
                 document.getElementById('dizplaymodal2').innerHTML = alertmodal;
-                if (this.total_calories > target) {
+                if (this.total_calories > this.target) {
                     document.getElementById('warning_display').innerHTML = `WARNING, YOU HAVE EXCEEDED YOUR DAILY CALORIES INTAKE. 
                                     PLEASE GET SOMETHING HEALTHIER`
                 }

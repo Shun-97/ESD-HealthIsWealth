@@ -18,7 +18,7 @@ app = Flask(__name__)
 CORS(app)
 
 # Database connection
-dbURL = "postgresql://bguqlttywcdyul:dcb0d826221e6019e36aee4cad4ac193e2bfa2a727748b5445187f3c852554a7@ec2-3-233-43-103.compute-1.amazonaws.com:5432/dcploeccegb868"
+dbURL = "postgresql://qsagqqaxzcxlkr:e8e41c0771f08d0c180276d468ce7f60ede084893ceaf7cf8e4538c972451ea1@ec2-18-215-111-67.compute-1.amazonaws.com:5432/d3si3nqpsl6ght"
 app.config['SQLALCHEMY_DATABASE_URI'] = dbURL
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
