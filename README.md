@@ -1,18 +1,18 @@
 # ESD-HealthIsWealth
 
-Our application helps our users to analyse their food, spread their diet with their friends, receive recommendations from our analysis trends and understand their calories input and output!
+Our application helps our users to analyse their food, share their diet with their friends, receive recommendations from our analysis trends and understand their calories input and output!
 
 ## Getting Started
 
-We have a docker-compose.yml files which consist of the necessary technologies to keep these microservices running.
+We have  docker-compose.yml files which consist of the necessary technologies to keep these microservices running.
 
-Following the steps below from the prerequisites, till the end of the installation guide will ensure that our application runs smoothly on your end.
+Following the steps below from the prerequisites till the end of the installation guide will ensure that our application runs smoothly on your end.
 
-These instructions will cover usage information for the docker containers and files. In addition, it will help our application be to up and running on your local machine for development and testing purposes. 
+These instructions will cover usage information for the docker containers and files. In addition, it will help our application be up and running on your local machine for development and testing purposes. 
 
 ### Prerequisites
 
-What things you need to install the software and how to install them:
+What are the things you need to install the software and how to install them:
 
 In order to run this container, you will need docker installed.
 There are links below that leads you to the installation of Docker.
@@ -52,9 +52,9 @@ Kong Admin URL: http://kong:8001
 Navigate to snapshot, located at the side bar and import the json file located at kong/development.json.
 
 # ALTERNATIVE
-You may proceed to our website at http://34.121.60.190.xip.io/ if you will like to use our deployed application rather than view individual components
+You may proceed to our website at http://34.121.60.190.xip.io/ if you would like to use our deployed application rather than view individual components
 
-Please Note: several network might block our IP as we do not have an SSL certificate enforced or a domain name registered.
+Please Note: several networks may block our IP as we do not have an SSL certificate enforced or a domain name registered.
 
 
 ## Built With
@@ -118,7 +118,7 @@ Imgur
 
 ##### Comprehensive Function
 
-Upon uploading the image, the image will then be uploaded to the imgur server. It will then return a JSON object to our microservice. Subsequently, we will extract the imgur link of the image from the JSON object, before passing the link into Clarifai API which scans what the image could be. It will then return a JSON object result which we will extract the highest possible result, before passing them to back to our complex microservice which communicate with the EDAMAM API. Our complex microservice will then return a list of possible recipe which can be deduced from the results. Displaying all health information and recipe information to the user. Providing them with a link to share to their LinkedIn account too!
+Upon uploading the image, the image will then be uploaded to the imgur server. It will then return a JSON object to our microservice. Subsequently, we will extract the imgur link of the image from the JSON object, before passing the link into Clarifai API which scans what the image could be. It will then return a JSON object result which we will extract the highest possible result, before passing them to back to our complex microservice which communicate with the EDAMAM API. Our complex microservice will then return a list of possible recipes which can be deduced from the results, displaying all health information and recipe information to the user and providing them with a link to share to their LinkedIn account too!
 
 #### Exercise Scheduling Functionality
 
@@ -134,7 +134,7 @@ Upon selecting a date, the user will be prompted with a modal overlay which prom
 
 ##### Comprehensive Function
 
-Upon arriving at the Plan a Meal UI, the user will be able to search for the food they planned. The microservice will invoke the calorieNinjas API which provides them with a comprehensive nutrition list about the food that they searched for. If the user is satisfied, they can add the food into their plan. After adding a certain bunch of food which amounts to a high calorie intake, a notification will be prompted, indicating health problems. Then, upon clicking on creating a meal, the meal will be added into the database, invoking getMealHistory, which will add their newly planned meal into the database. Then, it will invoke the accountsManagement Microservice which calls the user's telegram chat id. This way, the telegram bot will then send a notification to the user, letting them know that the planned meals details and the planned meal is successfully added. Lastly, getMealHistory will then be invoked to obtain the meal history of the user, before displaying it on the Landing_Plan UI.
+Upon arriving at the Plan a Meal UI, the user will be able to search for the food they planned. The microservice will invoke the calorieNinjas API which provides them with a comprehensive nutrition list about the food that they searched for. If the user is satisfied, they can add the food into their plan. After adding a certain bunch of food which amounts to a high calorie intake, a notification will be prompted, indicating health problems. Then, upon clicking on creating a meal, the meal will be added into the database, invoking getMealHistory, which will add their newly planned meal into the database. Then, it will invoke the accountManagement Microservice which calls the user's telegram chat id. This way, the telegram bot will then send a notification to the user, letting them know that the planned meals details and the planned meal is successfully added. Lastly, getMealHistory will then be invoked to obtain the meal history of the user, before displaying it on the Landing_Plan UI.
 
 ## Versioning
 
@@ -145,7 +145,7 @@ We use [Git](https://ourcodingclub.github.io/tutorials/git/) for versioning. For
 * **Lee Shun Hui** - *Back-End Developer* - [Lee Shun Hui](https://github.com/Shun-97)
 * **Yeo Yao Cong** - *Front-End Developer* - [Yeo Yao Cong](https://github.com/izhcong1997)
 * **Hong Li Xuan** - *Architecture Design* - [Hong Li Xuan](https://github.com/h-lixuan)
-* **Trisha Chua Zi Hui** - *Quality Assurance API Tester* - [Trisha Chua](https://github.com/trishachua2019)
+* **Chua Zihui Trisha** - *Quality Assurance API Tester* - [Trisha Chua](https://github.com/trishachua2019)
 * **Kendrick Yeong** - *Marketing* - [Kendrick Yeong](https://github.com/kendrick-bit)
 
 See also the list of [contributors](https://github.com/Shun-97/ESD-HealthIsWealth/graphs/contributors) who participated in this project.
