@@ -17,7 +17,6 @@
   <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
   <script src="js/ScriptLoader.js"></script>
   <script src="js/navbar.js"></script>
-  <link rel="stylesheet" href="css/main.css">
   
   <!-- full calendar -->
   <link href='External_Files/FullCalendar/main.css' rel='stylesheet' />
@@ -115,6 +114,7 @@
       $('#exercise_form').modal('show')
       date_form = document.getElementById('date_form')
       date_form.value = date + 'T00:00'
+
     }
     // document.addEventListener('DOMContentLoaded', function () {
 
@@ -207,7 +207,7 @@
                                   Description: ${description}
                                 </div>
                                 <div class="modal-footer">
-                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick = 'location.reload()'>Close</button>
                                 </div>
                               </div>
                             </div>`;

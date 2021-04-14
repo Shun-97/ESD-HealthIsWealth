@@ -11,7 +11,7 @@ import AMQP_setup
 import pika
 
 app = Flask(__name__)
-cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
+cors = CORS(app)
 
 calories_url = "https://api.calorieninjas.com/v1/nutrition?query="
 api_key = "REtXb+Q4bQ2JMKCYXL7+3g==urfa511CyFMRg6g0"

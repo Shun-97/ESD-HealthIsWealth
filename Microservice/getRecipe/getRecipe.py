@@ -59,7 +59,7 @@ def complex_image_search():
         # print(image_food)
 
         # Insert History to database
-        grapql = 'http://accountManagement:5100/api/history/add'
+        grapql = 'http://getsearchhistory:6120/api/history/add'
 
         body = {
             'username': username,
@@ -109,14 +109,14 @@ def recipe():
     if request.is_json:
         try:
             food = request.get_json()
-            print("hello")
+            # print("hello")
             # I will need to grab this data from front end, might need to change this
-            print(food)
+            # print(food)
             query_url = recipe_url + "?q=" + \
                 food["food"] + "&app_id=" + app_id + "&app_key=" + app_key
-            print(query_url)
+            # print(query_url)
             recipe_result = requests.get(query_url)
-            print('recipe_result:', recipe_result.json())
+            # print('recipe_result:', recipe_result.json())
             return jsonify({
                 "code": 201,
                 "data": recipe_result.json()

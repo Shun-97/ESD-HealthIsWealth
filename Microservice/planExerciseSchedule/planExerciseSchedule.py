@@ -11,8 +11,8 @@ import pika
 app = Flask(__name__)
 CORS(app)
 
-# exercise_url = 'http://getExercise:5320/api/exercise'
-exercise_url = 'http://localhost:8000/api/v1/exercise'
+exercise_url = 'http://getexercise:5320/api/exercise'
+# exercise_url = 'http://localhost:8000/api/v1/exercise'
 telegram_url = 'https://g2t6-healthiswell.herokuapp.com/1717486923:AAH56XlVFTeHy-N459udrbX43bqfehL28GQ/setCalender'
 @app.route("/api/SetCalendar", methods=["POST"])
 def setCalendar():
@@ -50,7 +50,7 @@ def setCalendar():
             {"message": "Telegram bot has received the JSON Information"})
             AMQP_setup.channel.basic_publish(exchange=AMQP_setup.exchangename, routing_key="calendar.activity",
                                                  body=message, properties=pika.BasicProperties(delivery_mode=2))
-            print(body)
+            # print(body)
             telegram_result = requests.post(
                 telegram_url, json=body, headers=headers)
             return exercise_result
@@ -61,7 +61,7 @@ def setCalendar():
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             ex_str = str(e) + " at " + str(exc_type) + ": " + \
                 fname + ": line " + str(exc_tb.tb_lineno)
-            print(ex_str)
+            # print(ex_str)
             message = json.dumps(
                 {"message": "--- internal error:" + ex_str + "---"})
             AMQP_setup.channel.basic_publish(exchange=AMQP_setup.exchangename, routing_key="calendar.error",

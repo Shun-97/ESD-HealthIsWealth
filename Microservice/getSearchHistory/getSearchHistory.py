@@ -7,7 +7,7 @@ from os import environ
 import requests
 
 app = Flask(__name__)
-cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
+cors = CORS(app)
 
 
 @app.route('/api/history/add', methods=['POST'])
