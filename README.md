@@ -58,7 +58,7 @@ Kong Admin URL: http://kong:8001
 Navigate to snapshot, located at the side bar and import the json file located at kong/development.json.
 
 # ALTERNATIVE
-You may proceed to our website at http://34.121.60.190.xip.io/ if you would like to use our deployed application rather than view individual components
+You may proceed to our website at http://34.121.93.98.xip.io/ if you would like to use our deployed application rather than view individual components
 
 Please Note: several networks may block our IP as we do not have an SSL certificate enforced or a domain name registered.
 
