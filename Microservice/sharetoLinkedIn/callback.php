@@ -5,18 +5,18 @@ require_once __DIR__ . '/vendor/autoload.php';
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 use GuzzleHttp\Client;
-$connection = new AMQPStreamConnection('localhost', 5672, 'guest', 'guest');
-$channel = $connection->channel();
+// $connection = new AMQPStreamConnection('localhost', 5672, 'guest', 'guest');
+// $channel = $connection->channel();
 
-$channel->exchange_declare('linkedin_shared', 'topic', true, true, false);
+// $channel->exchange_declare('linkedin_shared', 'topic', true, true, false);
 
-$routing_key = 'linkedin.shared';
+// $routing_key = 'linkedin.shared';
 
 try {
     $msg = new AMQPMessage("---- Logging in to LinkedIn ----");
 
-    $channel->basic_publish($msg, 'linkedin_shared', $routing_key, array('delivery_mode' => 2));
-    $client = new Client(['base_uri' => 'https://www.linkedin.com']);
+    // $channel->basic_publish($msg, 'linkedin_shared', $routing_key, array('delivery_mode' => 2));
+    // $client = new Client(['base_uri' => 'https://www.linkedin.com']);
     $response = $client->request('POST', '/oauth/v2/accessToken', [
         'form_params' => [
                 "grant_type" => "authorization_code",
@@ -29,12 +29,12 @@ try {
     $data = json_decode($response->getBody()->getContents(), true);
     $access_token = $data['access_token']; // store this token somewhere
 
-    $msg = new AMQPMessage("---- Successfully logged in and obtained access token ----");
-    $channel->basic_publish($msg, 'linkedin_shared', $routing_key, array('delivery_mode' => 2));
+    // $msg = new AMQPMessage("---- Successfully logged in and obtained access token ----");
+    // $channel->basic_publish($msg, 'linkedin_shared', $routing_key, array('delivery_mode' => 2));
     try {
 
-        $msg = new AMQPMessage("---- Obtaining OAuth Code ----");
-        $channel->basic_publish($msg, 'linkedin_shared', $routing_key);
+        // $msg = new AMQPMessage("---- Obtaining OAuth Code ----");
+        // $channel->basic_publish($msg, 'linkedin_shared', $routing_key);
         $client = new Client(['base_uri' => 'https://api.linkedin.com']);
         $response = $client->request('GET', '/v2/me', [
             'headers' => [
@@ -70,29 +70,29 @@ try {
                 'body' => $body_json,
             ]);
         
-            if ($response->getStatusCode() !== 201) {
-                $msg = new AMQPMessage('!!!!!!! - Error: '. $response->getLastBody()->errors[0]->message, array('delivery_mode' => 2));
-                $channel->basic_publish($msg, 'linkedin_shared', $routing_key);
-            }
-            $msg = new AMQPMessage("---- Successfully shared onto LinkedIn, redirecting back to upload.php ----");
-            $channel->basic_publish($msg, 'linkedin_shared', $routing_key, array('delivery_mode' => 2));
+            // if ($response->getStatusCode() !== 201) {
+                // $msg = new AMQPMessage('!!!!!!! - Error: '. $response->getLastBody()->errors[0]->message, array('delivery_mode' => 2));
+                // $channel->basic_publish($msg, 'linkedin_shared', $routing_key);
+            // }
+            // $msg = new AMQPMessage("---- Successfully shared onto LinkedIn, redirecting back to upload.php ----");
+            // $channel->basic_publish($msg, 'linkedin_shared', $routing_key, array('delivery_mode' => 2));
             $_SESSION['sMsg'] = '---- Successfully shared onto LinkedIn ----';
             header("Location: ../../upload.php");
         } catch(Exception $e) {
-            $msg = new AMQPMessage($e->getMessage(). ' for link '. $link);
-            $channel->basic_publish($msg, 'linkedin_shared', $routing_key);
+            // $msg = new AMQPMessage($e->getMessage(). ' for link '. $link);
+            // $channel->basic_publish($msg, 'linkedin_shared', $routing_key);
             $_SESSION['msg'] = "Error!";
             header("Location: ../../upload.php");
         }
     } catch(Exception $e) {
-        $msg = new AMQPMessage($e->getMessage());
-        $channel->basic_publish($msg, 'linkedin_shared', $routing_key);
+        // $msg = new AMQPMessage($e->getMessage());
+        // $channel->basic_publish($msg, 'linkedin_shared', $routing_key);
         $_SESSION['msg'] = "Error!";
         header("Location: ../../upload.php");
     }
 } catch(Exception $e) {
-    $msg = new AMQPMessage($e->getMessage());
-    $channel->basic_publish($msg, 'linkedin_shared', $routing_key);
+    // $msg = new AMQPMessage($e->getMessage());
+    // $channel->basic_publish($msg, 'linkedin_shared', $routing_key);
     $_SESSION['msg'] = "Error!";
     header("Location: ../../upload.php");
 }
