@@ -10,6 +10,10 @@ Following the steps below from the prerequisites till the end of the installatio
 
 These instructions will cover usage information for the docker containers and files. In addition, it will help our application be up and running on your local machine for development and testing purposes. 
 
+# Things to Note:
+
+GraphQL Link might change when the dynamic link expires. do inform us if you are unable to access the data at our database at shunhui.lee.2019@sis.smu.edu.sg, ycyeo.2019@sis.smu.edu.sg, lxhong.2019@sis.smu.edu.sg, trisha.chua.2019@sis.smu.edu.sg, zhyeong.2019@sis.smu.edu.sg.
+
 ### Prerequisites
 
 What are the things you need to install the software and how to install them:
