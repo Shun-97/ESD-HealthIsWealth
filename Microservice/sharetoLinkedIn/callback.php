@@ -71,9 +71,8 @@ try {
             ]);
         
             // if ($response->getStatusCode() !== 201) {
-
-            //     $msg = new AMQPMessage('!!!!!!! - Error: '. $response->getLastBody()->errors[0]->message, array('delivery_mode' => 2));
-            //     $channel->basic_publish($msg, 'linkedin_shared', $routing_key);
+                // $msg = new AMQPMessage('!!!!!!! - Error: '. $response->getLastBody()->errors[0]->message, array('delivery_mode' => 2));
+                // $channel->basic_publish($msg, 'linkedin_shared', $routing_key);
             // }
             // $msg = new AMQPMessage("---- Successfully shared onto LinkedIn, redirecting back to upload.php ----");
             // $channel->basic_publish($msg, 'linkedin_shared', $routing_key, array('delivery_mode' => 2));
@@ -82,19 +81,19 @@ try {
         } catch(Exception $e) {
             // $msg = new AMQPMessage($e->getMessage(). ' for link '. $link);
             // $channel->basic_publish($msg, 'linkedin_shared', $routing_key);
-            $_SESSION['msg'] = "Error!";
+            $_SESSION['msg'] = $e->getMessage();
             header("Location: ../../upload.php");
         }
     } catch(Exception $e) {
         // $msg = new AMQPMessage($e->getMessage());
         // $channel->basic_publish($msg, 'linkedin_shared', $routing_key);
-        $_SESSION['msg'] = "Error!";
+        $_SESSION['msg'] = $e->getMessage();
         header("Location: ../../upload.php");
     }
 } catch(Exception $e) {
     // $msg = new AMQPMessage($e->getMessage());
     // $channel->basic_publish($msg, 'linkedin_shared', $routing_key);
-    $_SESSION['msg'] = "Error!";
+    $_SESSION['msg'] = $e->getMessage();
     header("Location: ../../upload.php");
 }
 
