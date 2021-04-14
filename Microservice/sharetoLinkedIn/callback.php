@@ -82,19 +82,19 @@ try {
         } catch(Exception $e) {
             // $msg = new AMQPMessage($e->getMessage(). ' for link '. $link);
             // $channel->basic_publish($msg, 'linkedin_shared', $routing_key);
-            $_SESSION['msg'] = "Error!";
+            $_SESSION['msg'] = $e->getMessage();
             header("Location: ../../upload.php");
         }
     } catch(Exception $e) {
         // $msg = new AMQPMessage($e->getMessage());
         // $channel->basic_publish($msg, 'linkedin_shared', $routing_key);
-        $_SESSION['msg'] = "Error!";
+        $_SESSION['msg'] = $e->getMessage();
         header("Location: ../../upload.php");
     }
 } catch(Exception $e) {
     // $msg = new AMQPMessage($e->getMessage());
     // $channel->basic_publish($msg, 'linkedin_shared', $routing_key);
-    $_SESSION['msg'] = "Error!";
+    $_SESSION['msg'] = $e->getMessage();
     header("Location: ../../upload.php");
 }
 
