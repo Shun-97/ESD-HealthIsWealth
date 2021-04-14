@@ -11,7 +11,7 @@ import pika
 import json
 
 app = Flask(__name__)
-cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
+CORS(app)
 telegram_url = 'https://g2t6-healthiswell.herokuapp.com/1717486923:AAH56XlVFTeHy-N459udrbX43bqfehL28GQ/foodPlan'
 
 
@@ -27,8 +27,8 @@ def planning():
             total_calories = jsondata['total_calories']
             telegramid = jsondata['telegramid']
             # print(jsondata)
-            print(username)
-            print(telegramid)
+            # print(username)
+            # print(telegramid)
             # Send to telegram
             headers = {
                 'Content-Type': "application/json",
@@ -48,8 +48,8 @@ def planning():
                                              body=message, properties=pika.BasicProperties(delivery_mode=2))
 
             # Insert to Meal Table
-            # url = "http://localhost:6120/api/meal/insert"
-            url = "http://localhost:8000/api/v1/meal/insert"
+            # url = "http://localhost:6130/api/meal/insert"
+            url = "http://getmeals:6130/api/meal/insert"
 
             body = {
                 'description': description,
@@ -68,6 +68,8 @@ def planning():
                 {"message": "Meal is successfully inserted into the Meal Table in the Database!"})
             AMQP_setup.channel.basic_publish(exchange=AMQP_setup.exchangename, routing_key="meal.activity",
                                              body=message, properties=pika.BasicProperties(delivery_mode=2))
+
+            # print(getMeals_result)
             returnresponse = {
                 'code': 201,
                 'response': getMeals_result.json()}

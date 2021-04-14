@@ -14,7 +14,7 @@ function load_script() { //specify commonly used JS and CSS here. Generates for 
       //Bootstrap JS
       "https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js",
       //Vue JS
-      "https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js",
+      // "https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js",
       //fontawesome
       "https://kit.fontawesome.com/a076d05399.js",
       "https://unpkg.com/axios/dist/axios.js",
