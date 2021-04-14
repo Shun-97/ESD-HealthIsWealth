@@ -144,7 +144,7 @@
           },
         computed: {
             styleObject: function() {
-                if (this.total_calories > target) {
+                if (this.total_calories > this.target) {
                     style =  {
                     'color': 'red',
                     'font-weight': 'bold'
