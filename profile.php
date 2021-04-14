@@ -51,6 +51,10 @@
             <div class="mb-3">
                 <label for="calories" class="form-label">Change your Telegram ID</label>
                 <input type="number" class="form-control" id="telegramid" name="telegramid" v-model="telegramid">
+                <br>
+                To find your Telegram ID, go to @G3T6_HiW_bot and type /chatid.
+                <br>
+                Remember to fill in all the details before submitting
             </div>
         </form>
         <br>
