@@ -44,7 +44,7 @@ C:/Users/<YourUsername>/Downloads/ESD-HealthIsWealth
 After navigating to the project directory, perform docker-compose up.
 
 # ALTERNATIVE
-You may proceed to our website at http://34.121.60.190.xip.io/ if you will like to use our deployed application rather than view individual components
+You may proceed to our website at http://34.121.60.190 if you will like to use our deployed application rather than view individual components
 
 Please Note: several network might block our IP as we do not have an SSL certificate enforced or a domain name registered.
 
