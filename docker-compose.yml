@@ -165,9 +165,9 @@ services:
       PYTHONUNBUFFERED: 1
 
  #######################################################
-  # getMealHistory : The getMealHistory microservice
+  # getMealHistory : The getSearchHistory microservice
   #######################################################
-  getMealHistory:
+  getSearchHistory:
     build:
       context: ./Microservice/getSearchHistory
       dockerfile: Dockerfile
