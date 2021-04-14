@@ -140,10 +140,11 @@
             cholesterol_mg: "",
             protein_g: "",
             carbohydrates_total_g: "",
+            target: localStorage.getItem('Calories')
           },
         computed: {
             styleObject: function() {
-                if (this.total_calories > 1000) {
+                if (this.total_calories > target) {
                     style =  {
                     'color': 'red',
                     'font-weight': 'bold'
@@ -225,7 +226,7 @@
                               </div>
                             </div>`;
                 document.getElementById('dizplaymodal2').innerHTML = alertmodal;
-                if (this.total_calories > 1000) {
+                if (this.total_calories > target) {
                     document.getElementById('warning_display').innerHTML = `WARNING, YOU HAVE EXCEEDED YOUR DAILY CALORIES INTAKE. 
                                     PLEASE GET SOMETHING HEALTHIER`
                 }
